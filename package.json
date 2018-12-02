@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-tmdb",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Source from TheMovieDB in Gatsby",
   "main": "index.js",
   "author": "LekoArts <hello@lekoarts.de>",
@@ -8,6 +8,7 @@
   "private": false,
   "dependencies": {
     "@babel/runtime": "^7.0.0",
+    "limits.js": "^0.1.4",
     "moviedb-promise": "^1.3.1"
   },
   "devDependencies": {
@@ -24,6 +25,7 @@
   },
   "keywords": [
     "gatsby",
+    "gatsby-plugin",
     "tmdb"
   ],
   "peerDependencies": {

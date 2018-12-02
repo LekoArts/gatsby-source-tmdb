@@ -8,14 +8,15 @@ const digest = input =>
 
 exports.digest = digest
 
-async function fetchPaginatedData(pluginOptions) {
-  const { pageSize, language, page, func } = pluginOptions
-  const response = await func({ language, page })
-  const { results } = response
+async function fetchPaginatedData(input) {
+  const { page = 1, func, options = {}, pagesCount } = input
+  const response = await func({ page, ...options })
+  const { results, total_pages: totalPages } = response
+  const pageSize = pagesCount || totalPages
 
   if (page < pageSize) {
     const additionalItems = await fetchPaginatedData({
-      ...pluginOptions,
+      ...input,
       page: response.page + 1,
     })
 

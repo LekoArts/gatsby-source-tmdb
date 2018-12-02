@@ -1,8 +1,13 @@
 const MOVIEDB = require('moviedb-promise')
+const limits = require('limits.js')
 const { digest, fetchPaginatedData } = require('./utils')
 
-exports.sourceNodes = async ({ actions, createNodeId }, { apiKey, sessionID, language = 'en-US' }) => {
+exports.sourceNodes = async (
+  { actions, createNodeId },
+  { apiKey, sessionID, language = 'en-US', region = 'US', endpoints = {}, pages = 3, timezone = 'Europe/London' }
+) => {
   const { createNode } = actions
+  const { account = true, misc = false, tv = false } = endpoints
 
   if (!apiKey || !sessionID) {
     throw new Error('You need to define apiKey and sessionID')
@@ -25,18 +30,14 @@ exports.sourceNodes = async ({ actions, createNodeId }, { apiKey, sessionID, lan
     createNode(node)
   }
 
-  async function detailGenerate({ name, first, second }) {
+  async function chainRequest({ name, first, second }) {
     try {
       console.log(`Start fetching ${name}`)
       const timeStart = process.hrtime()
-      const initial = await first()
       const firstList = await fetchPaginatedData({
-        pageSize: initial.total_pages,
-        language,
         func: first,
-        page: 1,
       })
-      const secondRequests = firstList.map(req => second({ id: req.id }))
+      const secondRequests = firstList.map(req => second({ id: req.id, language }))
       const secondDetailed = await Promise.all(secondRequests)
       const timeDuration = process.hrtime(timeStart)
       console.log(`Fetching ${name} took ${timeDuration[0]} second(s)`)
@@ -49,36 +50,105 @@ exports.sourceNodes = async ({ actions, createNodeId }, { apiKey, sessionID, lan
     }
   }
 
-  const moviedb = new MOVIEDB(apiKey)
+  async function singleRequest({ name, func, options = {}, paginate = false, pagesCount }) {
+    try {
+      console.log(`Start fetching ${name}`)
+      const timeStart = process.hrtime()
+      let data
+      if (paginate) {
+        data = await fetchPaginatedData({
+          func,
+          options,
+          pagesCount,
+        })
+      } else {
+        data = await func({ language, ...options })
+      }
+      const timeDuration = process.hrtime(timeStart)
+      console.log(`Fetching ${name} took ${timeDuration[0]} second(s)`)
+      if (paginate) {
+        data.forEach(item => {
+          nodeHelper(item, name)
+        })
+      } else {
+        nodeHelper(data, name)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const moviedb = new MOVIEDB(apiKey, false)
   moviedb.sessionId = sessionID
+  moviedb.throttle = limits().within(10 * 1000, 35)
 
-  const timeStartAccInfo = process.hrtime()
-  console.log(`Start fetching AccountInfo`)
-  const accountInfo = await moviedb.accountInfo()
-  const timeDurationAccInfo = process.hrtime(timeStartAccInfo)
-  console.log(`Fetching AccountInfo took ${timeDurationAccInfo[0]} second(s)`)
-  nodeHelper(accountInfo, 'AccountInfo')
+  await singleRequest({ name: 'AccountInfo', func: moviedb.accountInfo })
+  await singleRequest({ name: 'Configuration', func: moviedb.configuration })
 
-  const timeStartConfiguration = process.hrtime()
-  console.log(`Start fetching Configuration`)
-  const Configuration = await moviedb.configuration()
-  const timeDurationConfiguration = process.hrtime(timeStartConfiguration)
-  console.log(`Fetching Configuration took ${timeDurationConfiguration[0]} second(s)`)
-  nodeHelper(Configuration, 'Configuration')
+  if (account) {
+    await chainRequest({ name: 'AccountLists', first: moviedb.accountLists, second: moviedb.listInfo })
+    await chainRequest({
+      name: 'AccountFavoriteMovies',
+      first: moviedb.accountFavoriteMovies,
+      second: moviedb.movieInfo,
+    })
+    await chainRequest({ name: 'AccountRatedMovies', first: moviedb.accountRatedMovies, second: moviedb.movieInfo })
+    await chainRequest({
+      name: 'AccountFavoriteTv',
+      first: moviedb.accountFavoriteTv,
+      second: moviedb.tvInfo,
+    })
+    await chainRequest({ name: 'AccountRatedTv', first: moviedb.accountRatedTv, second: moviedb.tvInfo })
+    await chainRequest({ name: 'AccountTvWatchlist', first: moviedb.accountTvWatchlist, second: moviedb.tvInfo })
+    await chainRequest({
+      name: 'AccountMovieWatchlist',
+      first: moviedb.accountMovieWatchlist,
+      second: moviedb.movieInfo,
+    })
+  }
 
-  await detailGenerate({ name: 'AccountLists', first: moviedb.accountLists, second: moviedb.listInfo })
-  await detailGenerate({
-    name: 'AccountFavoriteMovies',
-    first: moviedb.accountFavoriteMovies,
-    second: moviedb.movieInfo,
-  })
-  await detailGenerate({ name: 'AccountRatedMovies', first: moviedb.accountRatedMovies, second: moviedb.movieInfo })
-  await detailGenerate({
-    name: 'AccountFavoriteTv',
-    first: moviedb.accountFavoriteTv,
-    second: moviedb.tvInfo,
-  })
-  await detailGenerate({ name: 'AccountRatedTv', first: moviedb.accountRatedTv, second: moviedb.tvInfo })
-  await detailGenerate({ name: 'AccountTvWatchlist', first: moviedb.accountTvWatchlist, second: moviedb.tvInfo })
-  await detailGenerate({ name: 'AccountMovieWatchlist', first: moviedb.accountMovieWatchlist, second: moviedb.movieInfo })
+  if (misc) {
+    await singleRequest({ name: 'MiscUpcomingMovies', func: moviedb.miscUpcomingMovies, options: { region } })
+    await singleRequest({
+      name: 'MiscNowPlayingMovies',
+      func: moviedb.miscNowPlayingMovies,
+      options: { region },
+      paginate: true,
+    })
+    await singleRequest({
+      name: 'MiscPopularMovies',
+      func: moviedb.miscPopularMovies,
+      options: { region },
+      paginate: true,
+      pagesCount: pages,
+    })
+    await singleRequest({
+      name: 'MiscTopRatedMovies',
+      func: moviedb.miscTopRatedMovies,
+      options: { region },
+      paginate: true,
+      pagesCount: pages,
+    })
+    await singleRequest({
+      name: 'MiscTopRatedTvs',
+      func: moviedb.miscTopRatedTvs,
+      paginate: true,
+      pagesCount: pages,
+    })
+    await singleRequest({
+      name: 'MiscPopularTvs',
+      func: moviedb.miscPopularTvs,
+      paginate: true,
+      pagesCount: pages,
+    })
+  }
+
+  if (tv) {
+    await singleRequest({
+      name: 'tvAiringToday',
+      func: moviedb.tvAiringToday,
+      options: { timezone },
+      paginate: true,
+    })
+  }
 }
