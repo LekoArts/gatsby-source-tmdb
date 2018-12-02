@@ -24,7 +24,6 @@
   },
   "keywords": [
     "gatsby",
-    "gatsby-plugin",
     "tmdb"
   ],
   "peerDependencies": {
