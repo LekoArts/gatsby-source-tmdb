@@ -2,6 +2,8 @@
 
 Source from [The Movie Database (TMDb)](https://www.themoviedb.org/) API (v3) in Gatsby.
 
+You can see a live example at [gatsby-source-tmdb.netlify.com](https://gatsby-source-tmdb.netlify.com/) ([Source Code](https://github.com/LekoArts/gatsby-source-tmdb-example)).
+
 Built with [moviedb-promise](https://github.com/grantholle/moviedb-promise).
 
 ***
