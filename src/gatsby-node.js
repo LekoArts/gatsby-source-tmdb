@@ -32,7 +32,6 @@ exports.sourceNodes = async (
 
   async function chainRequest({ name, first, second }) {
     try {
-      console.log(`Start fetching ${name}`)
       const timeStart = process.hrtime()
       const firstList = await fetchPaginatedData({
         func: first,
@@ -52,7 +51,6 @@ exports.sourceNodes = async (
 
   async function singleRequest({ name, func, options = {}, paginate = false, pagesCount }) {
     try {
-      console.log(`Start fetching ${name}`)
       const timeStart = process.hrtime()
       let data
       if (paginate) {
@@ -80,67 +78,71 @@ exports.sourceNodes = async (
 
   const moviedb = new MOVIEDB(apiKey, false)
   moviedb.sessionId = sessionID
-  moviedb.throttle = limits().within(10 * 1000, 35)
+  moviedb.throttle = limits().within(10 * 1000, 36)
 
   await singleRequest({ name: 'AccountInfo', func: moviedb.accountInfo })
   await singleRequest({ name: 'Configuration', func: moviedb.configuration })
 
   if (account) {
-    await chainRequest({ name: 'AccountLists', first: moviedb.accountLists, second: moviedb.listInfo })
-    await chainRequest({
-      name: 'AccountFavoriteMovies',
-      first: moviedb.accountFavoriteMovies,
-      second: moviedb.movieInfo,
-    })
-    await chainRequest({ name: 'AccountRatedMovies', first: moviedb.accountRatedMovies, second: moviedb.movieInfo })
-    await chainRequest({
-      name: 'AccountFavoriteTv',
-      first: moviedb.accountFavoriteTv,
-      second: moviedb.tvInfo,
-    })
-    await chainRequest({ name: 'AccountRatedTv', first: moviedb.accountRatedTv, second: moviedb.tvInfo })
-    await chainRequest({ name: 'AccountTvWatchlist', first: moviedb.accountTvWatchlist, second: moviedb.tvInfo })
-    await chainRequest({
-      name: 'AccountMovieWatchlist',
-      first: moviedb.accountMovieWatchlist,
-      second: moviedb.movieInfo,
-    })
+    await Promise.all([
+      chainRequest({ name: 'AccountLists', first: moviedb.accountLists, second: moviedb.listInfo }),
+      chainRequest({
+        name: 'AccountFavoriteMovies',
+        first: moviedb.accountFavoriteMovies,
+        second: moviedb.movieInfo,
+      }),
+      chainRequest({ name: 'AccountRatedMovies', first: moviedb.accountRatedMovies, second: moviedb.movieInfo }),
+      chainRequest({
+        name: 'AccountFavoriteTv',
+        first: moviedb.accountFavoriteTv,
+        second: moviedb.tvInfo,
+      }),
+      chainRequest({ name: 'AccountRatedTv', first: moviedb.accountRatedTv, second: moviedb.tvInfo }),
+      chainRequest({ name: 'AccountTvWatchlist', first: moviedb.accountTvWatchlist, second: moviedb.tvInfo }),
+      chainRequest({
+        name: 'AccountMovieWatchlist',
+        first: moviedb.accountMovieWatchlist,
+        second: moviedb.movieInfo,
+      }),
+    ])
   }
 
   if (misc) {
-    await singleRequest({ name: 'MiscUpcomingMovies', func: moviedb.miscUpcomingMovies, options: { region } })
-    await singleRequest({
-      name: 'MiscNowPlayingMovies',
-      func: moviedb.miscNowPlayingMovies,
-      options: { region },
-      paginate: true,
-    })
-    await singleRequest({
-      name: 'MiscPopularMovies',
-      func: moviedb.miscPopularMovies,
-      options: { region },
-      paginate: true,
-      pagesCount: pages,
-    })
-    await singleRequest({
-      name: 'MiscTopRatedMovies',
-      func: moviedb.miscTopRatedMovies,
-      options: { region },
-      paginate: true,
-      pagesCount: pages,
-    })
-    await singleRequest({
-      name: 'MiscTopRatedTvs',
-      func: moviedb.miscTopRatedTvs,
-      paginate: true,
-      pagesCount: pages,
-    })
-    await singleRequest({
-      name: 'MiscPopularTvs',
-      func: moviedb.miscPopularTvs,
-      paginate: true,
-      pagesCount: pages,
-    })
+    await Promise.all([
+      singleRequest({ name: 'MiscUpcomingMovies', func: moviedb.miscUpcomingMovies, options: { region } }),
+      singleRequest({
+        name: 'MiscNowPlayingMovies',
+        func: moviedb.miscNowPlayingMovies,
+        options: { region },
+        paginate: true,
+      }),
+      singleRequest({
+        name: 'MiscPopularMovies',
+        func: moviedb.miscPopularMovies,
+        options: { region },
+        paginate: true,
+        pagesCount: pages,
+      }),
+      singleRequest({
+        name: 'MiscTopRatedMovies',
+        func: moviedb.miscTopRatedMovies,
+        options: { region },
+        paginate: true,
+        pagesCount: pages,
+      }),
+      singleRequest({
+        name: 'MiscTopRatedTvs',
+        func: moviedb.miscTopRatedTvs,
+        paginate: true,
+        pagesCount: pages,
+      }),
+      singleRequest({
+        name: 'MiscPopularTvs',
+        func: moviedb.miscPopularTvs,
+        paginate: true,
+        pagesCount: pages,
+      }),
+    ])
   }
 
   if (tv) {
