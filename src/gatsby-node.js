@@ -1,9 +1,9 @@
 const MOVIEDB = require('moviedb-promise')
 const limits = require('limits.js')
-const { digest, fetchPaginatedData } = require('./utils')
+const { fetchPaginatedData, nodeHelper } = require('./utils')
 
 exports.sourceNodes = async (
-  { actions, createNodeId },
+  { actions, createNodeId, store, cache },
   { apiKey, sessionID, language = 'en-US', region = 'US', endpoints = {}, pages = 3, timezone = 'Europe/London' }
 ) => {
   const { createNode } = actions
@@ -11,23 +11,6 @@ exports.sourceNodes = async (
 
   if (!apiKey || !sessionID) {
     throw new Error('You need to define apiKey and sessionID')
-  }
-
-  const nodeHelper = (input, name) => {
-    input[`${name}Id`] = input.id
-    input.id = createNodeId(`TMDB_${name}_${input.id}`)
-
-    const node = {
-      ...input,
-      parent: null,
-      children: [],
-      internal: {
-        type: `TMDB${name}`,
-      },
-    }
-
-    node.internal.contentDigest = digest(node)
-    createNode(node)
   }
 
   async function chainRequest({ name, first, second }) {
@@ -41,9 +24,7 @@ exports.sourceNodes = async (
       const timeDuration = process.hrtime(timeStart)
       console.log(`Fetching ${name} took ${timeDuration[0]} second(s)`)
 
-      secondDetailed.forEach(item => {
-        nodeHelper(item, name)
-      })
+      await Promise.all(secondDetailed.map(item => nodeHelper({ item, name, createNodeId, createNode, store, cache })))
     } catch (err) {
       console.error(err)
     }
@@ -65,11 +46,9 @@ exports.sourceNodes = async (
       const timeDuration = process.hrtime(timeStart)
       console.log(`Fetching ${name} took ${timeDuration[0]} second(s)`)
       if (paginate) {
-        data.forEach(item => {
-          nodeHelper(item, name)
-        })
+        await Promise.all(data.map(item => nodeHelper({ item, name, createNodeId, createNode, store, cache })))
       } else {
-        nodeHelper(data, name)
+        await nodeHelper({ item: data, name, createNodeId, createNode, store, cache })
       }
     } catch (err) {
       console.error(err)
@@ -93,17 +72,17 @@ exports.sourceNodes = async (
       }),
       chainRequest({ name: 'AccountRatedMovies', first: moviedb.accountRatedMovies, second: moviedb.movieInfo }),
       chainRequest({
+        name: 'AccountMovieWatchlist',
+        first: moviedb.accountMovieWatchlist,
+        second: moviedb.movieInfo,
+      }),
+      chainRequest({
         name: 'AccountFavoriteTv',
         first: moviedb.accountFavoriteTv,
         second: moviedb.tvInfo,
       }),
       chainRequest({ name: 'AccountRatedTv', first: moviedb.accountRatedTv, second: moviedb.tvInfo }),
       chainRequest({ name: 'AccountTvWatchlist', first: moviedb.accountTvWatchlist, second: moviedb.tvInfo }),
-      chainRequest({
-        name: 'AccountMovieWatchlist',
-        first: moviedb.accountMovieWatchlist,
-        second: moviedb.movieInfo,
-      }),
     ])
   }
 
