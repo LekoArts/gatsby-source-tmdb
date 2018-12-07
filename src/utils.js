@@ -1,5 +1,11 @@
 const { createRemoteFileNode } = require('gatsby-source-filesystem')
 const crypto = require('crypto')
+const ProgressBar = require('progress')
+
+const bar = new ProgressBar(`Generating images [:bar] :current/:total :elapsed secs :percent`, {
+  total: 0,
+  width: 25,
+})
 
 const digest = input =>
   crypto
@@ -31,7 +37,11 @@ async function fetchPaginatedData(input) {
 
 exports.fetchPaginatedData = fetchPaginatedData
 
+let totalJobs = 0
+
 const addLocalImage = async ({ store, cache, createNode, node, fieldName }) => {
+  bar.total = totalJobs
+
   const fileNode = await createRemoteFileNode({
     url: `https://image.tmdb.org/t/p/original/${node[fieldName]}`,
     store,
@@ -41,6 +51,7 @@ const addLocalImage = async ({ store, cache, createNode, node, fieldName }) => {
   })
 
   if (fileNode) {
+    bar.tick()
     node[`${fieldName}___NODE`] = fileNode.id
   }
 }
@@ -59,10 +70,12 @@ const nodeHelper = async ({ item, name, createNodeId, createNode, store, cache }
   }
 
   if (item.backdrop_path) {
+    totalJobs += 1
     await addLocalImage({ store, cache, createNode, node, fieldName: 'backdrop_path' })
   }
 
   if (item.poster_path) {
+    totalJobs += 1
     await addLocalImage({ store, cache, createNode, node, fieldName: 'poster_path' })
   }
 
