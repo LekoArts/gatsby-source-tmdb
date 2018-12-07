@@ -9,6 +9,8 @@ const digest = input =>
 
 exports.digest = digest
 
+const capitalize = input => input[0].toUpperCase() + input.slice(1)
+
 async function fetchPaginatedData(input) {
   const { page = 1, func, options = {}, pagesCount } = input
   const response = await func({ page, ...options })
@@ -52,7 +54,7 @@ const nodeHelper = async ({ item, name, createNodeId, createNode, store, cache }
     parent: null,
     children: [],
     internal: {
-      type: `TMDB${name}`,
+      type: `TMDB${capitalize(name)}`,
     },
   }
 
