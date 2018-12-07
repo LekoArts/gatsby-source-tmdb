@@ -4,15 +4,15 @@ const { fetchPaginatedData, nodeHelper } = require('./utils')
 
 const defaultModules = {
   account: {
-    activate: false,
+    activate: true,
     endpoints: {
-      // tvs: ['accountFavoriteTv', 'accountRatedTv', 'accountTvWatchlist'],
+      tvs: ['accountFavoriteTv', 'accountRatedTv', 'accountTvWatchlist'],
       movies: ['accountFavoriteMovies', 'accountRatedMovies', 'accountMovieWatchlist'],
       list: 'accountLists',
     },
   },
   misc: {
-    activate: true,
+    activate: false,
     endpoints: [
       ['miscUpcomingMovies'],
       ['miscNowPlayingMovies', true, 1],
@@ -39,14 +39,12 @@ exports.sourceNodes = async (
 
   async function chainRequest({ name, first, second }) {
     try {
-      const timeStart = process.hrtime()
+      console.log(`Fetching ${name}`)
       const firstList = await fetchPaginatedData({
         func: first,
       })
       const secondRequests = firstList.map(req => second({ id: req.id, language }))
       const secondDetailed = await Promise.all(secondRequests)
-      const timeDuration = process.hrtime(timeStart)
-      console.log(`Fetching ${name} took ${timeDuration[0]} second(s)`)
 
       await Promise.all(secondDetailed.map(item => nodeHelper({ item, name, createNodeId, createNode, store, cache })))
     } catch (err) {
@@ -56,8 +54,9 @@ exports.sourceNodes = async (
 
   async function singleRequest({ name, func, options = {}, paginate = false, pagesCount }) {
     try {
-      const timeStart = process.hrtime()
       let data
+      console.log(`Fetching ${name}`)
+
       if (paginate) {
         data = await fetchPaginatedData({
           func,
@@ -67,8 +66,7 @@ exports.sourceNodes = async (
       } else {
         data = await func({ language, ...options })
       }
-      const timeDuration = process.hrtime(timeStart)
-      console.log(`Fetching ${name} took ${timeDuration[0]} second(s)`)
+
       if (paginate) {
         await Promise.all(data.map(item => nodeHelper({ item, name, createNodeId, createNode, store, cache })))
       } else {
@@ -97,15 +95,16 @@ exports.sourceNodes = async (
     let movies = []
     let tvs = []
     if (Array.isArray(modules.account.endpoints.movies) && modules.account.endpoints.movies.length !== 0) {
-      movies = modules.account.endpoints.movies.map(name =>
+      movies = modules.account.endpoints.movies.map(async name =>
         chainRequest({ name, first: moviedb[name], second: moviedb.movieInfo })
       )
     }
     if (Array.isArray(modules.account.endpoints.tvs) && modules.account.endpoints.tvs.length !== 0) {
-      tvs = modules.account.endpoints.tvs.map(name =>
+      tvs = modules.account.endpoints.tvs.map(async name =>
         chainRequest({ name, first: moviedb[name], second: moviedb.tvInfo })
       )
     }
+
     await Promise.all([
       chainRequest({
         name: modules.account.endpoints.list,
@@ -118,7 +117,7 @@ exports.sourceNodes = async (
   }
 
   if (modules.misc.activate && modules.misc.endpoints.length !== 0 && Array.isArray(modules.misc.endpoints)) {
-    const requests = modules.misc.endpoints.map(([name, usePagination = false, pages = 3]) =>
+    const requests = modules.misc.endpoints.map(async ([name, usePagination = false, pages = 3]) =>
       singleRequest({
         name,
         func: moviedb[name],
@@ -135,7 +134,7 @@ exports.sourceNodes = async (
         /* eslint-enable indent */
       })
     )
-    await Promise.all(requests)
+    await Promise.all([...requests])
   }
 
   if (modules.tv.activate) {
