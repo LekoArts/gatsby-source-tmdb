@@ -1,6 +1,7 @@
 const MOVIEDB = require('moviedb-promise')
 const limits = require('limits.js')
-const { fetchPaginatedData, nodeHelper } = require('./utils')
+const { fetchPaginatedData } = require('./fetch-paginated-data')
+const { normalize } = require('./normalize')
 
 const defaultModules = {
   account: {
@@ -15,11 +16,11 @@ const defaultModules = {
     activate: false,
     endpoints: [
       ['miscUpcomingMovies'],
-      ['miscNowPlayingMovies', true, 1],
-      ['miscPopularMovies', true, 1],
-      ['miscTopRatedMovies', true, 1],
-      ['miscTopRatedTvs', true, 1],
-      ['miscPopularTvs', true, 1],
+      ['miscNowPlayingMovies'],
+      ['miscPopularMovies', 2],
+      ['miscTopRatedMovies', 2],
+      ['miscTopRatedTvs', 1],
+      ['miscPopularTvs', 1],
     ],
   },
   tv: {
@@ -47,7 +48,7 @@ exports.sourceNodes = async (
       const secondDetailed = await Promise.all(secondRequests)
 
       await Promise.all(
-        secondDetailed.map(item => nodeHelper({ item, name, createNodeId, createNode, store, cache, touchNode }))
+        secondDetailed.map(item => normalize({ item, name, createNodeId, createNode, store, cache, touchNode }))
       )
     } catch (err) {
       console.error(err)
@@ -71,10 +72,10 @@ exports.sourceNodes = async (
 
       if (paginate) {
         await Promise.all(
-          data.map(item => nodeHelper({ item, name, createNodeId, createNode, store, cache, touchNode }))
+          data.map(item => normalize({ item, name, createNodeId, createNode, store, cache, touchNode }))
         )
       } else {
-        await nodeHelper({
+        await normalize({
           item: data,
           name,
           createNodeId,
@@ -122,24 +123,18 @@ exports.sourceNodes = async (
   }
 
   if (modules.misc.activate && modules.misc.endpoints.length !== 0 && Array.isArray(modules.misc.endpoints)) {
-    const requests = modules.misc.endpoints.map(async ([name, usePagination = false, pages = 3]) =>
+    const requests = modules.misc.endpoints.map(async ([name, pages = 3]) =>
       singleRequest({
         name,
         func: moviedb[name],
         options: {
           region,
         },
-        /* eslint-disable indent */
-        ...(usePagination
-          ? {
-            paginate: true,
-            pagesCount: pages,
-          }
-          : {}),
-        /* eslint-enable indent */
+        paginate: true,
+        pagesCount: pages,
       })
     )
-    await Promise.all([...requests])
+    await Promise.all(requests)
   }
 
   if (modules.tv.activate) {
