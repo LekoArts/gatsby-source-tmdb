@@ -8,6 +8,19 @@ const bar = new ProgressBar(`Generating images [:bar] :current/:total :elapsed s
 
 let totalJobs = 0
 
+/**
+ * @name addLocalImage
+ * @description Add image nodes (so that gatsby-plugin-sharp & gatsby-image) can be used. The images will be downloaded and cached. Much quicker!
+ * @param store
+ * @param cache
+ * @param createNode
+ * @param createNodeId
+ * @param touchNode
+ * @param node - The current node
+ * @param fieldName - Either poster_path or backdrop_path
+ * @returns {Promise<*>} - Returns an image node
+ */
+
 const addLocalImage = async ({ store, cache, createNode, createNodeId, touchNode, node, fieldName }) => {
   totalJobs += 1
   bar.total = totalJobs

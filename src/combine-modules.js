@@ -24,6 +24,13 @@ const defaultModules = {
   },
 }
 
+/**
+ * @name combineModules
+ * @description The user could only put "activate" into an entry and will get all "endpoints" then as his/her override of the "activate" will be combined with the default "endpoints"
+ * @param userModules
+ * @returns Object - Combined Object
+ */
+
 const combineModules = userModules =>
   Object.assign(defaultModules, {
     account: {
