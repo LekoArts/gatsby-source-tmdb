@@ -25,6 +25,7 @@ const defaultModules = {
   },
   tv: {
     activate: false,
+    endpoints: [['tvAiringToday'], ['tvOnTheAir']],
   },
 }
 
@@ -137,12 +138,18 @@ exports.sourceNodes = async (
     await Promise.all(requests)
   }
 
-  if (modules.tv.activate) {
-    await singleRequest({
-      name: 'tvAiringToday',
-      func: moviedb.tvAiringToday,
-      options: { timezone },
-      paginate: true,
-    })
+  if (modules.tv.activate && modules.tv.endpoints.length !== 0 && Array.isArray(modules.tv.endpoints)) {
+    const requests = modules.tv.endpoints.map(async ([name, pages = 3]) =>
+      singleRequest({
+        name,
+        func: moviedb[name],
+        options: {
+          timezone,
+        },
+        paginate: true,
+        pagesCount: pages,
+      })
+    )
+    await Promise.all(requests)
   }
 }
