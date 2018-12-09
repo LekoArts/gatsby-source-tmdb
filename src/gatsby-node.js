@@ -2,38 +2,15 @@ const MOVIEDB = require('moviedb-promise')
 const limits = require('limits.js')
 const { fetchPaginatedData } = require('./fetch-paginated-data')
 const { normalize } = require('./normalize')
-
-const defaultModules = {
-  account: {
-    activate: true,
-    endpoints: {
-      tvs: ['accountFavoriteTv', 'accountRatedTv', 'accountTvWatchlist'],
-      movies: ['accountFavoriteMovies', 'accountRatedMovies', 'accountMovieWatchlist'],
-      list: 'accountLists',
-    },
-  },
-  misc: {
-    activate: false,
-    endpoints: [
-      ['miscUpcomingMovies'],
-      ['miscNowPlayingMovies'],
-      ['miscPopularMovies', 2],
-      ['miscTopRatedMovies', 2],
-      ['miscTopRatedTvs', 1],
-      ['miscPopularTvs', 1],
-    ],
-  },
-  tv: {
-    activate: false,
-    endpoints: [['tvAiringToday'], ['tvOnTheAir']],
-  },
-}
+const { combineModules } = require('./combine-modules')
 
 exports.sourceNodes = async (
   { actions, createNodeId, store, cache },
-  { apiKey, sessionID, language = 'en-US', region = 'US', modules = defaultModules, timezone = 'Europe/London' }
+  { apiKey, sessionID, language = 'en-US', region = 'US', modules: userModules, timezone = 'Europe/London' }
 ) => {
   const { createNode, touchNode } = actions
+
+  const modules = combineModules(userModules)
 
   if (!apiKey || !sessionID) {
     throw new Error('You need to define apiKey and sessionID')
@@ -101,6 +78,7 @@ exports.sourceNodes = async (
   if (modules.account.activate) {
     let movies = []
     let tvs = []
+    let list = null
     if (Array.isArray(modules.account.endpoints.movies) && modules.account.endpoints.movies.length !== 0) {
       movies = modules.account.endpoints.movies.map(async name =>
         chainRequest({ name, first: moviedb[name], second: moviedb.movieInfo })
@@ -112,15 +90,15 @@ exports.sourceNodes = async (
       )
     }
 
-    await Promise.all([
-      chainRequest({
+    if (modules.account.endpoints.list) {
+      list = chainRequest({
         name: modules.account.endpoints.list,
         first: moviedb[modules.account.endpoints.list],
         second: moviedb.listInfo,
-      }),
-      ...movies,
-      ...tvs,
-    ])
+      })
+    }
+
+    await Promise.all([list, ...movies, ...tvs])
   }
 
   if (modules.misc.activate && modules.misc.endpoints.length !== 0 && Array.isArray(modules.misc.endpoints)) {
