@@ -6,15 +6,16 @@ const { addLocalImage } = require('./add-local-image')
  * @description Create a node out of the data that the API gives back. Switches the id and adds image nodes when possible.
  * @param item - Movie/Show
  * @param name - Name of the moviedb-promise function
- * @param createNodeId
- * @param createNode
- * @param touchNode
- * @param store
- * @param cache
+ * @param gatsbyFunctions - Gatsby's internal helper functions
  * @returns {Promise<*>} - Created a node with changed it and image nodes
  */
 
-const normalize = async ({ item, name, createNodeId, createNode, touchNode, store, cache }) => {
+const normalize = async ({ item, name, gatsbyFunctions }) => {
+  const {
+    createNodeId,
+    actions: { createNode },
+  } = gatsbyFunctions
+
   item[`${name}Id`] = item.id
   item.id = createNodeId(`TMDB_${name}_${item.id}`)
 
@@ -28,11 +29,11 @@ const normalize = async ({ item, name, createNodeId, createNode, touchNode, stor
   }
 
   if (item.backdrop_path) {
-    await addLocalImage({ store, cache, createNode, createNodeId, touchNode, node, fieldName: 'backdrop_path' })
+    await addLocalImage({ node, fieldName: 'backdrop_path', gatsbyFunctions })
   }
 
   if (item.poster_path) {
-    await addLocalImage({ store, cache, createNode, createNodeId, touchNode, node, fieldName: 'poster_path' })
+    await addLocalImage({ node, fieldName: 'poster_path', gatsbyFunctions })
   }
 
   node.internal.contentDigest = digest(node)

@@ -5,11 +5,9 @@ const { normalize } = require('./normalize')
 const { combineModules } = require('./combine-modules')
 
 exports.sourceNodes = async (
-  { actions, createNodeId, store, cache },
+  gatsbyFunctions,
   { apiKey, sessionID, language = 'en-US', region = 'US', modules: userModules, timezone = 'Europe/London' }
 ) => {
-  const { createNode, touchNode } = actions
-
   const modules = combineModules(userModules)
 
   if (!apiKey || !sessionID) {
@@ -25,9 +23,7 @@ exports.sourceNodes = async (
       const secondRequests = firstList.map(req => second({ id: req.id, language }))
       const secondDetailed = await Promise.all(secondRequests)
 
-      await Promise.all(
-        secondDetailed.map(item => normalize({ item, name, createNodeId, createNode, store, cache, touchNode }))
-      )
+      await Promise.all(secondDetailed.map(item => normalize({ item, name, gatsbyFunctions })))
     } catch (err) {
       console.error(err)
     }
@@ -49,18 +45,12 @@ exports.sourceNodes = async (
       }
 
       if (paginate) {
-        await Promise.all(
-          data.map(item => normalize({ item, name, createNodeId, createNode, store, cache, touchNode }))
-        )
+        await Promise.all(data.map(item => normalize({ item, name, gatsbyFunctions })))
       } else {
         await normalize({
           item: data,
           name,
-          createNodeId,
-          createNode,
-          store,
-          cache,
-          touchNode,
+          gatsbyFunctions,
         })
       }
     } catch (err) {

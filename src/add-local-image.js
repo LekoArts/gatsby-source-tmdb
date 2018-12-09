@@ -12,17 +12,20 @@ let totalJobs = 0
  * @name addLocalImage
  * @description Add image nodes (so that gatsby-plugin-sharp & gatsby-image) can be used.
  * The images will be downloaded and cached. Much quicker!
- * @param store
- * @param cache
- * @param createNode
- * @param createNodeId
- * @param touchNode
+ * @param gatsbyFunctions - Gatsby's internal helper functions
  * @param node - The current node
  * @param fieldName - Either poster_path or backdrop_path
  * @returns {Promise<*>} - Returns an image node
  */
 
-const addLocalImage = async ({ store, cache, createNode, createNodeId, touchNode, node, fieldName }) => {
+const addLocalImage = async ({ node, fieldName, gatsbyFunctions }) => {
+  const {
+    createNodeId,
+    store,
+    cache,
+    actions: { createNode, touchNode },
+  } = gatsbyFunctions
+
   totalJobs += 1
   bar.total = totalJobs
 
