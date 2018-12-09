@@ -39,24 +39,44 @@ exports.fetchPaginatedData = fetchPaginatedData
 
 let totalJobs = 0
 
-const addLocalImage = async ({ store, cache, createNode, node, fieldName }) => {
+const addLocalImage = async ({ store, cache, createNode, createNodeId, touchNode, node, fieldName }) => {
   bar.total = totalJobs
 
-  const fileNode = await createRemoteFileNode({
-    url: `https://image.tmdb.org/t/p/original/${node[fieldName]}`,
-    store,
-    cache,
-    createNode,
-    createNodeId: id => `TMDB-LocalImage-${id}`,
-  })
+  const clone = Object.assign({}, node)
+  let imageNodeId
+  const remoteDataCacheKey = `TMDB-File-${clone.id}`
+  const cacheRemoteData = await cache.get(remoteDataCacheKey)
 
-  if (fileNode) {
-    bar.tick()
-    node[`${fieldName}___NODE`] = fileNode.id
+  if (cacheRemoteData) {
+    imageNodeId = cacheRemoteData.imageNodeId // eslint-disable-line prefer-destructuring
+    touchNode({ nodeId: cacheRemoteData.imageNodeId })
   }
+
+  if (!imageNodeId) {
+    const imageNode = await createRemoteFileNode({
+      url: `https://image.tmdb.org/t/p/original/${clone[fieldName]}`,
+      store,
+      cache,
+      createNode,
+      createNodeId,
+    })
+
+    if (imageNode) {
+      bar.tick()
+      imageNodeId = imageNode.id
+
+      await cache.set(remoteDataCacheKey, { imageNodeId })
+    }
+  }
+
+  if (imageNodeId) {
+    node[`${fieldName}___NODE`] = imageNodeId
+  }
+
+  return clone
 }
 
-const nodeHelper = async ({ item, name, createNodeId, createNode, store, cache }) => {
+const nodeHelper = async ({ item, name, createNodeId, createNode, touchNode, store, cache }) => {
   item[`${name}Id`] = item.id
   item.id = createNodeId(`TMDB_${name}_${item.id}`)
 
@@ -71,25 +91,13 @@ const nodeHelper = async ({ item, name, createNodeId, createNode, store, cache }
 
   if (item.backdrop_path) {
     totalJobs += 1
-    await addLocalImage({ store, cache, createNode, node, fieldName: 'backdrop_path' })
+    await addLocalImage({ store, cache, createNode, createNodeId, touchNode, node, fieldName: 'backdrop_path' })
   }
 
   if (item.poster_path) {
     totalJobs += 1
-    await addLocalImage({ store, cache, createNode, node, fieldName: 'poster_path' })
+    await addLocalImage({ store, cache, createNode, createNodeId, touchNode, node, fieldName: 'poster_path' })
   }
-
-  /*
-  if (item.items && item.items.length > 0) {
-    await Promise.all(
-      item.items.map(async subitem => {
-        const extraDataNode = await nodeHelper({ item: subitem, name: item.name, createNode, createNodeId, store, cache })
-
-        node.items___NODE =
-      })
-    )
-  }
-  */
 
   node.internal.contentDigest = digest(node)
   return createNode(node)

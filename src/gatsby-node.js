@@ -31,7 +31,7 @@ exports.sourceNodes = async (
   { actions, createNodeId, store, cache },
   { apiKey, sessionID, language = 'en-US', region = 'US', modules = defaultModules, timezone = 'Europe/London' }
 ) => {
-  const { createNode } = actions
+  const { createNode, touchNode } = actions
 
   if (!apiKey || !sessionID) {
     throw new Error('You need to define apiKey and sessionID')
@@ -46,7 +46,9 @@ exports.sourceNodes = async (
       const secondRequests = firstList.map(req => second({ id: req.id, language }))
       const secondDetailed = await Promise.all(secondRequests)
 
-      await Promise.all(secondDetailed.map(item => nodeHelper({ item, name, createNodeId, createNode, store, cache })))
+      await Promise.all(
+        secondDetailed.map(item => nodeHelper({ item, name, createNodeId, createNode, store, cache, touchNode }))
+      )
     } catch (err) {
       console.error(err)
     }
@@ -68,7 +70,9 @@ exports.sourceNodes = async (
       }
 
       if (paginate) {
-        await Promise.all(data.map(item => nodeHelper({ item, name, createNodeId, createNode, store, cache })))
+        await Promise.all(
+          data.map(item => nodeHelper({ item, name, createNodeId, createNode, store, cache, touchNode }))
+        )
       } else {
         await nodeHelper({
           item: data,
@@ -77,6 +81,7 @@ exports.sourceNodes = async (
           createNode,
           store,
           cache,
+          touchNode,
         })
       }
     } catch (err) {
