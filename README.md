@@ -60,7 +60,7 @@ module.exports = {
 
 The plugin exposes some TMDb API options you can modify, e.g. [language][lang], [region][region] and [timezone][time].
 
-The `modules` option gives your control over the querying of data from the TMDb API. The names are the function names of [moviedb-promise][moviedb]. By **default** all endpoints (which make sense) are inserted into the arrays. **Note:** Therefore the `modules` option can be used to minimize the data requested. See examples below.
+The `modules` option gives your control over the querying of data from the TMDb API. The names are the function names of [moviedb-promise][moviedb]. By **default** all endpoints (which make sense) are inserted into the arrays. **Note:** Therefore the `modules` option can be used to minimize the data requested.
 
 The following `gatsby-config` shows all available options with their default values.
 
@@ -117,7 +117,7 @@ module.exports = {
           },
           tv: {
             activate: false,
-            endpoints: [['tvAiringToday'], ['tvOnTheAir']],
+            endpoints: [['tvAiringToday'], ['tvOnTheAir', 2]],
           },
         },
 
@@ -132,7 +132,7 @@ module.exports = {
 }
 ```
 
-#### Examples
+### Examples
 
 **Example 1: You only want `accountFavoriteTv`**
 
@@ -190,6 +190,22 @@ modules: {
   tv: {
     activate: true,
     endpoints: [['tvAiringToday']],
+  },
+}
+```
+
+**Example 5: You don't want `account` but all endpoints from `misc` and `tv`**
+
+```JS
+modules: {
+  account: {
+    activate: false,
+  },
+  misc: {
+    activate: true,
+  },
+  tv: {
+    activate: true,
   },
 }
 ```
