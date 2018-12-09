@@ -11,7 +11,7 @@ const { addLocalImage } = require('./add-local-image')
  * @param touchNode
  * @param store
  * @param cache
- * @returns {Promise<*>}
+ * @returns {Promise<*>} - Created a node with changed it and image nodes
  */
 
 const normalize = async ({ item, name, createNodeId, createNode, touchNode, store, cache }) => {
@@ -23,7 +23,7 @@ const normalize = async ({ item, name, createNodeId, createNode, touchNode, stor
     parent: null,
     children: [],
     internal: {
-      type: `TMDB${capitalize(name)}`,
+      type: `TMDB${capitalize(name)}`, // As "name" begins with a lowercase letter, capitalize it!
     },
   }
 

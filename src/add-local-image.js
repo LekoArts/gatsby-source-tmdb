@@ -10,7 +10,8 @@ let totalJobs = 0
 
 /**
  * @name addLocalImage
- * @description Add image nodes (so that gatsby-plugin-sharp & gatsby-image) can be used. The images will be downloaded and cached. Much quicker!
+ * @description Add image nodes (so that gatsby-plugin-sharp & gatsby-image) can be used.
+ * The images will be downloaded and cached. Much quicker!
  * @param store
  * @param cache
  * @param createNode
@@ -37,7 +38,7 @@ const addLocalImage = async ({ store, cache, createNode, createNodeId, touchNode
 
   if (!imageNodeId) {
     const imageNode = await createRemoteFileNode({
-      url: `https://image.tmdb.org/t/p/original/${clone[fieldName]}`,
+      url: `https://image.tmdb.org/t/p/original/${clone[fieldName]}`, // https://developers.themoviedb.org/3/getting-started/images
       store,
       cache,
       createNode,
