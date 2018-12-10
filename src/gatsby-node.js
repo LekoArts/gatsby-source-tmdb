@@ -8,7 +8,12 @@ exports.sourceNodes = async (
   gatsbyFunctions,
   { apiKey, sessionID, language = 'en-US', region = 'US', modules: userModules, timezone = 'Europe/London' }
 ) => {
-  const modules = combineModules(userModules)
+  let modules
+  if (userModules) {
+    modules = combineModules(userModules)
+  } else {
+    modules = combineModules({})
+  }
 
   if (!apiKey || !sessionID) {
     throw new Error('You need to define apiKey and sessionID')
