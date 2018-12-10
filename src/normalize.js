@@ -44,9 +44,7 @@ const normalize = async ({ item, name, poster, backdrop, gatsbyFunctions }) => {
 
   if (node.items && node.items.length > 0) {
     const itemNodes = await Promise.all(
-      node.items.map(subitem =>
-        normalize({ item: subitem, name: subitem.media_type, poster, backdrop, gatsbyFunctions })
-      )
+      node.items.map(subitem => normalize({ item: subitem, name: 'listItem', poster, backdrop, gatsbyFunctions }))
     )
 
     node.items___NODE = itemNodes.filter(p => !!p).map(n => n.id)
