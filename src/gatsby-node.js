@@ -1,13 +1,14 @@
 const MOVIEDB = require('moviedb-promise')
 const limits = require('limits.js')
-const { fetchPaginatedData, nodeHelper } = require('./utils')
+const { fetchPaginatedData } = require('./fetch-paginated-data')
+const { normalize } = require('./normalize')
+const { combineModules } = require('./combine-modules')
 
 exports.sourceNodes = async (
-  { actions, createNodeId, store, cache },
-  { apiKey, sessionID, language = 'en-US', region = 'US', endpoints = {}, pages = 3, timezone = 'Europe/London' }
+  gatsbyFunctions,
+  { apiKey, sessionID, language = 'en-US', region = 'US', modules: userModules, timezone = 'Europe/London' }
 ) => {
-  const { createNode } = actions
-  const { account = true, misc = false, tv = false } = endpoints
+  const modules = combineModules(userModules)
 
   if (!apiKey || !sessionID) {
     throw new Error('You need to define apiKey and sessionID')
@@ -15,16 +16,14 @@ exports.sourceNodes = async (
 
   async function chainRequest({ name, first, second }) {
     try {
-      const timeStart = process.hrtime()
+      console.log(`Fetching ${name}`)
       const firstList = await fetchPaginatedData({
         func: first,
       })
       const secondRequests = firstList.map(req => second({ id: req.id, language }))
       const secondDetailed = await Promise.all(secondRequests)
-      const timeDuration = process.hrtime(timeStart)
-      console.log(`Fetching ${name} took ${timeDuration[0]} second(s)`)
 
-      await Promise.all(secondDetailed.map(item => nodeHelper({ item, name, createNodeId, createNode, store, cache })))
+      await Promise.all(secondDetailed.map(item => normalize({ item, name, gatsbyFunctions })))
     } catch (err) {
       console.error(err)
     }
@@ -32,8 +31,9 @@ exports.sourceNodes = async (
 
   async function singleRequest({ name, func, options = {}, paginate = false, pagesCount }) {
     try {
-      const timeStart = process.hrtime()
       let data
+      console.log(`Fetching ${name}`)
+
       if (paginate) {
         data = await fetchPaginatedData({
           func,
@@ -43,12 +43,15 @@ exports.sourceNodes = async (
       } else {
         data = await func({ language, ...options })
       }
-      const timeDuration = process.hrtime(timeStart)
-      console.log(`Fetching ${name} took ${timeDuration[0]} second(s)`)
+
       if (paginate) {
-        await Promise.all(data.map(item => nodeHelper({ item, name, createNodeId, createNode, store, cache })))
+        await Promise.all(data.map(item => normalize({ item, name, gatsbyFunctions })))
       } else {
-        await nodeHelper({ item: data, name, createNodeId, createNode, store, cache })
+        await normalize({
+          item: data,
+          name,
+          gatsbyFunctions,
+        })
       }
     } catch (err) {
       console.error(err)
@@ -62,74 +65,59 @@ exports.sourceNodes = async (
   await singleRequest({ name: 'AccountInfo', func: moviedb.accountInfo })
   await singleRequest({ name: 'Configuration', func: moviedb.configuration })
 
-  if (account) {
-    await Promise.all([
-      chainRequest({ name: 'AccountLists', first: moviedb.accountLists, second: moviedb.listInfo }),
-      chainRequest({
-        name: 'AccountFavoriteMovies',
-        first: moviedb.accountFavoriteMovies,
-        second: moviedb.movieInfo,
-      }),
-      chainRequest({ name: 'AccountRatedMovies', first: moviedb.accountRatedMovies, second: moviedb.movieInfo }),
-      chainRequest({
-        name: 'AccountMovieWatchlist',
-        first: moviedb.accountMovieWatchlist,
-        second: moviedb.movieInfo,
-      }),
-      chainRequest({
-        name: 'AccountFavoriteTv',
-        first: moviedb.accountFavoriteTv,
-        second: moviedb.tvInfo,
-      }),
-      chainRequest({ name: 'AccountRatedTv', first: moviedb.accountRatedTv, second: moviedb.tvInfo }),
-      chainRequest({ name: 'AccountTvWatchlist', first: moviedb.accountTvWatchlist, second: moviedb.tvInfo }),
-    ])
+  if (modules.account.activate) {
+    let movies = []
+    let tvs = []
+    let list = null
+    if (Array.isArray(modules.account.endpoints.movies) && modules.account.endpoints.movies.length !== 0) {
+      movies = modules.account.endpoints.movies.map(async name =>
+        chainRequest({ name, first: moviedb[name], second: moviedb.movieInfo })
+      )
+    }
+    if (Array.isArray(modules.account.endpoints.tvs) && modules.account.endpoints.tvs.length !== 0) {
+      tvs = modules.account.endpoints.tvs.map(async name =>
+        chainRequest({ name, first: moviedb[name], second: moviedb.tvInfo })
+      )
+    }
+
+    if (modules.account.endpoints.list) {
+      list = chainRequest({
+        name: modules.account.endpoints.list,
+        first: moviedb[modules.account.endpoints.list],
+        second: moviedb.listInfo,
+      })
+    }
+
+    await Promise.all([list, ...movies, ...tvs])
   }
 
-  if (misc) {
-    await Promise.all([
-      singleRequest({ name: 'MiscUpcomingMovies', func: moviedb.miscUpcomingMovies, options: { region } }),
+  if (modules.misc.activate && modules.misc.endpoints.length !== 0 && Array.isArray(modules.misc.endpoints)) {
+    const requests = modules.misc.endpoints.map(async ([name, pages = 3]) =>
       singleRequest({
-        name: 'MiscNowPlayingMovies',
-        func: moviedb.miscNowPlayingMovies,
-        options: { region },
-        paginate: true,
-      }),
-      singleRequest({
-        name: 'MiscPopularMovies',
-        func: moviedb.miscPopularMovies,
-        options: { region },
+        name,
+        func: moviedb[name],
+        options: {
+          region,
+        },
         paginate: true,
         pagesCount: pages,
-      }),
-      singleRequest({
-        name: 'MiscTopRatedMovies',
-        func: moviedb.miscTopRatedMovies,
-        options: { region },
-        paginate: true,
-        pagesCount: pages,
-      }),
-      singleRequest({
-        name: 'MiscTopRatedTvs',
-        func: moviedb.miscTopRatedTvs,
-        paginate: true,
-        pagesCount: pages,
-      }),
-      singleRequest({
-        name: 'MiscPopularTvs',
-        func: moviedb.miscPopularTvs,
-        paginate: true,
-        pagesCount: pages,
-      }),
-    ])
+      })
+    )
+    await Promise.all(requests)
   }
 
-  if (tv) {
-    await singleRequest({
-      name: 'tvAiringToday',
-      func: moviedb.tvAiringToday,
-      options: { timezone },
-      paginate: true,
-    })
+  if (modules.tv.activate && modules.tv.endpoints.length !== 0 && Array.isArray(modules.tv.endpoints)) {
+    const requests = modules.tv.endpoints.map(async ([name, pages = 3]) =>
+      singleRequest({
+        name,
+        func: moviedb[name],
+        options: {
+          timezone,
+        },
+        paginate: true,
+        pagesCount: pages,
+      })
+    )
+    await Promise.all(requests)
   }
 }
