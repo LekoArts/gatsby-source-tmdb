@@ -36,8 +36,18 @@ const normalize = async ({ item, name, gatsbyFunctions }) => {
     await addLocalImage({ node, fieldName: 'poster_path', gatsbyFunctions })
   }
 
+  if (node.items && node.items.length > 0) {
+    const itemNodes = await Promise.all(
+      node.items.map(subitem => normalize({ item: subitem, name: subitem.media_type, gatsbyFunctions }))
+    )
+
+    node.items___NODE = itemNodes.filter(p => !!p).map(n => n.id)
+  }
+  delete node.items
+
   node.internal.contentDigest = digest(node)
-  return createNode(node)
+  createNode(node)
+  return node
 }
 
 exports.normalize = normalize
