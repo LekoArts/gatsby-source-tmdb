@@ -126,6 +126,21 @@ module.exports = {
         // See all timezones: https://developers.themoviedb.org/3/configuration/get-timezones
 
         timezone: 'Europe/London',
+
+        // TMDb allows 40 Requests per 10 seconds
+        // If you pull a lot of data you could have an error
+        // telling you that you're over that limit. With this
+        // option you can do less requests per 10 seconds
+
+        reqPerTenSeconds: 36,
+
+        // Decide whether you want to download images from
+        // poster_path and backdrop_path URLs or not.
+        // This can save you a lot of time if you're not using one/both
+        // of them anyway
+
+        poster: true,
+        backdrop: false,
       },
     },
   ],

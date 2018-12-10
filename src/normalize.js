@@ -4,13 +4,15 @@ const { addLocalImage } = require('./add-local-image')
 /**
  * @name normalize
  * @description Create a node out of the data that the API gives back. Switches the id and adds image nodes when possible.
- * @param item - Movie/Show
- * @param name - Name of the moviedb-promise function
- * @param gatsbyFunctions - Gatsby's internal helper functions
- * @returns {Promise<*>} - Created a node with changed it and image nodes
+ * @param {object} item - Movie/Show
+ * @param {string} name - Name of the moviedb-promise function
+ * @param {boolean} poster - True/False if poster_path URL should be queried
+ * @param {boolean} backdrop - True/False if backdrop_path URL should be queried
+ * @param {object} gatsbyFunctions - Gatsby's internal helper functions
+ * @returns {Promise<*>} - Created a node with changed id and image nodes
  */
 
-const normalize = async ({ item, name, gatsbyFunctions }) => {
+const normalize = async ({ item, name, poster, backdrop, gatsbyFunctions }) => {
   const {
     createNodeId,
     actions: { createNode },
@@ -28,17 +30,23 @@ const normalize = async ({ item, name, gatsbyFunctions }) => {
     },
   }
 
-  if (item.backdrop_path) {
-    await addLocalImage({ node, fieldName: 'backdrop_path', gatsbyFunctions })
+  if (backdrop) {
+    if (item.backdrop_path) {
+      await addLocalImage({ node, fieldName: 'backdrop_path', gatsbyFunctions })
+    }
   }
 
-  if (item.poster_path) {
-    await addLocalImage({ node, fieldName: 'poster_path', gatsbyFunctions })
+  if (poster) {
+    if (item.poster_path) {
+      await addLocalImage({ node, fieldName: 'poster_path', gatsbyFunctions })
+    }
   }
 
   if (node.items && node.items.length > 0) {
     const itemNodes = await Promise.all(
-      node.items.map(subitem => normalize({ item: subitem, name: subitem.media_type, gatsbyFunctions }))
+      node.items.map(subitem =>
+        normalize({ item: subitem, name: subitem.media_type, poster, backdrop, gatsbyFunctions })
+      )
     )
 
     node.items___NODE = itemNodes.filter(p => !!p).map(n => n.id)

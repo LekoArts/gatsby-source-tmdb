@@ -6,7 +6,17 @@ const { combineModules } = require('./combine-modules')
 
 exports.sourceNodes = async (
   gatsbyFunctions,
-  { apiKey, sessionID, language = 'en-US', region = 'US', modules: userModules, timezone = 'Europe/London' }
+  {
+    apiKey,
+    sessionID,
+    language = 'en-US',
+    region = 'US',
+    modules: userModules,
+    timezone = 'Europe/London',
+    reqPerTenSeconds = 36,
+    poster = true,
+    backdrop = false,
+  }
 ) => {
   let modules
   if (userModules) {
@@ -28,7 +38,7 @@ exports.sourceNodes = async (
       const secondRequests = firstList.map(req => second({ id: req.id, language }))
       const secondDetailed = await Promise.all(secondRequests)
 
-      await Promise.all(secondDetailed.map(item => normalize({ item, name, gatsbyFunctions })))
+      await Promise.all(secondDetailed.map(item => normalize({ item, name, poster, backdrop, gatsbyFunctions })))
     } catch (err) {
       console.error(err)
     }
@@ -50,11 +60,13 @@ exports.sourceNodes = async (
       }
 
       if (paginate) {
-        await Promise.all(data.map(item => normalize({ item, name, gatsbyFunctions })))
+        await Promise.all(data.map(item => normalize({ item, name, poster, backdrop, gatsbyFunctions })))
       } else {
         await normalize({
           item: data,
           name,
+          poster,
+          backdrop,
           gatsbyFunctions,
         })
       }
@@ -65,7 +77,7 @@ exports.sourceNodes = async (
 
   const moviedb = new MOVIEDB(apiKey, false)
   moviedb.sessionId = sessionID
-  moviedb.throttle = limits().within(10 * 1000, 36)
+  moviedb.throttle = limits().within(10 * 1000, reqPerTenSeconds)
 
   await singleRequest({ name: 'AccountInfo', func: moviedb.accountInfo })
   await singleRequest({ name: 'Configuration', func: moviedb.configuration })
