@@ -32,7 +32,7 @@ const normalize = async ({ item, name, poster, backdrop, gatsbyFunctions }) => {
 
   if (backdrop) {
     if (item.backdrop_path) {
-      await addLocalImage({ node, fieldName: 'backdrop_path', gatsbyFunctions })
+      await addLocalImage({ {node: {...node, id: createNodeId(`TMDB_${name}_${item.id}_backdrop`)}}, fieldName: 'backdrop_path', gatsbyFunctions })
     }
   }
 
