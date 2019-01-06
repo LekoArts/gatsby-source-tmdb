@@ -31,7 +31,7 @@ const addLocalImage = async ({ node, fieldName, gatsbyFunctions }) => {
 
   const clone = Object.assign({}, node)
   let imageNodeId
-  const remoteDataCacheKey = `TMDB-File-${clone.id}`
+  const remoteDataCacheKey = `TMDB-File-${clone.id}-${fieldName}`
   const cacheRemoteData = await cache.get(remoteDataCacheKey)
 
   if (cacheRemoteData) {

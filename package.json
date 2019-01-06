@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-tmdb",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Source from The Movie Database (TMDb) in Gatsby",
   "main": "index.js",
   "author": "LekoArts <hello@lekoarts.de>",
