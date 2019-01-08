@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`combine modules should allow changing "misc" 1`] = `
+Object {
+  "account": Object {
+    "activate": false,
+    "endpoints": Object {
+      "list": "accountLists",
+      "movies": Array [
+        "accountFavoriteMovies",
+        "accountRatedMovies",
+        "accountMovieWatchlist",
+      ],
+      "tvs": Array [
+        "accountFavoriteTv",
+        "accountRatedTv",
+        "accountTvWatchlist",
+      ],
+    },
+  },
+  "misc": Object {
+    "activate": true,
+    "endpoints": Array [
+      Array [
+        "miscUpcomingMovies",
+      ],
+      Array [
+        "miscPopularMovies",
+        5,
+      ],
+    ],
+  },
+  "tv": Object {
+    "activate": false,
+    "endpoints": Array [
+      Array [
+        "tvAiringToday",
+      ],
+      Array [
+        "tvOnTheAir",
+        2,
+      ],
+    ],
+  },
+}
+`;
+
+exports[`combine modules should make use of the activate key 1`] = `
+Object {
+  "account": Object {
+    "activate": false,
+    "endpoints": Object {
+      "list": "accountLists",
+      "movies": Array [
+        "accountFavoriteMovies",
+        "accountRatedMovies",
+        "accountMovieWatchlist",
+      ],
+      "tvs": Array [
+        "accountFavoriteTv",
+        "accountRatedTv",
+        "accountTvWatchlist",
+      ],
+    },
+  },
+  "misc": Object {
+    "activate": true,
+    "endpoints": Array [
+      Array [
+        "miscUpcomingMovies",
+      ],
+      Array [
+        "miscNowPlayingMovies",
+      ],
+      Array [
+        "miscPopularMovies",
+        2,
+      ],
+      Array [
+        "miscTopRatedMovies",
+        2,
+      ],
+      Array [
+        "miscTopRatedTvs",
+        1,
+      ],
+      Array [
+        "miscPopularTvs",
+        1,
+      ],
+    ],
+  },
+  "tv": Object {
+    "activate": true,
+    "endpoints": Array [
+      Array [
+        "tvAiringToday",
+      ],
+      Array [
+        "tvOnTheAir",
+        2,
+      ],
+    ],
+  },
+}
+`;
+
+exports[`combine modules should respect change of default movies values 1`] = `
+Object {
+  "account": Object {
+    "activate": true,
+    "endpoints": Object {
+      "tvs": Array [
+        "accountFavoriteTv",
+      ],
+    },
+  },
+  "misc": Object {
+    "activate": false,
+    "endpoints": Array [
+      Array [
+        "miscUpcomingMovies",
+      ],
+      Array [
+        "miscNowPlayingMovies",
+      ],
+      Array [
+        "miscPopularMovies",
+        2,
+      ],
+      Array [
+        "miscTopRatedMovies",
+        2,
+      ],
+      Array [
+        "miscTopRatedTvs",
+        1,
+      ],
+      Array [
+        "miscPopularTvs",
+        1,
+      ],
+    ],
+  },
+  "tv": Object {
+    "activate": false,
+    "endpoints": Array [
+      Array [
+        "tvAiringToday",
+      ],
+      Array [
+        "tvOnTheAir",
+        2,
+      ],
+    ],
+  },
+}
+`;

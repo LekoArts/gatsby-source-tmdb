@@ -23,3 +23,5 @@ coverage
 node_modules
 .idea
 !index.js
+!babel.config.js
+!jest.config.js

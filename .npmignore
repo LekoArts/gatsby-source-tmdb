@@ -23,3 +23,6 @@ yarn.lock
 node_modules
 src
 .idea
+.circleci
+jest.config.js
+babel.config.js

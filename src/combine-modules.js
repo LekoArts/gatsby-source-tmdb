@@ -24,6 +24,8 @@ const defaultModules = {
   },
 }
 
+exports.defaultModules = defaultModules
+
 /**
  * @name combineModules
  * @description The user could only put "activate" into an entry and
@@ -34,19 +36,22 @@ const defaultModules = {
  */
 
 const combineModules = userModules =>
-  Object.assign(defaultModules, {
-    account: {
-      ...defaultModules.account,
-      ...userModules.account,
-    },
-    misc: {
-      ...defaultModules.misc,
-      ...userModules.misc,
-    },
-    tv: {
-      ...defaultModules.tv,
-      ...userModules.tv,
-    },
-  })
+  Object.assign(
+    {},
+    {
+      account: {
+        ...defaultModules.account,
+        ...userModules.account,
+      },
+      misc: {
+        ...defaultModules.misc,
+        ...userModules.misc,
+      },
+      tv: {
+        ...defaultModules.tv,
+        ...userModules.tv,
+      },
+    }
+  )
 
 exports.combineModules = combineModules
