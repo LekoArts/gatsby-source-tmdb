@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-tmdb",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Source from The Movie Database (TMDb) in Gatsby",
   "main": "index.js",
   "author": "LekoArts <hello@lekoarts.de>",
@@ -11,24 +11,23 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "@babel/runtime": "^7.2.0",
-    "gatsby-source-filesystem": "^2.0.7",
+    "@babel/runtime": "^7.3.1",
+    "gatsby-source-filesystem": "^2.0.20",
     "limits.js": "^0.1.4",
-    "moviedb-promise": "^1.3.2",
-    "progress": "^2.0.3"
+    "moviedb-promise": "^1.3.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.0",
-    "@babel/core": "^7.2.0",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
     "babel-eslint": "^10.0.1",
     "babel-preset-gatsby-package": "^0.1.3",
     "cross-env": "^5.2.0",
-    "eslint": "^5.10.0",
+    "eslint": "^5.13.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-config-prettier": "^3.3.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-prettier": "^3.0.0",
-    "prettier": "^1.15.3"
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "prettier": "^1.16.4"
   },
   "keywords": [
     "gatsby",
