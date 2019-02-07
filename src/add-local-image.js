@@ -1,12 +1,4 @@
-const ProgressBar = require('progress')
 const { createRemoteFileNode } = require('gatsby-source-filesystem')
-
-const bar = new ProgressBar(`Generating images [:bar] :current/:total :elapsed secs :percent`, {
-  total: 0,
-  width: 30,
-})
-
-let totalJobs = 0
 
 /**
  * @name addLocalImage
@@ -25,9 +17,6 @@ const addLocalImage = async ({ node, fieldName, gatsbyFunctions }) => {
     cache,
     actions: { createNode, touchNode },
   } = gatsbyFunctions
-
-  totalJobs += 1
-  bar.total = totalJobs
 
   const clone = Object.assign({}, node)
   let imageNodeId
@@ -49,7 +38,6 @@ const addLocalImage = async ({ node, fieldName, gatsbyFunctions }) => {
     })
 
     if (imageNode) {
-      bar.tick()
       imageNodeId = imageNode.id
 
       await cache.set(remoteDataCacheKey, { imageNodeId })

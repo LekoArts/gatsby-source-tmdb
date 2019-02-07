@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-tmdb",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Source from The Movie Database (TMDb) in Gatsby",
   "main": "index.js",
   "author": "LekoArts <hello@lekoarts.de>",
@@ -14,8 +14,7 @@
     "@babel/runtime": "^7.3.1",
     "gatsby-source-filesystem": "^2.0.20",
     "limits.js": "^0.1.4",
-    "moviedb-promise": "^1.3.2",
-    "progress": "^2.0.3"
+    "moviedb-promise": "^1.3.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
