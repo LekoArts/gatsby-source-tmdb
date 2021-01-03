@@ -34,6 +34,7 @@ exports.sourceNodes = async (
       console.log(`Fetching ${name}`)
       const firstList = await fetchPaginatedData({
         func: first,
+        language,
       })
       const secondRequests = firstList.map(req => second({ id: req.id, language }))
       const secondDetailed = await Promise.all(secondRequests)
@@ -52,6 +53,7 @@ exports.sourceNodes = async (
       if (paginate) {
         data = await fetchPaginatedData({
           func,
+          language,
           options,
           pagesCount,
         })
