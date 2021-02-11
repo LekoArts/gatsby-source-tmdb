@@ -19,7 +19,7 @@ coverage
 # node-waf configuration
 .lock-wscript
 
-**/lib
+**/dist
 public
 .cache
 .vscode

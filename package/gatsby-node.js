@@ -1,2 +1,2 @@
 // Proxy to TypeScript compiled output
-module.exports = require(`./lib/gatsby-node`)
+module.exports = require(`./dist/gatsby-node`)

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "es5",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -13,7 +13,8 @@
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "lib": ["es2016"]
   },
   "exclude": ["example/*"]
 }

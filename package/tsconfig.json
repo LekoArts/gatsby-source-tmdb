@@ -1,8 +1,11 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["src"],
+  "include": ["src/**/*.ts"],
   "compilerOptions": {
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationDir": "./dist"
   },
   "exclude": [
     "node_modules",
