@@ -2,7 +2,7 @@
 
 Source from [The Movie Database (TMDb)](https://www.themoviedb.org/) API (v3) in Gatsby.
 
-You can see a **live example** at [tmdb.lekoarts.de](https://tmdb.lekoarts.de/) ([Source Code](https://github.com/LekoArts/gatsby-source-tmdb-example)).
+You can see a **live example** at [tmdb.lekoarts.de](https://tmdb.lekoarts.de/) ([Source Code](https://github.com/LekoArts/gatsby-source-tmdb/tree/master/example)).
 
 Built with [moviedb-promise](https://github.com/grantholle/moviedb-promise).
 
