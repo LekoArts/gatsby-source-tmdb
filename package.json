@@ -9,6 +9,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^26.0.20",
     "@types/node": "^14.14.7",
     "@types/react": "^16.9.56",
     "@types/react-dom": "^16.9.9",
@@ -23,8 +24,10 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^4.3.0",
+    "jest": "^26.6.3",
     "lint-staged": "^10.5.1",
     "prettier": "^2.1.2",
+    "ts-jest": "^26.5.1",
     "typescript": "^4.0.5"
   },
   "scripts": {
@@ -35,7 +38,11 @@
     "lint:fix": "yarn lint --fix",
     "format": "prettier \"**/*.{md,mdx,json,yaml}\" --write",
     "watch": "yarn workspace gatsby-source-tmdb watch",
-    "prepare": "yarn workspace gatsby-source-tmdb prepare"
+    "prepare": "yarn workspace gatsby-source-tmdb prepare",
+    "test": "jest",
+    "test:update": "jest --updateSnapshot",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --ci --runInBand"
   },
   "husky": {
     "hooks": {

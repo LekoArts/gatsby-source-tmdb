@@ -1,5 +1,12 @@
 import { GatsbyNode } from "gatsby"
+import { ERROR_CODES } from "./constants"
 
 export const onPreInit: GatsbyNode["onPreInit"] = ({ reporter }) => {
-  reporter.info(`gatsby-source-tmdb sucessfully loaded`)
+  reporter.setErrorMap({
+    [ERROR_CODES.generic]: {
+      text: (context) => context.sourceMessage,
+      level: `ERROR`,
+      category: `THIRD_PARTY`,
+    },
+  })
 }
