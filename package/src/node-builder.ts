@@ -1,12 +1,103 @@
-import { SourceNodesArgs, NodeInput } from "gatsby"
-import { IdentifiableRecord, NodeHelpers } from "gatsby-node-helpers"
+import { Options } from "got"
 import * as TMDBPlugin from "./types/tmdb-plugin"
+import * as Response from "./types/response"
+import { modifyURL } from "./api-utils"
+import { ERROR_CODES } from "./constants"
 
-interface IBuildFromId {
-  obj: Record<string, unknown>
-  getFactory: (remoteType: string) => (node: IdentifiableRecord) => NodeInput
-  gatsbyApi: SourceNodesArgs
-  options: TMDBPlugin.PluginOptions
+export const nodeBuilder = async ({
+  endpoint,
+  tmdbGot,
+  nodeHelpers,
+  pluginOptions,
+  accountId,
+  gatsbyApi,
+}: TMDBPlugin.NodeBuilder) => {
+  const urlWithoutAccountId = endpoint.url.replace(`/:account_id`, ``)
+  const typeName = endpoint.typeName || modifyURL(urlWithoutAccountId, endpoint.context)
+  const Node = nodeHelpers.createNodeFactory(typeName)
+
+  const itemTimer = gatsbyApi.reporter.activityTimer(`Source from TMDB API for ${typeName}`)
+  itemTimer.start()
+
+  const defaults: Options = {
+    searchParams: {
+      language: pluginOptions.language,
+      region: pluginOptions.region,
+      timezone: pluginOptions.timezone,
+      page: 1,
+      ...endpoint.searchParams,
+    },
+    context: {
+      account_id: accountId,
+      ...endpoint.context,
+    },
+    pagination: {
+      countLimit: endpoint.countLimit || 60,
+    },
+  }
+
+  let items: Array<Response.Response> = []
+
+  try {
+    items = await tmdbGot.paginate.all(endpoint.url, {
+      responseType: `json`,
+      context: defaults.context,
+      searchParams: defaults.searchParams,
+      pagination: {
+        countLimit: defaults.pagination.countLimit,
+        // @ts-ignore
+        transform: (response) => {
+          const { results } = response.body as Response.PaginatedResponse
+
+          if (!results) {
+            return [response.body]
+          }
+
+          return results
+        },
+        shouldContinue: (item, allItems) => {
+          const hasNoPagination = allItems.length > 0 && allItems.every((entry) => entry.id === item.id)
+          return !hasNoPagination
+        },
+        paginate: (response) => {
+          const prevSearchParams = response.request.options.searchParams
+          const prevPage = Number(prevSearchParams.get(`page`))
+          const { total_pages: totalPages } = response.body as Response.PaginatedResponse
+
+          if (prevPage > totalPages) {
+            return false
+          }
+
+          itemTimer.setStatus(`Getting page ${prevPage}`)
+
+          return {
+            searchParams: {
+              ...prevSearchParams,
+              page: prevPage + 1,
+            },
+          }
+        },
+      },
+    })
+  } catch (error) {
+    gatsbyApi.reporter.panicOnBuild(
+      {
+        id: ERROR_CODES.individualSourcing,
+        context: {
+          sourceMessage: `Error during the sourcing from the API`,
+        },
+      },
+      error
+    )
+    itemTimer.end()
+  }
+
+  itemTimer.setStatus(`Processing ${items.length} results`)
+
+  items.forEach((item) => {
+    const node = Node({ ...item, id: item.id.toString() })
+    gatsbyApi.actions.createNode(node)
+  })
+
+  itemTimer.end()
 }
-
-const buildFromId = ({ obj, getFactory, gatsbyApi, options }: IBuildFromId) => {}

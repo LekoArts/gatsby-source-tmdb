@@ -32,6 +32,7 @@
   },
   "scripts": {
     "develop": "yarn workspace example develop",
+    "clean": "yarn workspace example clean",
     "tsc": "tsc",
     "type-check": "tsc --noEmit",
     "lint": "eslint . --ignore-path .gitignore --ignore-path .prettierignore --ext .ts,.tsx,.js",
