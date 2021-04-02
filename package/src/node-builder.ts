@@ -5,10 +5,23 @@ import { modifyURL } from "./api-utils"
 import { ERROR_CODES } from "./constants"
 
 const imageTransformation = ({ node, configuration }: TMDBPlugin.ImageTransformation) => {
-  console.log(node)
-  console.log(configuration)
+  const baseUrl = configuration.images.secure_base_url
+  const imageSizes = configuration.images
+  const imageTypes = [`backdrop`, `logo`, `poster`, `profile`, `still`]
+  const modifiedNode = node
 
-  return node
+  // For each imageType, e.g. "backdrop_path" extend the string to an object
+  // With the "source" as the original path and then all available sizes as new keys
+  imageTypes.forEach((type) => {
+    if (node[`${type}_path`]) {
+      modifiedNode[`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
+        (o, key) => ({ ...o, [key]: `${baseUrl}${key}${node[`${type}_path`]}` }),
+        { source: node[`${type}_path`] as string }
+      )
+    }
+  })
+
+  return modifiedNode
 }
 
 export const nodeBuilder = async ({

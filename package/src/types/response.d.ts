@@ -64,7 +64,7 @@ export interface AccountInfo {
 }
 
 export interface MovieResult {
-  poster_path?: string | null
+  poster_path?: string | null | { source: string; [key: string]: string }
   adult?: boolean
   overview?: string
   release_date?: string
@@ -74,7 +74,7 @@ export interface MovieResult {
   original_title?: string
   original_language?: string
   title?: string
-  backdrop_path?: string | null
+  backdrop_path?: string | null | { source: string; [key: string]: string }
   popularity?: number
   vote_count?: number
   video?: boolean
@@ -83,11 +83,11 @@ export interface MovieResult {
 }
 
 export interface TvResult {
-  poster_path?: string | null
+  poster_path?: string | null | { source: string; [key: string]: string }
   popularity?: number
   id?: number
   overview?: string
-  backdrop_path?: string | null
+  backdrop_path?: string | null | { source: string; [key: string]: string }
   vote_average?: number
   media_type: "tv"
   first_air_date?: string
@@ -108,7 +108,6 @@ export interface AccountList {
   iso_639_1?: string
   list_type?: string
   name?: string
-  poster_path?: null
 }
 
 export interface SimpleEpisode {
@@ -120,7 +119,7 @@ export interface SimpleEpisode {
   production_code?: string | null
   season_number?: number
   show_id?: number
-  still_path?: string | null
+  still_path?: string | null | { source: string; [key: string]: string }
   vote_average?: number
   vote_count?: number
   rating?: number
@@ -133,8 +132,33 @@ export interface SimpleSeason {
   id?: number
   name?: string
   overview?: string
-  poster_path?: string
+  poster_path?: string | { source: string; [key: string]: string }
   season_number?: number
+}
+
+export interface Network {
+  headquarters?: string
+  name?: string
+  id?: number
+  logo_path?: string | { source: string; [key: string]: string }
+  origin_country?: string
+}
+
+export interface SimplePerson {
+  birthday?: string | null
+  known_for_department?: string
+  deathday?: string | null
+  id?: number
+  name?: string
+  also_known_as?: string[]
+  gender?: number
+  biography?: string
+  popularity?: number
+  place_of_birth?: string | null
+  profile_path?: string | null | { source: string; [key: string]: string }
+  adult?: boolean
+  imdb_id?: string
+  homepage?: string | null
 }
 
 export interface MovieResultResponse extends PaginatedResponse {
@@ -158,5 +182,13 @@ export type PaginationTransformResponse =
   | TvResultResponse
   | SimpleEpisodeResponse
   | AccountListResponse
-export type ResponseItem = AccountInfo | MovieResult | TvResult | SimpleEpisode | SimpleSeason | AccountList
+export interface ResponseItem
+  extends AccountInfo,
+    MovieResult,
+    TvResult,
+    SimpleEpisode,
+    SimpleSeason,
+    AccountList,
+    Network,
+    SimplePerson {}
 export type PaginationItems = Array<ResponseItem>
