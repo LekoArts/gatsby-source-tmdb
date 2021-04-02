@@ -4,6 +4,13 @@ import * as Response from "./types/response"
 import { modifyURL } from "./api-utils"
 import { ERROR_CODES } from "./constants"
 
+const imageTransformation = ({ node, configuration }: TMDBPlugin.ImageTransformation) => {
+  console.log(node)
+  console.log(configuration)
+
+  return node
+}
+
 export const nodeBuilder = async ({
   endpoint,
   tmdbGot,
@@ -11,6 +18,7 @@ export const nodeBuilder = async ({
   pluginOptions,
   accountId,
   gatsbyApi,
+  configuration,
 }: TMDBPlugin.NodeBuilder) => {
   const urlWithoutAccountId = endpoint.url.replace(`/:account_id`, ``)
   const typeName = endpoint.typeName || modifyURL(urlWithoutAccountId, endpoint.context)
@@ -36,7 +44,7 @@ export const nodeBuilder = async ({
     },
   }
 
-  let items: Array<Response.Response> = []
+  let items: Response.PaginationItems = []
 
   try {
     items = await tmdbGot.paginate.all(endpoint.url, {
@@ -47,7 +55,7 @@ export const nodeBuilder = async ({
         countLimit: defaults.pagination.countLimit,
         // @ts-ignore
         transform: (response) => {
-          const { results } = response.body as Response.PaginatedResponse
+          const { results } = response.body as Response.PaginationTransformResponse
 
           if (!results) {
             return [response.body]
@@ -95,7 +103,8 @@ export const nodeBuilder = async ({
   itemTimer.setStatus(`Processing ${items.length} results`)
 
   items.forEach((item) => {
-    const node = Node({ ...item, id: item.id.toString() })
+    const transformedItem = imageTransformation({ node: item, configuration })
+    const node = Node({ ...transformedItem, id: item.id.toString() })
     gatsbyApi.actions.createNode(node)
   })
 

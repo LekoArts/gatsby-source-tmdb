@@ -21,7 +21,7 @@
  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-interface PaginatedResponse {
+export interface PaginatedResponse {
   page: number
   total_results: number
   total_pages: number
@@ -52,6 +52,9 @@ export interface AccountInfo {
     gravatar?: {
       hash?: string
     }
+    tmdb?: {
+      avatar_path: string
+    }
   }
   iso_639_1?: string
   iso_3166_1?: string
@@ -60,7 +63,7 @@ export interface AccountInfo {
   username?: string
 }
 
-interface MovieResult {
+export interface MovieResult {
   poster_path?: string | null
   adult?: boolean
   overview?: string
@@ -79,7 +82,7 @@ interface MovieResult {
   rating?: number
 }
 
-interface TvResult {
+export interface TvResult {
   poster_path?: string | null
   popularity?: number
   id?: number
@@ -97,7 +100,7 @@ interface TvResult {
   rating?: number
 }
 
-interface AccountList {
+export interface AccountList {
   description?: string
   favorite_count?: number
   id?: number
@@ -108,7 +111,7 @@ interface AccountList {
   poster_path?: null
 }
 
-interface SimpleEpisode {
+export interface SimpleEpisode {
   air_date?: string
   episode_number?: number
   id?: number
@@ -124,7 +127,7 @@ interface SimpleEpisode {
   order?: number
 }
 
-interface SimpleSeason {
+export interface SimpleSeason {
   air_date?: string
   episode_count?: number
   id?: number
@@ -134,18 +137,26 @@ interface SimpleSeason {
   season_number?: number
 }
 
-interface MovieResultResponse extends PaginatedResponse {
+export interface MovieResultResponse extends PaginatedResponse {
   results?: Array<MovieResult>
 }
 
-interface TvResultResponse extends PaginatedResponse {
+export interface TvResultResponse extends PaginatedResponse {
   results?: Array<TvResult>
 }
 
-interface SimpleEpisodeResponse extends PaginatedResponse {
+export interface SimpleEpisodeResponse extends PaginatedResponse {
   results?: Array<SimpleEpisode>
 }
 
-interface AccountListResponse extends PaginatedResponse {
+export interface AccountListResponse extends PaginatedResponse {
   results?: Array<AccountList>
 }
+
+export type PaginationTransformResponse =
+  | MovieResultResponse
+  | TvResultResponse
+  | SimpleEpisodeResponse
+  | AccountListResponse
+export type ResponseItem = AccountInfo | MovieResult | TvResult | SimpleEpisode | SimpleSeason | AccountList
+export type PaginationItems = Array<ResponseItem>

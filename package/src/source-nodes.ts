@@ -38,12 +38,20 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
 
     reporter.info(`Initiating requests to TMDB API`)
 
-    actions.createNode(ConfigurationNode({ ...configuration, id: `tmdb-configuration` }))
+    actions.createNode(ConfigurationNode({ ...configuration, id: createNodeId(`tmdb-configuration`) }))
     actions.createNode(AccountNode({ ...accountInfo, id: accountInfo.id.toString() }))
 
     await Promise.all(
       defaultEndpoints.map((endpoint) =>
-        nodeBuilder({ endpoint, gatsbyApi, tmdbGot, pluginOptions, accountId: accountInfo.id, nodeHelpers })
+        nodeBuilder({
+          endpoint,
+          gatsbyApi,
+          tmdbGot,
+          pluginOptions,
+          accountId: accountInfo.id,
+          nodeHelpers,
+          configuration,
+        })
       )
     )
   } catch (error) {

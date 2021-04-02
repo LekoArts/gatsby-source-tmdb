@@ -34,4 +34,10 @@ export interface NodeBuilder {
   pluginOptions: PluginOptions
   accountId: Response.AccountInfo["id"]
   gatsbyApi: SourceNodesArgs
+  configuration: Response.Configuration
+}
+
+export interface ImageTransformation {
+  node: Response.ResponseItem
+  configuration: Response.Configuration
 }
