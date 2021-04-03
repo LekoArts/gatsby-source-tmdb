@@ -1,39 +1,44 @@
 import { GatsbyNode } from "gatsby"
+import * as TMDBPlugin from "./types/tmdb-plugin"
 
-export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] = ({ actions }): any => {
+export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] = (
+  { actions },
+  pluginOptions: TMDBPlugin.PluginOptions
+): any => {
+  const { typePrefix } = pluginOptions
   const { createTypes } = actions
 
   createTypes(`
-    type TmdbAccount implements Node {
+    type ${typePrefix}Account implements Node {
       tmdbId: String
       username: String
       include_adult: Boolean
       name: String
       iso_3166_1: String
       iso_639_1: String
-      avatar: TmdbAccountAvatar
+      avatar: ${typePrefix}AccountAvatar
     }
 
-    type TmdbAccountAvatar {
-      gravatar: TmdbAccountAvatarGravatar
-      tmdb: TmdbAccountAvatarTmdb
+    type ${typePrefix}AccountAvatar {
+      gravatar: ${typePrefix}AccountAvatarGravatar
+      tmdb: ${typePrefix}AccountAvatarTmdb
     }
 
-    type TmdbAccountAvatarGravatar {
+    type ${typePrefix}AccountAvatarGravatar {
       hash: String
     }
 
-    type TmdbAccountAvatarTmdb {
+    type ${typePrefix}AccountAvatarTmdb {
       avatar_path: String
     }
 
-    type TmdbConfiguration implements Node {
+    type ${typePrefix}Configuration implements Node {
       change_keys: [String]
       tmdbId: String
-      images: TmdbConfigurationImages
+      images: ${typePrefix}ConfigurationImages
     }
 
-    type TmdbConfigurationImages {
+    type ${typePrefix}ConfigurationImages {
       base_url: String
       secure_base_url: String
       backdrop_sizes: [String]

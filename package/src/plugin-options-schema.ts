@@ -49,7 +49,13 @@ export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }):
     timezone: Joi.string()
       .pattern(/^[A-Za-z_]*\/[A-Za-z_]*$/, `Region/City`)
       .description(`Specify a timezone to offset the day calculation.`)
-      .default(`America/New_York`),
+      .default(`Europe/London`),
     endpoints: Joi.array().description(`Specify the TMDB endpoints that the plugin should access.`).items(EndpointKeys),
+    typePrefix: Joi.string()
+      .pattern(/^[a-zA-Z_][A-Za-z0-9_]*$/)
+      .description(
+        `Specify the prefix for all created nodes, e.g. allTmdbAccount. It must follow this spec: https://spec.graphql.org/draft/#sec-Names`
+      )
+      .default(`Tmdb`),
   })
 }

@@ -18,6 +18,7 @@ describe(`pluginOptionsSchema`, () => {
           },
         },
       ],
+      typePrefix: `invalid 2`,
     }
 
     const { isValid, errors } = await testPluginOptionsSchema(pluginOptionsSchema, options)
@@ -33,6 +34,7 @@ describe(`pluginOptionsSchema`, () => {
       `"endpoints[0].searchParams.language" must be a string`,
       `"endpoints[0].countLimit" must be a number`,
       `"endpoints[0].no_url" is not allowed`,
+      `"typePrefix" with value "invalid 2" fails to match the required pattern: /^[a-zA-Z_][A-Za-z0-9_]*$/`,
     ])
   })
   it(`should validate correct options`, async () => {
@@ -55,6 +57,7 @@ describe(`pluginOptionsSchema`, () => {
           countLimit: 60,
         },
       ],
+      typePrefix: `Leko`,
     }
 
     const { isValid, errors } = await testPluginOptionsSchema(pluginOptionsSchema, options)

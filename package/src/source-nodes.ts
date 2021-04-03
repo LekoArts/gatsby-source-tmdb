@@ -11,10 +11,10 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
   gatsbyApi: SourceNodesArgs,
   pluginOptions: TMDBPlugin.PluginOptions
 ): Promise<any> => {
-  const { apiKey, sessionID } = pluginOptions
+  const { apiKey, sessionID, typePrefix } = pluginOptions
   const { reporter, createNodeId, createContentDigest, actions } = gatsbyApi
   const nodeHelpers = createNodeHelpers({
-    typePrefix: `Tmdb`,
+    typePrefix,
     createNodeId,
     createContentDigest,
   })
@@ -38,7 +38,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
 
     reporter.info(`Initiating requests to TMDB API`)
 
-    actions.createNode(ConfigurationNode({ ...configuration, id: createNodeId(`tmdb-configuration`) }))
+    actions.createNode(ConfigurationNode({ ...configuration, id: createNodeId(`${typePrefix}-tmdb-configuration`) }))
     actions.createNode(AccountNode({ ...accountInfo, id: accountInfo.id.toString() }))
 
     await Promise.all(
