@@ -11,13 +11,14 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
   gatsbyApi: SourceNodesArgs,
   pluginOptions: TMDBPlugin.PluginOptions
 ): Promise<any> => {
-  const { apiKey, sessionID, typePrefix } = pluginOptions
+  const { apiKey, sessionID, typePrefix, endpoints } = pluginOptions
   const { reporter, createNodeId, createContentDigest, actions } = gatsbyApi
   const nodeHelpers = createNodeHelpers({
     typePrefix,
     createNodeId,
     createContentDigest,
   })
+  const endpointsToQuery = endpoints ?? defaultEndpoints
 
   try {
     /**
@@ -42,7 +43,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
     actions.createNode(AccountNode({ ...accountInfo, id: accountInfo.id.toString() }))
 
     await Promise.all(
-      defaultEndpoints.map((endpoint) =>
+      endpointsToQuery.map((endpoint) =>
         nodeBuilder({
           endpoint,
           gatsbyApi,

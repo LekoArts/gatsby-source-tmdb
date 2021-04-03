@@ -10,6 +10,7 @@ export interface PluginOptions extends DefaultPluginOptions {
   region: string
   timezone: string
   typePrefix: string
+  endpoints: Endpoint[]
 }
 
 export interface Endpoint {

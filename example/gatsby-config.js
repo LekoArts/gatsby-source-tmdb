@@ -15,6 +15,23 @@ module.exports = {
         sessionID: process.env.SESSION_ID,
         timezone: `Europe/Berlin`,
         region: `DE`,
+        endpoints: [
+          {
+            url: `account/:account_id/lists`,
+          },
+          {
+            url: `account/:account_id/favorite/movies`,
+          },
+          {
+            url: `account/:account_id/favorite/tv`,
+          },
+          {
+            url: `account/:account_id/watchlist/movies`,
+          },
+          {
+            url: `account/:account_id/watchlist/tv`,
+          },
+        ],
       },
     },
     `gatsby-plugin-react-helmet-async`,
