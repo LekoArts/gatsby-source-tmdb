@@ -108,6 +108,7 @@ export interface AccountList {
   iso_639_1?: string
   list_type?: string
   name?: string
+  items?: MovieResult[] | TvResult[]
 }
 
 export interface SimpleEpisode {

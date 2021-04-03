@@ -18,6 +18,9 @@ module.exports = {
         endpoints: [
           {
             url: `account/:account_id/lists`,
+            extension: {
+              url: `list/:list_id`,
+            },
           },
           {
             url: `account/:account_id/favorite/movies`,

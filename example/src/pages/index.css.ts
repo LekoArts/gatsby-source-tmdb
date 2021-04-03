@@ -44,3 +44,9 @@ export const columnStyle = style({
     },
   },
 })
+
+export const descStyle = style({
+  background: `rgba(0, 0, 0, 0.1)`,
+  padding: `1rem`,
+  borderRadius: themeVars.radii.default,
+})

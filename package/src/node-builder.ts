@@ -19,6 +19,18 @@ const imageTransformation = ({ node, configuration }: TMDBPlugin.ImageTransforma
         { source: node[`${type}_path`] as string }
       )
     }
+    // When a list is queried it has all its items in "items"
+    // These nodes also need to be adjusted
+    if (node.items) {
+      node.items.forEach((item, index) => {
+        if (item[`${type}_path`]) {
+          modifiedNode.items[index][`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
+            (o, key) => ({ ...o, [key]: `${baseUrl}${key}${item[`${type}_path`]}` }),
+            { source: item[`${type}_path`] as string }
+          )
+        }
+      })
+    }
   })
 
   return modifiedNode
