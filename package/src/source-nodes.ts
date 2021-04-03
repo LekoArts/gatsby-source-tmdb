@@ -11,7 +11,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
   gatsbyApi: SourceNodesArgs,
   pluginOptions: TMDBPlugin.PluginOptions
 ): Promise<any> => {
-  const { apiKey, sessionID, typePrefix, endpoints } = pluginOptions
+  const { apiKey, sessionID, typePrefix = `Tmdb`, endpoints } = pluginOptions
   const { reporter, createNodeId, createContentDigest, actions } = gatsbyApi
   const nodeHelpers = createNodeHelpers({
     typePrefix,

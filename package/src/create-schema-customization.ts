@@ -5,7 +5,7 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
   { actions },
   pluginOptions: TMDBPlugin.PluginOptions
 ): any => {
-  const { typePrefix } = pluginOptions
+  const { typePrefix = `Tmdb` } = pluginOptions
   const { createTypes } = actions
 
   createTypes(`
