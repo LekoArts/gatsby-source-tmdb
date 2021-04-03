@@ -21,15 +21,27 @@ module.exports = {
           },
           {
             url: `account/:account_id/favorite/movies`,
+            extension: {
+              url: `movie/:movie_id`,
+            },
           },
           {
             url: `account/:account_id/favorite/tv`,
+            extension: {
+              url: `tv/:tv_id`,
+            },
           },
           {
             url: `account/:account_id/watchlist/movies`,
+            extension: {
+              url: `movie/:movie_id`,
+            },
           },
           {
             url: `account/:account_id/watchlist/tv`,
+            extension: {
+              url: `tv/:tv_id`,
+            },
           },
         ],
       },

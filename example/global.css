@@ -22,6 +22,10 @@ h3 {
   animation: octocat-wave 560ms ease-in-out;
 }
 
+[data-item="card"]:hover:after {
+  opacity: 1;
+}
+
 @keyframes octocat-wave {
   0 %,
   100% {

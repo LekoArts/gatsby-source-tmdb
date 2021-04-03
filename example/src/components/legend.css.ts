@@ -18,6 +18,7 @@ export const titleStyle = style({
   color: themeVars.color.greyLight,
   fontWeight: 500,
   fontSize: `1rem`,
+  marginBottom: `1rem`,
 })
 
 export const wrapperStyle = style({

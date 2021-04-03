@@ -8,3 +8,39 @@ export const titleStyle = style({
 export const primaryColorStyle = style({
   color: themeVars.color.primary,
 })
+
+export const rowStyle = style({
+  display: `flex`,
+  flexWrap: `wrap`,
+  justifyContent: `space-between`,
+  paddingTop: `3rem`,
+})
+
+export const columnStyle = style({
+  display: `flex`,
+  flex: `1 1 auto`,
+  flexBasis: `100%`,
+  maxWidth: `100%`,
+  width: `100%`,
+  marginBottom: `2.5rem`,
+  "@media": {
+    "screen and (min-width: 321px)": {
+      flexBasis: `calc(99.9% * 1 / 2 - 0.5rem)`,
+      maxWidth: `calc(99.9% * 1 / 2 - 0.5rem)`,
+      width: `calc(99.9% * 1 / 2 - 0.5rem)`,
+      marginBottom: `1rem`,
+    },
+    "screen and (min-width: 700px)": {
+      flexBasis: `calc(99.9% * 1 / 3 - 1rem)`,
+      maxWidth: `calc(99.9% * 1 / 3 - 1rem)`,
+      width: `calc(99.9% * 1 / 3 - 1rem)`,
+      marginBottom: `2rem`,
+    },
+    "screen and (min-width: 1000px)": {
+      flexBasis: `calc(99.9% * 1 / 3 - 1.5rem)`,
+      maxWidth: `calc(99.9% * 1 / 3 - 1.5rem)`,
+      width: `calc(99.9% * 1 / 3 - 1.5rem)`,
+      marginBottom: `2.5rem`,
+    },
+  },
+})

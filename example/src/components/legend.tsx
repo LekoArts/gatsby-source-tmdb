@@ -11,7 +11,7 @@ import {
 
 const Legend: React.FC = () => (
   <div className={legendStyle}>
-    <h2 className={titleStyle}>Legend</h2>
+    <div className={titleStyle}>Legend</div>
     <div className={wrapperStyle}>
       <div className={legendItemStyle}>
         <Icon name="star" className={`${greyLightFillStyle} ${legendIconStyle}`} /> Rating

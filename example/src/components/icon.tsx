@@ -5,13 +5,15 @@ export const Icon: React.FC<{
   name: "next" | "first" | "star" | "running" | "ended" | "episodes" | "seasons"
   hidden?: boolean
   className?: string
-}> = ({ name, hidden = true, className }) => (
+  style?: React.CSSProperties
+}> = ({ name, hidden = true, className, style }) => (
   <svg
     data-name={name}
     data-item="custom-item"
     focusable={hidden ? `false` : null}
     aria-hidden={hidden ? `true` : null}
     className={`${iconStyles[name]} ${className}`}
+    style={style}
   >
     <use xlinkHref={`#${name}`} />
   </svg>
