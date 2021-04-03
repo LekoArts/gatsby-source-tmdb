@@ -13,7 +13,11 @@ module.exports = {
       options: {
         apiKey: process.env.API_KEY,
         sessionID: process.env.SESSION_ID,
+        timezone: `Europe/Berlin`,
+        region: `DE`,
       },
     },
+    `gatsby-plugin-react-helmet-async`,
+    `gatsby-plugin-gatsby-cloud`,
   ],
 }
