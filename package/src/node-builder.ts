@@ -1,7 +1,7 @@
 import { Options } from "got"
 import * as TMDBPlugin from "./types/tmdb-plugin"
 import * as Response from "./types/response"
-import { modifyURL } from "./api-utils"
+import { getParam, modifyURL } from "./api-utils"
 import { ERROR_CODES } from "./constants"
 
 const imageTransformation = ({ node, configuration }: TMDBPlugin.ImageTransformation) => {
@@ -33,7 +33,10 @@ export const nodeBuilder = async ({
   gatsbyApi,
   configuration,
 }: TMDBPlugin.NodeBuilder) => {
+  // The account_id shouldn't be in the typeName
   const urlWithoutAccountId = endpoint.url.replace(`/:account_id`, ``)
+  // endpoint.context is a free-form field that people can pass in, e.g. for tv/:tv_id/season/:season_number/episode/:episode_number
+  // They can pass in tv_id etc.
   const typeName = endpoint.typeName || modifyURL(urlWithoutAccountId, endpoint.context)
   const Node = nodeHelpers.createNodeFactory(typeName)
 
@@ -59,8 +62,8 @@ export const nodeBuilder = async ({
 
   let items: Response.PaginationItems = []
 
-  try {
-    items = await tmdbGot.paginate.all(endpoint.url, {
+  const fetchPaginatedData = async (): Promise<Response.PaginationItems> =>
+    tmdbGot.paginate.all(endpoint.url, {
       responseType: `json`,
       context: defaults.context,
       searchParams: defaults.searchParams,
@@ -100,12 +103,43 @@ export const nodeBuilder = async ({
         },
       },
     })
+
+  const fetchData = async ({ url, context }): Promise<Response.ResponseItem> => tmdbGot(url, { context }).json()
+
+  try {
+    items = await fetchPaginatedData()
+
+    // The endpoint can also have an "extension" to get additional information from an initial request
+    // e.g. getting /account/{account_id}/favorite/tv each TV item only has limited information
+    // An additional request for each item against the /tv/:tv_id endpoint is necessary to get all details
+    if (endpoint.extension) {
+      try {
+        const param = getParam(endpoint.extension.url)
+        const detailedItems = items.map((item) =>
+          fetchData({ url: endpoint.extension.url, context: { [param]: item.id } })
+        )
+
+        // This replaces the fetched items with the full version
+        items = await Promise.all(detailedItems)
+      } catch (error) {
+        gatsbyApi.reporter.panicOnBuild(
+          {
+            id: ERROR_CODES.extensionSourcing,
+            context: {
+              sourceMessage: `Error during sourcing the detailed information (extension) from ${endpoint.url}`,
+            },
+          },
+          error
+        )
+        itemTimer.end()
+      }
+    }
   } catch (error) {
     gatsbyApi.reporter.panicOnBuild(
       {
         id: ERROR_CODES.individualSourcing,
         context: {
-          sourceMessage: `Error during the sourcing from the API`,
+          sourceMessage: `Error during the sourcing from the API of ${endpoint.url}`,
         },
       },
       error

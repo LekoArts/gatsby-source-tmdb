@@ -70,7 +70,7 @@ export interface MovieResult {
   release_date?: string
   genre_ids?: Array<number>
   id?: number
-  media_type: "movie"
+  media_type?: "movie"
   original_title?: string
   original_language?: string
   title?: string

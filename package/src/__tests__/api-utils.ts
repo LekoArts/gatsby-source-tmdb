@@ -1,4 +1,4 @@
-import { modifyURL } from "../api-utils"
+import { modifyURL, getParam } from "../api-utils"
 
 const endpoint01 = `configuration`
 const endpoint02 = `movie/:movie_id`
@@ -30,5 +30,8 @@ describe(`api-utils`, () => {
   })
   it(`modifyURL should not replace params in endpoint with params that don't map to input string`, () => {
     expect(modifyURL(endpoint02, { test: `123` })).toBe(`movie/:movie_id`)
+  })
+  it(`getParam should capture param`, () => {
+    expect(getParam(`/tv/:tv_id`)).toBe(`tv_id`)
   })
 })

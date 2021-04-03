@@ -29,6 +29,13 @@ export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }):
         `Pass information that is necessary for the URL, e.g. when requesting movie/:movie_id pass movie_id here through context.`
       ),
     countLimit: Joi.number().description(`Number of how many items to fetch from this endpoint.`),
+    extension: Joi.object({
+      url: Joi.string()
+        .required()
+        .description(
+          `The individual endpoint that should be used to get more information. The "id" from the previous/root endpoint will be used for the ":param" in this extension endpoint`
+        ),
+    }),
   })
 
   return Joi.object({

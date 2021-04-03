@@ -27,6 +27,9 @@ export interface Endpoint {
     [key: string]: string
   }
   countLimit?: number
+  extension?: {
+    url: string
+  }
 }
 
 export interface NodeBuilder {

@@ -13,5 +13,10 @@ export const onPreInit: GatsbyNode["onPreInit"] = ({ reporter }) => {
       level: `ERROR`,
       category: `THIRD_PARTY`,
     },
+    [ERROR_CODES.extensionSourcing]: {
+      text: (context) => context.sourceMessage,
+      level: `ERROR`,
+      category: `THIRD_PARTY`,
+    },
   })
 }
