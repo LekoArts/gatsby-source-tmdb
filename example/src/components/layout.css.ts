@@ -20,10 +20,10 @@ export const footerStyle = style({
 export const mainStyle = style({
   maxWidth: `1200px`,
   margin: `0 auto`,
-  padding: `2rem 1rem`,
+  padding: `3rem 1rem`,
   "@media": {
     [`screen and (min-width: ${breakpoints.sm})`]: {
-      padding: `3rem 2rem`,
+      padding: `4rem 2rem`,
     },
   },
 })

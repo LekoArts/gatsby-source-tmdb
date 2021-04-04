@@ -11,8 +11,9 @@ const Column: React.FC = ({ children }) => <div className={columnStyle}>{childre
 
 const Index: React.FC<PageProps<DataProps>> = ({
   data: { info, favTV, favMovies, lists, watchedMovies, watchedTV },
+  location,
 }) => (
-  <Layout>
+  <Layout location={location}>
     <h1 className={titleStyle}>
       Series & Movies<span className={primaryColorStyle}>.</span> {info.username}
     </h1>
@@ -41,6 +42,7 @@ const Index: React.FC<PageProps<DataProps>> = ({
                   <Column key={tv.tmdbId}>
                     <Card
                       name={tv.name}
+                      link={`/tv/${tv.tmdbId}`}
                       cover={tv.poster_path.path}
                       next={airDate}
                       rating={tv.vote_average}
@@ -60,6 +62,7 @@ const Index: React.FC<PageProps<DataProps>> = ({
                 <Column key={movie.tmdbId}>
                   <Card
                     cover={movie.poster_path.path}
+                    link={`/movie/${movie.tmdbId}`}
                     name={movie.title}
                     rating={movie.vote_average}
                     release={movie.release_date}
@@ -87,6 +90,7 @@ const Index: React.FC<PageProps<DataProps>> = ({
                   <Column key={tv.name}>
                     <Card
                       cover={tv.poster_path.path}
+                      link={`/tv/${tv.tmdbId}`}
                       name={tv.name}
                       next={airDate}
                       rating={tv.vote_average}
@@ -106,6 +110,7 @@ const Index: React.FC<PageProps<DataProps>> = ({
                 <Column key={movie.title}>
                   <Card
                     cover={movie.poster_path.path}
+                    link={`/movie/${movie.tmdbId}`}
                     name={movie.title}
                     rating={movie.vote_average}
                     release={movie.release_date}
@@ -131,6 +136,7 @@ const Index: React.FC<PageProps<DataProps>> = ({
                   <Column key={item.name}>
                     <Card
                       cover={item.poster_path.path}
+                      link={`/${item.media_type}/${item.id}`}
                       name={item.name}
                       rating={item.vote_average}
                       release={item.first_air_date}

@@ -26,6 +26,26 @@ h3 {
   opacity: 1;
 }
 
+[data-item="detail-view-details"] .statistics-01 svg {
+  vertical-align: bottom;
+  width: 2rem;
+  height: 2rem;
+}
+
+[data-item="detail-view-details"] .statistics-02 div {
+  margin-right: 1.25rem;
+  font-size: 1.15rem;
+}
+
+[data-item="detail-view-details"] .statistics-02 svg {
+  vertical-align: baseline;
+}
+
+.overview-detail p {
+  --baseline-multiplier: 0.179;
+  --x-height-multiplier: 0.35;
+}
+
 @keyframes octocat-wave {
   0 %,
   100% {

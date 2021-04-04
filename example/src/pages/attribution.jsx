@@ -1,12 +1,10 @@
 import * as React from "react"
-import Back from "../components/back"
 import Layout from "../components/layout"
 import Link from "../components/link"
 
 const Attribution = () => (
   <Layout>
     <h1>Attribution</h1>
-    <Back />
     <p>
       <Link to="https://www.themoviedb.org/">The Movie Database</Link> for providing all the data via its API.
     </p>

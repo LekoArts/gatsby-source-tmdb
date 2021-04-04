@@ -3,9 +3,9 @@ import { Icon } from "./icon"
 import {
   legendStyle,
   titleStyle,
-  greyLightFillStyle,
   wrapperStyle,
   legendItemStyle,
+  greyLightFillStyle,
   legendIconStyle,
 } from "./legend.css"
 
