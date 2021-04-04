@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css"
-import { themeVars } from "../styles.css"
+import { themeVars, breakpoints } from "../styles.css"
 
 export const titleStyle = style({
   marginBottom: `6rem`,
@@ -24,19 +24,19 @@ export const columnStyle = style({
   width: `100%`,
   marginBottom: `2.5rem`,
   "@media": {
-    "screen and (min-width: 321px)": {
+    [`screen and (min-width: ${breakpoints.sm})`]: {
       flexBasis: `calc(99.9% * 1 / 2 - 0.5rem)`,
       maxWidth: `calc(99.9% * 1 / 2 - 0.5rem)`,
       width: `calc(99.9% * 1 / 2 - 0.5rem)`,
       marginBottom: `1rem`,
     },
-    "screen and (min-width: 700px)": {
+    [`screen and (min-width: ${breakpoints.md})`]: {
       flexBasis: `calc(99.9% * 1 / 3 - 1rem)`,
       maxWidth: `calc(99.9% * 1 / 3 - 1rem)`,
       width: `calc(99.9% * 1 / 3 - 1rem)`,
       marginBottom: `2rem`,
     },
-    "screen and (min-width: 1000px)": {
+    [`screen and (min-width: ${breakpoints.lg})`]: {
       flexBasis: `calc(99.9% * 1 / 3 - 1.5rem)`,
       maxWidth: `calc(99.9% * 1 / 3 - 1.5rem)`,
       width: `calc(99.9% * 1 / 3 - 1.5rem)`,

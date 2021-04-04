@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css"
-import { themeVars } from "../styles.css"
+import { breakpoints, themeVars } from "../styles.css"
 
 export const imageStyle = style({
   position: `absolute`,
@@ -41,7 +41,7 @@ export const wrapperStyle = style({
     opacity: 1,
   },
   "@media": {
-    "screen and (min-width: 700px)": {
+    [`screen and (min-width: ${breakpoints.sm})`]: {
       ":after": {
         opacity: 0,
       },
@@ -63,7 +63,7 @@ export const contentStyle = style({
     },
   },
   "@media": {
-    "screen and (min-width: 700px)": {
+    [`screen and (min-width: ${breakpoints.sm})`]: {
       padding: `1rem`,
       opacity: 0,
     },
@@ -81,7 +81,7 @@ export const itemStyle = style({
   flexDirection: `column`,
   justifyContent: `space-between`,
   "@media": {
-    "screen and (min-width: 700px)": {
+    [`screen and (min-width: ${breakpoints.sm})`]: {
       marginRight: `1rem`,
     },
   },

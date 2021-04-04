@@ -1,5 +1,5 @@
 import { style, keyframes } from "@vanilla-extract/css"
-import { themeVars } from "../styles.css"
+import { breakpoints, themeVars } from "../styles.css"
 
 export const tabsStyle = style({
   padding: `0.5rem 0 2rem 0`,
@@ -39,7 +39,7 @@ export const tabBigStyle = style({
   padding: `0.3rem 1rem`,
   color: themeVars.color.grey,
   fontWeight: 500,
-  fontSize: `1.5rem`,
+  fontSize: `1.3rem`,
   borderRadius: themeVars.radii.default,
   transition: `all 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0s`,
   selectors: {
@@ -52,8 +52,8 @@ export const tabBigStyle = style({
     },
   },
   "@media": {
-    "screen and (max-width: 600px)": {
-      fontSize: `1.3rem`,
+    [`screen and (min-width: ${breakpoints.sm})`]: {
+      fontSize: `1.5rem`,
     },
   },
 })

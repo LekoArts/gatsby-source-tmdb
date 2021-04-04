@@ -20,13 +20,19 @@ export const themeVars = createGlobalTheme(`:root`, {
   },
 })
 
+export const breakpoints = {
+  sm: `640px`,
+  md: `768px`,
+  lg: `1024px`,
+}
+
 globalStyle(`html, body`, {
   fontFamily: themeVars.font.body,
   textRendering: `optimizeLegibility`,
   boxSizing: `border-box`,
   fontSize: `16px`,
   "@media": {
-    "screen and (min-width: 600px)": {
+    [`screen and (min-width: ${breakpoints.sm})`]: {
       fontSize: `18px`,
     },
   },

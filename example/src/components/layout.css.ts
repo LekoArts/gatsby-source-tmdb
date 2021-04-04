@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css"
-import { themeVars } from "../styles.css"
+import { breakpoints, themeVars } from "../styles.css"
 
 export const githubCornerStyle = style({
   top: 0,
@@ -20,10 +20,10 @@ export const footerStyle = style({
 export const mainStyle = style({
   maxWidth: `1200px`,
   margin: `0 auto`,
-  padding: `3rem 2rem`,
+  padding: `2rem 1rem`,
   "@media": {
-    "screen and (max-width: 600px)": {
-      padding: `2rem 1rem`,
+    [`screen and (min-width: ${breakpoints.sm})`]: {
+      padding: `3rem 2rem`,
     },
   },
 })
