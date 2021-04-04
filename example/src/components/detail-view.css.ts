@@ -125,23 +125,16 @@ export const castOverviewStyle = style({
   display: `flex`,
   flexWrap: `wrap`,
   flexDirection: `row`,
-  justifyContent: `space-between`,
+  justifyContent: `flex-start`,
 })
 
 export const castStyle = style({
   display: `flex`,
   flexDirection: `column`,
   flexWrap: `nowrap`,
-  width: `calc(99.9% * 1 / 2 - 0.5rem)`,
+  width: `185px`,
   marginBottom: `2rem`,
-  "@media": {
-    [`screen and (min-width: ${breakpoints.sm})`]: {
-      width: `calc(99.9% * 1 / 3 - 0.5rem)`,
-    },
-    [`screen and (min-width: ${breakpoints.lg})`]: {
-      width: `calc(99.9% * 1 / 6 - 0.5rem)`,
-    },
-  },
+  marginRight: `2rem`,
 })
 
 export const castImageWrapperStyle = style({
