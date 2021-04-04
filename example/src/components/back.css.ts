@@ -9,6 +9,8 @@ export const backStyle = style({
   padding: `0.5rem 0.75rem`,
   background: `rgba(0, 0, 0, 0.1)`,
   borderRadius: themeVars.radii.default,
+  textDecoration: `none`,
+  transition: `all 0.3s ease-in-out`,
   ":hover": {
     background: themeVars.color.primary,
     color: themeVars.color.black,
