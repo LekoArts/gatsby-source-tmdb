@@ -6,89 +6,6 @@ import Legend from "../components/legend"
 import { primaryColorStyle, titleStyle, rowStyle, columnStyle, descStyle } from "./index.css"
 import Card from "../components/card"
 
-type DataProps = {
-  info: {
-    username: string
-  }
-  favTV: {
-    nodes: {
-      name: string
-      vote_average: number
-      first_air_date: string
-      poster_path: {
-        path: string
-      }
-      next_episode_to_air?: {
-        air_date: string
-      }
-      tmdbId: string
-      status: "Returning Series" | "Ended" | "Canceled"
-      number_of_episodes: number
-      number_of_seasons: number
-    }[]
-    totalCount: number
-  }
-  favMovies: {
-    nodes: {
-      title: string
-      release_date: string
-      vote_average: number
-      tmdbId: string
-      poster_path: {
-        path: string
-      }
-    }[]
-    totalCount: number
-  }
-  lists: {
-    totalCount: number
-    nodes: {
-      name: string
-      description: string
-      items: {
-        name: string
-        vote_average: number
-        first_air_date: string
-        media_type: string
-        id: number
-        poster_path: {
-          path: string
-        }
-      }[]
-    }[]
-  }
-  watchedTV: {
-    totalCount: number
-    nodes: {
-      first_air_date: string
-      next_episode_to_air: {
-        air_date: string
-      }
-      vote_average: number
-      status: "Returning Series" | "Ended" | "Canceled"
-      tmdbId: string
-      name: string
-      number_of_episodes: number
-      number_of_seasons: number
-      poster_path: {
-        path: string
-      }
-    }[]
-  }
-  watchedMovies: {
-    totalCount: number
-    nodes: {
-      release_date: string
-      vote_average: number
-      tmdbId: string
-      title: string
-      poster_path: {
-        path: string
-      }
-    }[]
-  }
-}
-
 const Row: React.FC = ({ children }) => <section className={rowStyle}>{children}</section>
 const Column: React.FC = ({ children }) => <div className={columnStyle}>{children}</div>
 
@@ -315,3 +232,86 @@ export const query = graphql`
     }
   }
 `
+
+type DataProps = {
+  info: {
+    username: string
+  }
+  favTV: {
+    nodes: {
+      name: string
+      vote_average: number
+      first_air_date: string
+      poster_path: {
+        path: string
+      }
+      next_episode_to_air?: {
+        air_date: string
+      }
+      tmdbId: string
+      status: "Returning Series" | "Ended" | "Canceled"
+      number_of_episodes: number
+      number_of_seasons: number
+    }[]
+    totalCount: number
+  }
+  favMovies: {
+    nodes: {
+      title: string
+      release_date: string
+      vote_average: number
+      tmdbId: string
+      poster_path: {
+        path: string
+      }
+    }[]
+    totalCount: number
+  }
+  lists: {
+    totalCount: number
+    nodes: {
+      name: string
+      description: string
+      items: {
+        name: string
+        vote_average: number
+        first_air_date: string
+        media_type: string
+        id: number
+        poster_path: {
+          path: string
+        }
+      }[]
+    }[]
+  }
+  watchedTV: {
+    totalCount: number
+    nodes: {
+      first_air_date: string
+      next_episode_to_air: {
+        air_date: string
+      }
+      vote_average: number
+      status: "Returning Series" | "Ended" | "Canceled"
+      tmdbId: string
+      name: string
+      number_of_episodes: number
+      number_of_seasons: number
+      poster_path: {
+        path: string
+      }
+    }[]
+  }
+  watchedMovies: {
+    totalCount: number
+    nodes: {
+      release_date: string
+      vote_average: number
+      tmdbId: string
+      title: string
+      poster_path: {
+        path: string
+      }
+    }[]
+  }
+}
