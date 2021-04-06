@@ -19,24 +19,12 @@ export const defaultEndpoints: Array<TMDBPlugin.Endpoint> = [
   },
   // Movies
   {
-    url: `movie/now_playing`,
-  },
-  {
     url: `movie/popular`,
   },
   {
     url: `movie/top_rated`,
   },
-  {
-    url: `movie/upcoming`,
-  },
   // TV
-  {
-    url: `tv/airing_today`,
-  },
-  {
-    url: `tv/on_the_air`,
-  },
   {
     url: `tv/popular`,
   },
