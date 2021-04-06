@@ -4,7 +4,7 @@ import * as Response from "./types/response"
 import { getParam, modifyURL } from "./api-utils"
 import { ERROR_CODES } from "./constants"
 
-const imageTransformation = ({ node, configuration }: TMDBPlugin.ImageTransformation) => {
+export const imageTransformation = ({ node, configuration }: TMDBPlugin.ImageTransformation) => {
   const baseUrl = configuration.images.secure_base_url
   const imageSizes = configuration.images
   const imageTypes = [`backdrop`, `logo`, `poster`, `profile`, `still`]
