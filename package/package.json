@@ -4,11 +4,13 @@
   "description": "Source from The Movie Database (TMDb) in Gatsby",
   "main": "index.js",
   "engines": {
-    "node": ">=10.13.0"
+    "node": ">=12.13.0"
   },
   "author": "LekoArts <hello@lekoarts.de>",
   "repository": {
-    "url": "https://github.com/LekoArts/gatsby-source-tmdb"
+    "type": "git",
+    "url": "https://github.com/LekoArts/gatsby-source-tmdb",
+    "directory": "package"
   },
   "bugs": {
     "url": "https://github.com/LekoArts/gatsby-source-tmdb/issues"

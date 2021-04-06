@@ -15,6 +15,7 @@
     "esModuleInterop": true,
     "jsx": "preserve",
     "lib": ["es2019"],
+    "skipLibCheck": true
   },
   "exclude": ["example/*"],
 }
