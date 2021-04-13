@@ -165,4 +165,57 @@ This way the `TmdbAccountFavoriteTv` type returns a list of _detailed_ TV respon
 
 ## Advanced Configuration
 
-TODO
+Being able to customize the `endpoints` option is a powerful option of this plugin. The examples below are only a subset of things as the sky is the limit!
+
+```js
+require("dotenv").config()
+
+module.exports = {
+  plugins: [
+    {
+      resolve: "gatsby-source-tmdb",
+      options: {
+        apiKey: process.env.API_KEY,
+        sessionID: process.env.SESSION_ID,
+        endpoints: [
+          // Query the /discover/movie endpoint for 50 movies that were released in 2021
+          // Sort it by popularity and name it "Top2021Movies"
+          {
+            url: `discover/movie`,
+            searchParams: {
+              language: `en-US`,
+              sort_by: `popularity.desc`,
+              year: `2021`,
+            },
+            typeName: `Top2021Movies`,
+            countLimit: 50,
+          },
+          // Get the information from "Stranger Things" and more details like videos & similar tv shows
+          {
+            url: "tv/:tv_id",
+            context: {
+              tv_id: "66732"
+            },
+            searchParams: {
+              append_to_response: "videos,similar"
+            }
+          },
+          // Use the search to find TV shows with "Naruto" and use the extension to get more details
+          // Than the search endpoint would provide. Also name it "NarutoSearch"
+          {
+            url: "search/tv",
+            searchParams: {
+              language: "en-US",
+              query: "Naruto"
+            },
+            typeName: "NarutoSearch",
+            extension: {
+              url: "tv/:tv_id",
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+```
