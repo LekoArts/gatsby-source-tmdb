@@ -1,13 +1,40 @@
-import { style } from "@vanilla-extract/css"
+import { style, keyframes } from "@vanilla-extract/css"
 import { breakpoints, themeVars } from "../styles.css"
 
-export const githubCornerStyle = style({
+const wave = keyframes({
+  "0%, 100%": {
+    transform: `rotate(0)`,
+  },
+  "20%, 60%": {
+    transform: `rotate(-25deg)`,
+  },
+  "40%, 80%": {
+    transform: `rotate(10deg)`,
+  },
+})
+
+export const githubCornerStyle = style({})
+
+export const githubCornerSvgStyle = style({
   top: 0,
   border: 0,
   right: 0,
   fill: themeVars.color.primary,
   color: themeVars.color.white,
   position: `absolute`,
+  selectors: {
+    [`${githubCornerStyle}:focus &`]: {
+      outline: `-webkit-focus-ring-color auto 1px`,
+    },
+  },
+})
+
+export const octoArmStyle = style({
+  selectors: {
+    [`${githubCornerStyle}:hover &`]: {
+      animation: `${wave} 560ms ease-in-out`,
+    },
+  },
 })
 
 export const footerStyle = style({

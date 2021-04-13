@@ -161,7 +161,7 @@ const DetailView: React.FC<{ id: string; type: "tv" | "movie" }> = ({ id, type }
               </div>
             ))}
           </div>
-          <div className={`${overviewStyle} overview-detail`}>
+          <div className={overviewStyle}>
             <h2 className={h2Style}>Overview</h2>
             <p className={paragraphStyle}>{data.overview}</p>
           </div>

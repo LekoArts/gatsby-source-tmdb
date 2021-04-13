@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css"
+import { style, globalStyle } from "@vanilla-extract/css"
 import { breakpoints, themeVars } from "../styles.css"
 
 export const detailViewWrapperStyle = style({
@@ -71,6 +71,12 @@ export const statistics1Style = style({
   color: themeVars.color.greyLight,
 })
 
+globalStyle(`${statistics1Style} svg`, {
+  verticalAlign: `bottom`,
+  width: `2rem`,
+  height: `2rem`,
+})
+
 export const primaryFillStyle = style({
   fill: themeVars.color.primary,
 })
@@ -90,6 +96,15 @@ export const statistics2Style = style({
   display: `flex`,
   alignItems: `center`,
   color: themeVars.color.greyLight,
+})
+
+globalStyle(`${statistics2Style} div`, {
+  marginRight: `1.25rem`,
+  fontSize: `1.15rem`,
+})
+
+globalStyle(`${statistics2Style} svg`, {
+  verticalAlign: `baseline`,
 })
 
 export const genresStyle = style({

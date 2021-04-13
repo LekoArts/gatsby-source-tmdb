@@ -41,3 +41,15 @@ globalStyle(`html, body`, {
   padding: 0,
   minHeight: `100vh`,
 })
+
+globalStyle(`h1`, {
+  fontSize: `2rem`,
+})
+
+globalStyle(`h2`, {
+  fontSize: `1.5rem`,
+})
+
+globalStyle(`h3`, {
+  fontSize: `1.17rem`,
+})

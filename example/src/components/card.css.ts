@@ -47,6 +47,11 @@ export const wrapperStyle = style({
       },
     },
   },
+  selectors: {
+    "&:hover:after": {
+      opacity: 1,
+    },
+  },
 })
 
 export const contentStyle = style({
