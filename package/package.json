@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-tmdb",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Source from The Movie Database (TMDb) in Gatsby. Supports all endpoints, optionally downloads images and extends results with more information.",
   "main": "index.js",
   "engines": {
