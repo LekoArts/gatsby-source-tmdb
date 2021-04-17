@@ -43,6 +43,7 @@
   "scripts": {
     "build": "tsc",
     "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "publish": "npm publish"
   }
 }
