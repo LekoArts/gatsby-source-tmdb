@@ -2,17 +2,16 @@ import { Options } from "got"
 import * as TMDBPlugin from "./types/tmdb-plugin"
 import * as Response from "./types/response"
 import { getParam, modifyURL } from "./api-utils"
-import { ERROR_CODES } from "./constants"
+import { ERROR_CODES, IMAGE_TYPES } from "./constants"
 
 export const imageTransformation = ({ node, configuration }: TMDBPlugin.ImageTransformation) => {
   const baseUrl = configuration.images.secure_base_url
   const imageSizes = configuration.images
-  const imageTypes = [`backdrop`, `logo`, `poster`, `profile`, `still`]
   const modifiedNode = node
 
   // For each imageType, e.g. "backdrop_path" extend the string to an object
   // With the "source" as the original path and then all available sizes as new keys
-  imageTypes.forEach((type) => {
+  IMAGE_TYPES.forEach((type) => {
     if (node[`${type}_path`]) {
       modifiedNode[`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
         (o, key) => ({ ...o, [key]: `${baseUrl}${key}${node[`${type}_path`]}` }),

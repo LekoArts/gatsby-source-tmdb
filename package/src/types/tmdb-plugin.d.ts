@@ -42,6 +42,12 @@ export interface NodeBuilder {
   configuration: Response.Configuration
 }
 
+export interface ImageNode {
+  source: string
+  original: string
+  [key: string]: string
+}
+
 export interface ImageTransformation {
   node: Response.ResponseItem
   configuration: Response.Configuration
