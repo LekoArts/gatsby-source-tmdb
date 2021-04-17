@@ -126,6 +126,17 @@ export const nodeBuilder = async ({
     if (endpoint.extension) {
       try {
         const param = getParam(endpoint.extension.url)
+
+        if (!param) {
+          gatsbyApi.reporter.panicOnBuild({
+            id: ERROR_CODES.getParamUndefined,
+            context: {
+              sourceMessage: `Couldn't find a parameter for ${endpoint.extension.url} - make sure it uses the format :your_parameter`,
+            },
+          })
+          itemTimer.end()
+        }
+
         const detailedItems = items.map((item) =>
           fetchData({ url: endpoint.extension.url, context: { [param]: item.id } })
         )

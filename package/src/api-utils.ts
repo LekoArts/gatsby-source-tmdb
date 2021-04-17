@@ -33,7 +33,7 @@ const getParamRegex = /:(.*)/
  * @param url
  * @return Parameter without colon
  */
-export const getParam = (url: string): string => url.match(getParamRegex)[1]
+export const getParam = (url: string): string => url.match(getParamRegex)?.[1]
 
 /**
  * Combine the user plugin options with the default options
