@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-tmdb",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Source from The Movie Database (TMDb) in Gatsby",
   "main": "index.js",
   "engines": {
@@ -42,8 +42,8 @@
   },
   "scripts": {
     "build": "tsc",
+    "npm": "npm",
     "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "tsc --watch",
-    "publish": "npm publish"
+    "watch": "tsc --watch"
   }
 }
