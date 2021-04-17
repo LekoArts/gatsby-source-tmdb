@@ -172,7 +172,7 @@ const DetailView: React.FC<{ id: string; type: "tv" | "movie" }> = ({ id, type }
           <>
             <h2>Top Billed Cast</h2>
             <div className={castOverviewStyle}>
-              {data.credits.cast.map((member) => (
+              {data.credits.cast.slice(0, 12).map((member) => (
                 <div className={castStyle} key={member.name}>
                   <div className={castImageWrapperStyle}>
                     <img alt="" className={castImageStyle} src={`${IMAGE_URL}w185${member.profile_path}`} />

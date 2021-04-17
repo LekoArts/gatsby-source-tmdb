@@ -62,7 +62,7 @@ const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, re
       style={{ transform: animatedProps.xys.to(trans) }}
     >
       <Link to={link} className={linkStyle}>
-        <img alt="" src={cover} className={imageStyle} />
+        <img alt="" loading="lazy" src={cover} className={imageStyle} />
         <div className={contentStyle}>
           <h2 className={titleStyle}>
             {name}
