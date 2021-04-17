@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "license": "MIT",
+  "starter-name": "gatsby-starter-tmdb",
   "dependencies": {
     "@vanilla-extract/babel-plugin": "^0.1.0",
     "@vanilla-extract/css": "^0.1.0",
