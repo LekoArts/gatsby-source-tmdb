@@ -141,6 +141,7 @@ export const castOverviewStyle = style({
   flexWrap: `wrap`,
   flexDirection: `row`,
   justifyContent: `flex-start`,
+  gap: `1rem`,
 })
 
 export const castStyle = style({
@@ -149,7 +150,6 @@ export const castStyle = style({
   flexWrap: `nowrap`,
   width: `185px`,
   marginBottom: `2rem`,
-  marginRight: `2rem`,
 })
 
 export const castImageWrapperStyle = style({

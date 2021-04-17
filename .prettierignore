@@ -33,3 +33,4 @@ public
 LICENSE
 *.txt
 *.toml
+package/dist

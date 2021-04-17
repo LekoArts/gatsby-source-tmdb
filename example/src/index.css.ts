@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css"
-import { themeVars, breakpoints } from "../styles.css"
+import { themeVars, breakpoints } from "./styles.css"
 
 export const titleStyle = style({
   marginBottom: `6rem`,

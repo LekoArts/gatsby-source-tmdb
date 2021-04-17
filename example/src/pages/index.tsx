@@ -3,7 +3,7 @@ import { graphql, PageProps } from "gatsby"
 import Layout from "../components/layout"
 import { Tab, TabBig, TabList, TabPanel, Tabs } from "../components/tab-overview"
 import Legend from "../components/legend"
-import { primaryColorStyle, titleStyle, rowStyle, columnStyle, descStyle } from "./index.css"
+import { primaryColorStyle, titleStyle, rowStyle, columnStyle, descStyle } from "../index.css"
 import Card from "../components/card"
 
 const Row: React.FC = ({ children }) => <section className={rowStyle}>{children}</section>
