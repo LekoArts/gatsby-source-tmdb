@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "strictBindCallApply": true,
+    "strictNullChecks": false,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": false,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "lib": ["es2019"],
+    "skipLibCheck": true
+  },
+  "exclude": ["example/*"],
+}

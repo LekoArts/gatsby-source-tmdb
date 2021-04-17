@@ -1,0 +1,48 @@
+{
+  "name": "gatsby-source-tmdb",
+  "version": "2.0.0",
+  "description": "Source from The Movie Database (TMDb) in Gatsby",
+  "main": "index.js",
+  "engines": {
+    "node": ">=12.13.0"
+  },
+  "author": "LekoArts <hello@lekoarts.de>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LekoArts/gatsby-source-tmdb",
+    "directory": "package"
+  },
+  "bugs": {
+    "url": "https://github.com/LekoArts/gatsby-source-tmdb/issues"
+  },
+  "homepage": "https://tmdb.lekoarts.de",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "gatsby-node-helpers": "^1.2.1",
+    "gatsby-source-filesystem": "^3.2.0",
+    "got": "^11.8.2"
+  },
+  "devDependencies": {
+    "@types/got": "^9.6.11",
+    "cross-env": "^7.0.3",
+    "gatsby": "^3.2.1",
+    "gatsby-plugin-utils": "^1.2.0"
+  },
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "tmdb",
+    "moviedb",
+    "themoviedb",
+    "themoviedatabase"
+  ],
+  "peerDependencies": {
+    "gatsby": ">=3.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "tsc --watch"
+  }
+}

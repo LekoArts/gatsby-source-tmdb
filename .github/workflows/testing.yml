@@ -1,0 +1,15 @@
+name: Testing
+on: pull_request
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-12.x-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Install dependencies
+        run: yarn install
+      - name: Run Jest
+        run: yarn test:ci

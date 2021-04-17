@@ -1,0 +1,20 @@
+name: Publish Starter
+on:
+  workflow_dispatch:
+jobs:
+  publish-starter:
+    name: Publish Starter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - name: Publish Starter
+        uses: ./.github/actions/publish-starter
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: example LekoArts starter-name main
