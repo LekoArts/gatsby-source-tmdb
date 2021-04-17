@@ -1,4 +1,4 @@
-import { modifyURL, getParam } from "../api-utils"
+import { modifyURL, getParam, defaultOptions, generateTypeName } from "../api-utils"
 
 const endpoint01 = `configuration`
 const endpoint02 = `movie/:movie_id`
@@ -33,5 +33,57 @@ describe(`api-utils`, () => {
   })
   it(`getParam should capture param`, () => {
     expect(getParam(`/tv/:tv_id`)).toBe(`tv_id`)
+  })
+  it(`defaultOptions works correctly`, () => {
+    expect(defaultOptions({ apiKey: `foo`, sessionID: `bar`, plugins: [] })).toMatchInlineSnapshot(`
+      Object {
+        "apiKey": "foo",
+        "endpoints": Array [
+          Object {
+            "url": "account/:account_id/lists",
+          },
+          Object {
+            "url": "account/:account_id/favorite/movies",
+          },
+          Object {
+            "url": "account/:account_id/favorite/tv",
+          },
+          Object {
+            "url": "account/:account_id/watchlist/movies",
+          },
+          Object {
+            "url": "account/:account_id/watchlist/tv",
+          },
+          Object {
+            "url": "movie/popular",
+          },
+          Object {
+            "url": "movie/top_rated",
+          },
+          Object {
+            "url": "tv/popular",
+          },
+          Object {
+            "url": "tv/top_rated",
+          },
+        ],
+        "language": "en-US",
+        "plugins": Array [],
+        "region": "US",
+        "sessionID": "bar",
+        "timezone": "Europe/London",
+        "typePrefix": "Tmdb",
+      }
+    `)
+  })
+  it(`generateTypeName works correctly`, () => {
+    expect(generateTypeName({ url: `account/:account_id/favorite/movies` }, `Tmdb`)).toBe(`TmdbAccountFavoriteMovies`)
+    expect(generateTypeName({ url: `tv/:tv_id`, context: { tv_id: `1234` } }, `Tmdb`)).toBe(`TmdbTv1234`)
+    expect(generateTypeName({ url: `account/:account_id/favorite/movies`, typeName: `CustomName` }, `Tmdb`)).toBe(
+      `TmdbCustomName`
+    )
+    expect(generateTypeName({ url: `account/:account_id/favorite/movies`, typeName: `CustomName` }, `Naruto`)).toBe(
+      `NarutoCustomName`
+    )
   })
 })

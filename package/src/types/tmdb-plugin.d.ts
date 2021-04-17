@@ -6,11 +6,11 @@ import * as Response from "./response"
 export interface PluginOptions extends DefaultPluginOptions {
   apiKey: string
   sessionID: string
-  language: string
-  region: string
-  timezone: string
-  typePrefix: string
-  endpoints: Endpoint[]
+  language?: string
+  region?: string
+  timezone?: string
+  typePrefix?: string
+  endpoints?: Endpoint[]
 }
 
 export interface Endpoint {
