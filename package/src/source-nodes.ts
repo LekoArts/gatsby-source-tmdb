@@ -3,22 +3,21 @@ import { createNodeHelpers } from "gatsby-node-helpers"
 import { tmdbGotInstance } from "./tmdb-got"
 import * as TMDBPlugin from "./types/tmdb-plugin"
 import * as Response from "./types/response"
-import { defaultEndpoints } from "./endpoints"
 import { nodeBuilder } from "./node-builder"
 import { ERROR_CODES } from "./constants"
+import { defaultOptions } from "./api-utils"
 
 export const sourceNodes: GatsbyNode["sourceNodes"] = async (
   gatsbyApi: SourceNodesArgs,
   pluginOptions: TMDBPlugin.PluginOptions
 ): Promise<any> => {
-  const { apiKey, sessionID, typePrefix = `Tmdb`, endpoints } = pluginOptions
+  const { apiKey, sessionID, typePrefix, endpoints } = defaultOptions(pluginOptions)
   const { reporter, createNodeId, createContentDigest, actions } = gatsbyApi
   const nodeHelpers = createNodeHelpers({
     typePrefix,
     createNodeId,
     createContentDigest,
   })
-  const endpointsToQuery = endpoints ?? defaultEndpoints
 
   try {
     /**
@@ -43,7 +42,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
     actions.createNode(AccountNode({ ...accountInfo, id: accountInfo.id.toString() }))
 
     await Promise.all(
-      endpointsToQuery.map((endpoint) =>
+      endpoints.map((endpoint) =>
         nodeBuilder({
           endpoint,
           gatsbyApi,
