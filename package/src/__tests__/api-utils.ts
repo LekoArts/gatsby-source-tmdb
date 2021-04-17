@@ -33,6 +33,7 @@ describe(`api-utils`, () => {
   })
   it(`getParam should capture param`, () => {
     expect(getParam(`/tv/:tv_id`)).toBe(`tv_id`)
+    expect(getParam(`/tv/1234`)).toBe(undefined)
   })
   it(`defaultOptions works correctly`, () => {
     expect(defaultOptions({ apiKey: `foo`, sessionID: `bar`, plugins: [] })).toMatchInlineSnapshot(`
@@ -79,6 +80,9 @@ describe(`api-utils`, () => {
   it(`generateTypeName works correctly`, () => {
     expect(generateTypeName({ url: `account/:account_id/favorite/movies` }, `Tmdb`)).toBe(`TmdbAccountFavoriteMovies`)
     expect(generateTypeName({ url: `tv/:tv_id`, context: { tv_id: `1234` } }, `Tmdb`)).toBe(`TmdbTv1234`)
+    expect(generateTypeName({ url: `tv/:tv_id`, context: { tv_id: `1234` }, typeName: `CustomName` }, `Tmdb`)).toBe(
+      `TmdbCustomName`
+    )
     expect(generateTypeName({ url: `account/:account_id/favorite/movies`, typeName: `CustomName` }, `Tmdb`)).toBe(
       `TmdbCustomName`
     )
