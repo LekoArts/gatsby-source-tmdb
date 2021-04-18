@@ -34,6 +34,7 @@
   },
   "scripts": {
     "develop": "yarn workspace example develop",
+    "build": "yarn workspace example build",
     "clean": "yarn workspace example clean",
     "tsc": "tsc",
     "type-check": "tsc --noEmit",

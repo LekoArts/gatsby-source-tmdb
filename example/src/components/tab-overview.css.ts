@@ -67,7 +67,7 @@ const fadeIn = keyframes({
   },
 })
 
-export const tabPanelStyle = style({
+export const tabPanelNavigationStyle = style({
   display: `none`,
   selectors: {
     "&.selected": {
@@ -75,6 +75,30 @@ export const tabPanelStyle = style({
       animationName: fadeIn,
       animationDuration: `0.2s`,
       animationTimingFunction: `linear`,
+    },
+  },
+})
+
+export const tabPanelGridStyle = style({
+  display: `none`,
+  selectors: {
+    "&.selected": {
+      display: `grid`,
+      gridTemplateColumns: `1fr`,
+      gap: `1rem`,
+      animationName: fadeIn,
+      animationDuration: `0.2s`,
+      animationTimingFunction: `linear`,
+      "@media": {
+        [`screen and (min-width: ${breakpoints.sm})`]: {
+          gridTemplateColumns: `repeat(2, 1fr)`,
+          gap: `1.5rem`,
+        },
+        [`screen and (min-width: ${breakpoints.lg})`]: {
+          gridTemplateColumns: `repeat(3, 1fr)`,
+          gap: `2.5rem`,
+        },
+      },
     },
   },
 })
