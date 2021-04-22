@@ -1,141 +1,153 @@
 import * as React from "react"
 import { graphql, PageProps } from "gatsby"
+import { Globals } from "react-spring"
 import Layout from "../components/layout"
 import { Tab, TabBig, TabList, TabPanel, Tabs } from "../components/tab-overview"
 import Legend from "../components/legend"
 import { primaryColorStyle, titleStyle, descStyle, spacerStyle } from "../index.css"
 import Card from "../components/card"
+import { usePrefersReducedMotion } from "../hooks/use-prefers-reduced-motion"
 
 const Index: React.FC<PageProps<DataProps>> = ({
   data: { info, favTV, favMovies, lists, watchedMovies, watchedTV },
   location,
-}) => (
-  <Layout location={location}>
-    <h1 className={titleStyle}>
-      Series & Movies<span className={primaryColorStyle}>.</span> {info.username}
-    </h1>
-    <Legend />
-    <Tabs forceRenderTabPanel>
-      <TabList>
-        <TabBig>Favorites</TabBig>
-        <TabBig>Watchlist</TabBig>
-        <TabBig>Lists</TabBig>
-      </TabList>
-      <TabPanel isNavigation>
-        <Tabs forceRenderTabPanel>
-          <TabList>
-            <Tab>Series ({favTV.totalCount})</Tab>
-            <Tab>Movies ({favMovies.totalCount})</Tab>
-          </TabList>
-          <div className={spacerStyle} />
-          <TabPanel>
-            {favTV.nodes.map((tv) => {
-              let airDate
-              if (tv.next_episode_to_air) {
-                airDate = tv.next_episode_to_air.air_date
-              }
+}) => {
+  const prefersReducedMotion = usePrefersReducedMotion()
 
-              return (
+  React.useEffect(() => {
+    Globals.assign({
+      skipAnimation: prefersReducedMotion,
+    })
+  }, [prefersReducedMotion])
+
+  return (
+    <Layout location={location}>
+      <h1 className={titleStyle}>
+        Series & Movies<span className={primaryColorStyle}>.</span> {info.username}
+      </h1>
+      <Legend />
+      <Tabs forceRenderTabPanel>
+        <TabList>
+          <TabBig>Favorites</TabBig>
+          <TabBig>Watchlist</TabBig>
+          <TabBig>Lists</TabBig>
+        </TabList>
+        <TabPanel isNavigation>
+          <Tabs forceRenderTabPanel>
+            <TabList>
+              <Tab>Series ({favTV.totalCount})</Tab>
+              <Tab>Movies ({favMovies.totalCount})</Tab>
+            </TabList>
+            <div className={spacerStyle} />
+            <TabPanel>
+              {favTV.nodes.map((tv) => {
+                let airDate
+                if (tv.next_episode_to_air) {
+                  airDate = tv.next_episode_to_air.air_date
+                }
+
+                return (
+                  <Card
+                    key={tv.tmdbId}
+                    name={tv.name}
+                    link={`/tv/${tv.tmdbId}`}
+                    cover={tv.poster_path.path}
+                    next={airDate}
+                    rating={tv.vote_average}
+                    status={tv.status}
+                    release={tv.first_air_date}
+                    episodes={tv.number_of_episodes}
+                    seasons={tv.number_of_seasons}
+                  />
+                )
+              })}
+            </TabPanel>
+            <TabPanel>
+              {favMovies.nodes.map((movie) => (
                 <Card
-                  key={tv.tmdbId}
-                  name={tv.name}
-                  link={`/tv/${tv.tmdbId}`}
-                  cover={tv.poster_path.path}
-                  next={airDate}
-                  rating={tv.vote_average}
-                  status={tv.status}
-                  release={tv.first_air_date}
-                  episodes={tv.number_of_episodes}
-                  seasons={tv.number_of_seasons}
-                />
-              )
-            })}
-          </TabPanel>
-          <TabPanel>
-            {favMovies.nodes.map((movie) => (
-              <Card
-                key={movie.tmdbId}
-                cover={movie.poster_path.path}
-                link={`/movie/${movie.tmdbId}`}
-                name={movie.title}
-                rating={movie.vote_average}
-                release={movie.release_date}
-              />
-            ))}
-          </TabPanel>
-        </Tabs>
-      </TabPanel>
-      <TabPanel isNavigation>
-        <Tabs forceRenderTabPanel>
-          <TabList>
-            <Tab>Series ({watchedTV.totalCount})</Tab>
-            <Tab>Movies ({watchedMovies.totalCount})</Tab>
-          </TabList>
-          <div className={spacerStyle} />
-          <TabPanel>
-            {watchedTV.nodes.map((tv) => {
-              let airDate
-              if (tv.next_episode_to_air) {
-                airDate = tv.next_episode_to_air.air_date
-              }
-              return (
-                <Card
-                  key={tv.name}
-                  cover={tv.poster_path.path}
-                  link={`/tv/${tv.tmdbId}`}
-                  name={tv.name}
-                  next={airDate}
-                  rating={tv.vote_average}
-                  status={tv.status}
-                  release={tv.first_air_date}
-                  episodes={tv.number_of_episodes}
-                  seasons={tv.number_of_seasons}
-                />
-              )
-            })}
-          </TabPanel>
-          <TabPanel>
-            {watchedMovies.nodes.map((movie) => (
-              <Card
-                key={movie.title}
-                cover={movie.poster_path.path}
-                link={`/movie/${movie.tmdbId}`}
-                name={movie.title}
-                rating={movie.vote_average}
-                release={movie.release_date}
-              />
-            ))}
-          </TabPanel>
-        </Tabs>
-      </TabPanel>
-      <TabPanel isNavigation>
-        <Tabs forceRenderTabPanel>
-          <TabList>
-            {lists.nodes.map((list) => (
-              <Tab key={list.name}>{list.name}</Tab>
-            ))}
-          </TabList>
-          <div className={spacerStyle} />
-          {lists.nodes.map((list) => (
-            <TabPanel key={list.name}>
-              <div className={descStyle}>{list.description}</div>
-              {list.items.map((item) => (
-                <Card
-                  key={item.name}
-                  cover={item.poster_path.path}
-                  link={`/${item.media_type}/${item.id}`}
-                  name={item.name}
-                  rating={item.vote_average}
-                  release={item.first_air_date}
+                  key={movie.tmdbId}
+                  cover={movie.poster_path.path}
+                  link={`/movie/${movie.tmdbId}`}
+                  name={movie.title}
+                  rating={movie.vote_average}
+                  release={movie.release_date}
                 />
               ))}
             </TabPanel>
-          ))}
-        </Tabs>
-      </TabPanel>
-    </Tabs>
-  </Layout>
-)
+          </Tabs>
+        </TabPanel>
+        <TabPanel isNavigation>
+          <Tabs forceRenderTabPanel>
+            <TabList>
+              <Tab>Series ({watchedTV.totalCount})</Tab>
+              <Tab>Movies ({watchedMovies.totalCount})</Tab>
+            </TabList>
+            <div className={spacerStyle} />
+            <TabPanel>
+              {watchedTV.nodes.map((tv) => {
+                let airDate
+                if (tv.next_episode_to_air) {
+                  airDate = tv.next_episode_to_air.air_date
+                }
+                return (
+                  <Card
+                    key={tv.name}
+                    cover={tv.poster_path.path}
+                    link={`/tv/${tv.tmdbId}`}
+                    name={tv.name}
+                    next={airDate}
+                    rating={tv.vote_average}
+                    status={tv.status}
+                    release={tv.first_air_date}
+                    episodes={tv.number_of_episodes}
+                    seasons={tv.number_of_seasons}
+                  />
+                )
+              })}
+            </TabPanel>
+            <TabPanel>
+              {watchedMovies.nodes.map((movie) => (
+                <Card
+                  key={movie.title}
+                  cover={movie.poster_path.path}
+                  link={`/movie/${movie.tmdbId}`}
+                  name={movie.title}
+                  rating={movie.vote_average}
+                  release={movie.release_date}
+                />
+              ))}
+            </TabPanel>
+          </Tabs>
+        </TabPanel>
+        <TabPanel isNavigation>
+          <Tabs forceRenderTabPanel>
+            <TabList>
+              {lists.nodes.map((list) => (
+                <Tab key={list.name}>{list.name}</Tab>
+              ))}
+            </TabList>
+            <div className={spacerStyle} />
+            {lists.nodes.map((list) => (
+              <TabPanel key={list.name}>
+                <div className={descStyle}>{list.description}</div>
+                {list.items.map((item) => (
+                  <Card
+                    key={item.name}
+                    cover={item.poster_path.path}
+                    link={`/${item.media_type}/${item.id}`}
+                    name={item.name}
+                    rating={item.vote_average}
+                    release={item.first_air_date}
+                  />
+                ))}
+              </TabPanel>
+            ))}
+          </Tabs>
+        </TabPanel>
+      </Tabs>
+    </Layout>
+  )
+}
 
 export default Index
 
