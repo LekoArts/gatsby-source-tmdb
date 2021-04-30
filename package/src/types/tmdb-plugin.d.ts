@@ -19,7 +19,7 @@ export interface Endpoint {
   searchParams?: {
     language?: string
     page?: number
-    append_to_response?: string
+    append_to_response?: string // eslint-disable-line
     region?: string
     [key: string]: string
   }

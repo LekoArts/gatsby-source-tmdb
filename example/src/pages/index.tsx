@@ -241,6 +241,7 @@ export const query = graphql`
   }
 `
 
+/* eslint-disable camelcase */
 type DataProps = {
   info: {
     username: string
