@@ -12,10 +12,16 @@ describe(`pluginOptionsSchema`, () => {
       endpoints: [
         {
           countLimit: `foobar`,
-          no_url: `foobar`,
+          url: `/with-leading-slash`,
           searchParams: {
             language: 123,
           },
+          extension: {
+            url: `/with-leading-slash`,
+          },
+        },
+        {
+          no_url: `foobar`,
         },
       ],
       typePrefix: `invalid 2`,
@@ -30,11 +36,13 @@ describe(`pluginOptionsSchema`, () => {
       `"language" with value "English" fails to match the ISO 639-1 pattern`,
       `"region" with value "New York" fails to match the ISO 3166-1 pattern`,
       `"timezone" with value "ZW" fails to match the Region/City pattern`,
-      `"endpoints[0].url" is required`,
+      `"endpoints[0].url" with value "/with-leading-slash" fails to match the No leading slash pattern`,
       `"endpoints[0].searchParams.language" must be a string`,
       `"endpoints[0].countLimit" must be a number`,
-      `"endpoints[0].no_url" is not allowed`,
-      `"typePrefix" with value "invalid 2" fails to match the required pattern: /^[a-zA-Z_][A-Za-z0-9_]*$/`,
+      `"endpoints[0].extension.url" with value "/with-leading-slash" fails to match the No leading slash pattern`,
+      `"endpoints[1].url" is required`,
+      `"endpoints[1].no_url" is not allowed`,
+      `"typePrefix" with value "invalid 2" fails to match the Valid GraphQL typePrefix pattern`,
     ])
   })
   it(`should validate correct options`, async () => {
@@ -46,7 +54,7 @@ describe(`pluginOptionsSchema`, () => {
       timezone: `America/New_York`,
       endpoints: [
         {
-          url: `foobar`,
+          url: `account/:account_id/lists`,
           searchParams: {
             language: `de-DE`,
             foo: `bar`,
@@ -55,6 +63,9 @@ describe(`pluginOptionsSchema`, () => {
             foo: `bar`,
           },
           countLimit: 60,
+          extension: {
+            url: `movie/:movie_id`,
+          },
         },
       ],
       typePrefix: `Leko`,
