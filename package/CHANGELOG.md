@@ -4,7 +4,8 @@
 
 ### Patch Changes
 
-- [#12](https://github.com/LekoArts/gatsby-source-tmdb/pull/12) [`91555a6`](https://github.com/LekoArts/gatsby-source-tmdb/commit/91555a68d5e2ab40fd330bc94bb9592de735c129) Thanks [@LekoArts](https://github.com/LekoArts)! - - Add a LICENSE
+- [#12](https://github.com/LekoArts/gatsby-source-tmdb/pull/12) [`91555a6`](https://github.com/LekoArts/gatsby-source-tmdb/commit/91555a68d5e2ab40fd330bc94bb9592de735c129) Thanks [@LekoArts](https://github.com/LekoArts)!
+  - Add a LICENSE
   - Add regex to plugin options so that `url` won't have a leading slash
   - Fix README links + add link to migration guide
   - Update dependencies
