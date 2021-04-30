@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css"
+import { style, globalStyle } from "@vanilla-extract/css"
 import { breakpoints, themeVars } from "../styles.css"
 
 export const imageStyle = style({
@@ -110,4 +110,8 @@ export const linkStyle = style({
   left: `0`,
   color: themeVars.color.white,
   ":hover": { color: themeVars.color.white },
+})
+
+globalStyle(`${linkStyle} .gatsby-image-wrapper`, {
+  height: `100%`,
 })

@@ -14,7 +14,7 @@ type SEOQuery = {
     siteMetadata: {
       title: string
       description: string
-      url: string
+      siteUrl: string
       logo: string
     }
   }
@@ -28,7 +28,7 @@ const SEO: React.FC<SEOProps> = ({ title, description, pathname, children }) => 
         siteMetadata {
           title
           description
-          url
+          siteUrl
           logo
         }
       }
@@ -41,7 +41,7 @@ const SEO: React.FC<SEOProps> = ({ title, description, pathname, children }) => 
   const seo = {
     title: title || siteMetadata.title,
     description: description || siteMetadata.description,
-    url: pathname ? `${siteMetadata.url}${pathname}` : location.href,
+    url: pathname ? `${siteMetadata.siteUrl}${pathname}` : location.href,
     image: `${siteMetadata.url}${siteMetadata.logo}`,
   }
 

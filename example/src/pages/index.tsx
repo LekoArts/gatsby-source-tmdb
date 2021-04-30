@@ -1,6 +1,7 @@
 import * as React from "react"
 import { graphql, PageProps } from "gatsby"
 import { Globals } from "react-spring"
+import { IGatsbyImageData } from "gatsby-plugin-image"
 import Layout from "../components/layout"
 import { Tab, TabBig, TabList, TabPanel, Tabs } from "../components/tab-overview"
 import Legend from "../components/legend"
@@ -51,7 +52,7 @@ const Index: React.FC<PageProps<DataProps>> = ({
                     key={tv.tmdbId}
                     name={tv.name}
                     link={`/tv/${tv.tmdbId}`}
-                    cover={tv.poster_path.path}
+                    cover={tv.poster_path.localFile}
                     next={airDate}
                     rating={tv.vote_average}
                     status={tv.status}
@@ -179,7 +180,11 @@ export const query = graphql`
         vote_average
         first_air_date
         poster_path {
-          path: w342
+          localFile {
+            childImageSharp {
+              gatsbyImageData(quality: 90, formats: [AUTO, WEBP, AVIF], placeholder: BLURRED, width: 600)
+            }
+          }
         }
         next_episode_to_air {
           air_date
@@ -246,7 +251,11 @@ type DataProps = {
       vote_average: number
       first_air_date: string
       poster_path: {
-        path: string
+        localFile: {
+          childImageSharp: {
+            gatsbyImageData: IGatsbyImageData
+          }
+        }
       }
       next_episode_to_air?: {
         air_date: string

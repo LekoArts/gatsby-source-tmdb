@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useSpring, animated } from "react-spring"
 import { Link } from "gatsby"
+import { IGatsbyImageData, getImage, GatsbyImage } from "gatsby-plugin-image"
 import { format, parseISO } from "date-fns"
 import { Icon } from "./icon"
 import {
@@ -17,7 +18,13 @@ import {
 type CardProps = {
   name: string
   link: string
-  cover: string
+  cover:
+    | string
+    | {
+        localFile: {
+          gatsbyImageData: IGatsbyImageData
+        }
+      }
   next?: string
   rating: number
   status?: "Returning Series" | "Ended" | "Canceled"
@@ -34,6 +41,7 @@ const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, re
     xys: [0, 0, 1],
     config: { mass: 10, tension: 400, friction: 30, precision: 0.00001 },
   }))
+  const isGatsbyImage = typeof cover !== `string`
 
   return (
     <animated.div
@@ -62,7 +70,11 @@ const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, re
       style={{ transform: animatedProps.xys.to(trans) }}
     >
       <Link to={link} className={linkStyle}>
-        <img alt="" loading="lazy" src={cover} className={imageStyle} />
+        {isGatsbyImage ? (
+          <GatsbyImage alt="" image={getImage(cover)} />
+        ) : (
+          <img alt="" loading="lazy" src={cover} className={imageStyle} />
+        )}
         <div className={contentStyle}>
           <h2 className={titleStyle}>
             {name}

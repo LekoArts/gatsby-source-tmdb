@@ -4,7 +4,7 @@ module.exports = {
   siteMetadata: {
     title: process.env.TITLE || `The Movie Database - LekoArts`,
     description: process.env.DESC || `Source from The Movie Database (TMDb) API (v3) in Gatsby.`,
-    url: process.env.URL || `https://tmdb.lekoarts.de`,
+    siteUrl: process.env.URL || `https://tmdb.lekoarts.de`,
     logo: `/logo.png`,
   },
   plugins: [
@@ -49,6 +49,9 @@ module.exports = {
         ],
       },
     },
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     `gatsby-plugin-react-helmet-async`,
     `gatsby-plugin-gatsby-cloud`,
   ],
