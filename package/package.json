@@ -20,14 +20,14 @@
   "private": false,
   "dependencies": {
     "gatsby-node-helpers": "^1.2.1",
-    "gatsby-source-filesystem": "^3.2.0",
+    "gatsby-source-filesystem": "^3.4.0",
     "got": "^11.8.2"
   },
   "devDependencies": {
     "@types/got": "^9.6.11",
     "cross-env": "^7.0.3",
-    "gatsby": "^3.2.1",
-    "gatsby-plugin-utils": "^1.2.0"
+    "gatsby": "^3.4.0",
+    "gatsby-plugin-utils": "^1.4.0"
   },
   "keywords": [
     "gatsby",
@@ -38,7 +38,7 @@
     "themoviedatabase"
   ],
   "peerDependencies": {
-    "gatsby": ">=3.0.0"
+    "gatsby": "^3.0.0"
   },
   "scripts": {
     "build": "tsc",
