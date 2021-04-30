@@ -70,11 +70,6 @@ const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, re
       style={{ transform: animatedProps.xys.to(trans) }}
     >
       <Link to={link} className={linkStyle}>
-        {isGatsbyImage ? (
-          <GatsbyImage alt="" image={getImage(cover)} />
-        ) : (
-          <img alt="" loading="lazy" src={cover} className={imageStyle} />
-        )}
         <div className={contentStyle}>
           <h2 className={titleStyle}>
             {name}
@@ -114,6 +109,11 @@ const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, re
             )}
           </div>
         </div>
+        {isGatsbyImage ? (
+          <GatsbyImage alt="" image={getImage(cover)} />
+        ) : (
+          <img alt="" loading="lazy" src={cover} className={imageStyle} />
+        )}
       </Link>
     </animated.div>
   )

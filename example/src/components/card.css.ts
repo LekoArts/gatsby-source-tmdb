@@ -35,7 +35,6 @@ export const wrapperStyle = style({
     right: `0`,
     bottom: `0`,
     background: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)`,
-    zIndex: -10,
     borderRadius: themeVars.radii.default,
     transition: `opacity 0.5s ease-in-out`,
     opacity: 1,
@@ -60,7 +59,13 @@ export const contentStyle = style({
   bottom: `0`,
   left: `0`,
   right: `0`,
+  top: 0,
   opacity: 1,
+  zIndex: 10,
+  display: `flex`,
+  flexDirection: `column`,
+  alignItems: `flex-start`,
+  justifyContent: `flex-end`,
   transition: `opacity 0.5s ease-in-out`,
   selectors: {
     [`${wrapperStyle}:hover &`]: {
