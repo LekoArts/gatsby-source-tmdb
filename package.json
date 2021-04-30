@@ -17,6 +17,7 @@
     "@types/react-dom": "^17.0.3",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
     "@typescript-eslint/parser": "^4.20.0",
+    "concurrently": "^6.0.2",
     "eslint": "^7.23.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.1.0",
@@ -33,23 +34,25 @@
     "typescript": "^4.2.3"
   },
   "scripts": {
-    "develop": "yarn workspace example develop",
-    "build": "yarn workspace example build",
-    "clean": "yarn workspace example clean",
+    "example:develop": "yarn workspace example develop",
+    "example:build": "yarn workspace example build",
+    "example:clean": "yarn workspace example clean",
+    "package:watch": "yarn workspace gatsby-source-tmdb watch",
+    "package:prepare": "yarn workspace gatsby-source-tmdb prepare",
+    "develop": "yarn concurrently 'yarn package:watch' 'yarn example:develop'",
     "tsc": "tsc",
     "type-check": "tsc --noEmit",
     "lint": "eslint . --ignore-path .gitignore --ignore-path .prettierignore --ext .ts,.tsx,.js",
     "lint:fix": "yarn lint --fix",
     "format": "prettier \"**/*.{md,mdx,json,yaml}\" --write",
-    "watch": "yarn workspace gatsby-source-tmdb watch",
-    "prepare": "yarn workspace gatsby-source-tmdb prepare",
     "test": "jest",
     "test:update": "jest --updateSnapshot",
     "test:watch": "jest --watch",
     "test:ci": "jest --ci --runInBand",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "concurrently": "concurrently"
   },
   "husky": {
     "hooks": {
