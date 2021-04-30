@@ -2,7 +2,9 @@
 
 Source from [The Movie Database (TMDb)](https://www.themoviedb.org/) API (v3) in Gatsby. You can leverage any endpoint from the [official documentation](https://developers.themoviedb.org/3/getting-started/introduction) and pull the data directly into Gatsby's GraphQL data layer. Customize the plugin to your needs by providing customized endpoints -- read more about that in the [advanced configuration](#advanced-configuration) section.
 
-You can see a **live preview** at [tmdb.lekoarts.de](https://tmdb.lekoarts.de) ([Source Code](https://github.com/LekoArts/gatsby-source-tmdb/tree/main/example))
+You can see a **live preview** at [tmdb.lekoarts.de](https://tmdb.lekoarts.de) ([Source Code](https://github.com/LekoArts/gatsby-source-tmdb/tree/main/example)).
+
+Create your own website with [gatsby-starter-tmdb](https://github.com/LekoArts/gatsby-starter-tmdb).
 
 ## Install
 
@@ -41,7 +43,7 @@ module.exports = {
 }
 ```
 
-The plugin is **not** requesting all available endpoints by default but only a [selected list](https://github.com/LekoArts/gatsby-source-tmdb/blob/main/package/src/endpoint.ts) of endpoints. It always requests the `/account` & `/configuration` endpoint. Please see the documentation below if you want to change the endpoints.
+The plugin is **not** requesting all available endpoints by default but only a [selected list](https://github.com/LekoArts/gatsby-source-tmdb/blob/main/package/src/endpoints.ts) of endpoints. It always requests the `/account` & `/configuration` endpoint. Please see the documentation below if you want to change the endpoints.
 
 ## Options
 
@@ -98,7 +100,7 @@ interface Endpoint {
 }
 ```
 
-This option allows you to configure the endpoints that the plugin is requesting from the TMDb API. The plugin defines some [sensible defaults](https://github.com/LekoArts/gatsby-source-tmdb/blob/main/package/src/endpoint.ts).
+This option allows you to configure the endpoints that the plugin is requesting from the TMDb API. The plugin defines some [sensible defaults](https://github.com/LekoArts/gatsby-source-tmdb/blob/main/package/src/endpoints.ts).
 
 The plugin uses [`got`](https://github.com/sindresorhus/got) under the hood, so some options directly come from its API design. Here are the options in detail:
 
@@ -219,3 +221,7 @@ module.exports = {
   ]
 }
 ```
+
+## Migration
+
+You want to migrate to a new major version? You can read all migration guides here: https://github.com/LekoArts/gatsby-source-tmdb/blob/main/MIGRATING.md

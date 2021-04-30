@@ -6,6 +6,8 @@ export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }):
   const EndpointKeys = Joi.object().keys({
     url: Joi.string()
       .required()
+      .lowercase()
+      .pattern(/^[^/].*$/, `No leading slash`)
       .description(
         `This is the endpoint that you want to get (without a leading slash). So e.g. account/:account_id/lists or movie/:movie_id. Replace the {some-key} with :some-key in the URL. The parameter also needs to be passed with the same name in context then.`
       ),
@@ -32,6 +34,8 @@ export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }):
     extension: Joi.object({
       url: Joi.string()
         .required()
+        .lowercase()
+        .pattern(/^[^/].*$/, `No leading slash`)
         .description(
           `The individual endpoint that should be used to get more information. The "id" from the previous/root endpoint will be used for the ":param" in this extension endpoint`
         ),
@@ -59,7 +63,7 @@ export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }):
       .default(`Europe/London`),
     endpoints: Joi.array().description(`Specify the TMDB endpoints that the plugin should access.`).items(EndpointKeys),
     typePrefix: Joi.string()
-      .pattern(/^[a-zA-Z_][A-Za-z0-9_]*$/)
+      .pattern(/^[a-zA-Z_][A-Za-z0-9_]*$/, `Valid GraphQL typePrefix`)
       .description(
         `Specify the prefix for all created nodes, e.g. allTmdbAccount. It must follow this spec: https://spec.graphql.org/draft/#sec-Names`
       )
