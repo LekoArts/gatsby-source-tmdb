@@ -10,7 +10,6 @@ module.exports = {
   flags: {
     DEV_SSR: false,
     FAST_DEV: true,
-    FUNCTIONS: true,
   },
   plugins: [
     {
