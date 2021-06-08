@@ -7,11 +7,16 @@ module.exports = {
     siteUrl: process.env.URL || `https://tmdb.lekoarts.de`,
     logo: `/logo.png`,
   },
+  flags: {
+    DEV_SSR: false,
+    FAST_DEV: true,
+    FUNCTIONS: true,
+  },
   plugins: [
     {
       resolve: `gatsby-source-tmdb`,
       options: {
-        apiKey: process.env.GATSBY_API_KEY,
+        apiKey: process.env.API_KEY,
         sessionID: process.env.SESSION_ID,
         timezone: `Europe/Berlin`,
         region: `DE`,

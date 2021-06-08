@@ -2815,10 +2815,10 @@
   resolved "https://registry.yarnpkg.com/@vanilla-extract/private/-/private-1.0.0.tgz#10711c4481decd2f9a2f19cb85dcee60eff3f75c"
   integrity sha512-NS/Dqenj1Fd9fX1qWz4nFP6hefbTJIpQYLgKQsJBQonJ/E0QYiYtTJ1oeUh7vpoW0ojVuuRdA1URbKb7MCJ4JA==
 
-"@vanilla-extract/webpack-plugin@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@vanilla-extract/webpack-plugin/-/webpack-plugin-1.0.0.tgz#c809447ac526c6b964be6ccd9fb133939e447cca"
-  integrity sha512-KUanRvmFzzfAUey8jyUH3FFSRCmxmbT9GJxjT8M5InTxj7Jprkm1xl+hTpSx1r69J4rI94zYXYRvWHcWl/L2ow==
+"@vanilla-extract/webpack-plugin@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@vanilla-extract/webpack-plugin/-/webpack-plugin-1.0.1.tgz#cd1549e4a9ff11776b46a59070c1fa52f168bb92"
+  integrity sha512-GPpMNrf8vrK+kyudZPMAk4KUfME9+FaXDDBnLAaTytspD7CJJNoIWmj3u9td1oWYeu0XMfez6G7gCkBwinCrog==
   dependencies:
     "@vanilla-extract/integration" "^1.0.0"
     chalk "^4.1.1"
@@ -7926,10 +7926,10 @@ gatsby@^3.4.0:
     xstate "^4.11.0"
     yaml-loader "^0.6.0"
 
-gatsby@^3.6.1:
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-3.6.1.tgz#770201d53ce80cde3ca84400420a16a53b4214be"
-  integrity sha512-xNR6IMzl+6ejuMy2yGukyYmsasOXnmmb90U/v1/rwXpovo7nOHJUwGPDTblLTYsHiq2Bpv5RJcGS6P/yhfKqOw==
+gatsby@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-3.6.2.tgz#73e2e0e185974c39bf2fe1ccf269fdd977b0094a"
+  integrity sha512-gzwnyk37sGTrT/oqAWKbfwJCPeLWOlX5wgq2pumCJDOGBo0yjL95pRiBeH1GG3jQGadcx2lG/6MoM46M6v3w9A==
   dependencies:
     "@babel/code-frame" "^7.10.4"
     "@babel/core" "^7.12.3"
@@ -13458,10 +13458,10 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-query@^3.16.0:
-  version "3.16.0"
-  resolved "https://registry.yarnpkg.com/react-query/-/react-query-3.16.0.tgz#8de1556aabb3d200d0f8eeb74ce2b0b3dd0a0a51"
-  integrity sha512-YOvI8mO9WG+r4XsyJinjlDMiV5IewUWUcTv2J7z6bIP3KOFvgT6k6HM8vQouz4hPnme7Ktq9j5e7LarUqgJXFQ==
+react-query@^3.16.1:
+  version "3.16.1"
+  resolved "https://registry.yarnpkg.com/react-query/-/react-query-3.16.1.tgz#0bb9c5c45a74e14b5e204218fa602fe1a1065976"
+  integrity sha512-dof8XXSZ7HprfzvpbJE+YZrhUXcQYxy1j+NU8ZPYpKKDF79wlZAke+GyYhQ0b6SuOFp8ZpVXSpdD4AL3lxmeXQ==
   dependencies:
     "@babel/runtime" "^7.5.5"
     broadcast-channel "^3.4.1"
@@ -13472,10 +13472,10 @@ react-refresh@^0.9.0:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.9.0.tgz#71863337adc3e5c2f8a6bfddd12ae3bfe32aafbf"
   integrity sha512-Gvzk7OZpiqKSkxsQvO/mbTN1poglhmAV7gR/DdIrRrSMXraRQQlfikRJOr3Nb9GTMPC5kof948Zy6jJZIFtDvQ==
 
-react-spring@^9.2.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-9.2.0.tgz#a736c242e10dcf2b630bc78301f8762f19880a6b"
-  integrity sha512-YFz3cMGF9fwtRpkHQCu8avOJw8IVDWtLcBCEy9aTcgV4QuYsXDdKT6Y0l4zNupJAT/WmMmwaGJIkwuMfG16vsA==
+react-spring@^9.2.2:
+  version "9.2.2"
+  resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-9.2.2.tgz#315bf14202a3d0d68b2652ba571a91b71e05be8b"
+  integrity sha512-tYlW4Qmfph8mS18HBTFu7QOX/TCXr6cf+BnHcHnMMB9BVPtAZ7UOTGTHyxbnmkMMMKdeP4QwGqffWfTo3BFvWg==
   dependencies:
     "@react-spring/core" "~9.2.0"
     "@react-spring/konva" "~9.2.0"

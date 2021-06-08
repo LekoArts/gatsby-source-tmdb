@@ -42,7 +42,7 @@ const SEO: React.FC<SEOProps> = ({ title, description, pathname, children }) => 
     title: title || siteMetadata.title,
     description: description || siteMetadata.description,
     url: pathname ? `${siteMetadata.siteUrl}${pathname}` : location.href,
-    image: `${siteMetadata.url}${siteMetadata.logo}`,
+    image: `${siteMetadata.siteUrl}${siteMetadata.logo}`,
   }
 
   return (

@@ -2,7 +2,7 @@ import * as React from "react"
 import { useQuery } from "react-query"
 import ContentLoader from "react-content-loader"
 import { format, parseISO } from "date-fns"
-import { fetchTmdb } from "../api/fetch-tmdb"
+import { fetchTmdb } from "../utils/fetch-tmdb"
 import { Icon } from "./icon"
 import {
   detailViewWrapperStyle,

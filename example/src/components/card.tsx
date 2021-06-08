@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useSpring, animated } from "react-spring"
 import { Link } from "gatsby"
-import { IGatsbyImageData, getImage, GatsbyImage } from "gatsby-plugin-image"
+import { IGatsbyImageData, getImage, GatsbyImage, ImageDataLike } from "gatsby-plugin-image"
 import { format, parseISO } from "date-fns"
 import { Icon } from "./icon"
 import {
@@ -21,7 +21,7 @@ type CardProps = {
   cover:
     | string
     | {
-        localFile: {
+        childImageSharp: {
           gatsbyImageData: IGatsbyImageData
         }
       }
@@ -110,9 +110,9 @@ const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, re
           </div>
         </div>
         {isGatsbyImage ? (
-          <GatsbyImage alt="" image={getImage(cover)} />
+          <GatsbyImage alt="" image={getImage(cover as ImageDataLike)} />
         ) : (
-          <img alt="" loading="lazy" src={cover} className={imageStyle} />
+          <img alt="" loading="lazy" src={cover as string} className={imageStyle} />
         )}
       </Link>
     </animated.div>
