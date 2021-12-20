@@ -22,10 +22,9 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
   try {
     /**
      * Customized got instance that should be used for fetching data.
+     * - endpoint: The endpoint used. Aligns with TMDB API documentation (so can include param), e.g. /account or /movie/:movie_id
+     * - options: Options for got instance. Pass searchParams directly, pass values for params in endpoints (e.g. /movie/:movie_id) via context
      * @example
-     * endpoint - The endpoint used. Aligns with TMDB API documentation (so can include param), e.g. /account or /movie/:movie_id
-     * options - Options for got instance. Pass searchParams directly, pass values for params in endpoints (e.g. /movie/:movie_id) via context
-     *
      * await tmdbGot(`movie/:movie_id`, { searchParams: { language: `de-DE` }, context: { movie_id: `475557` } })
      */
     const tmdbGot = tmdbGotInstance({ apiKey, sessionID })

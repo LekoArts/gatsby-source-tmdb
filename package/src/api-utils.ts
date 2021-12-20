@@ -9,6 +9,8 @@ import { TYPE_PREFIX } from "./constants"
  * @param url
  * @param params
  * @return Modified url
+ * @example
+ * modifyURL('/tv/:tv_id/season/:season_number', { tv_id: 2, season_number: 3 })
  */
 export const modifyURL = (url: string, params?: Record<string, unknown>): string => {
   if (!params) {
@@ -32,6 +34,8 @@ const getParamRegex = /:(.*)/
  * Parse the endpoint URL and get the parameter that is used
  * @param url
  * @return Parameter without colon
+ * @example
+ * getParam('/tv/:tv_id')
  */
 export const getParam = (url: string): string => url.match(getParamRegex)?.[1]
 

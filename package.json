@@ -36,10 +36,10 @@
   "scripts": {
     "example:develop": "yarn workspace example develop",
     "example:build": "yarn workspace example build",
-    "example:clean": "yarn workspace example clean",
     "package:watch": "yarn workspace gatsby-source-tmdb watch",
     "package:prepare": "yarn workspace gatsby-source-tmdb prepare",
     "develop": "yarn concurrently 'yarn package:watch' 'yarn example:develop'",
+    "build": "yarn package:prepare && yarn example:build",
     "tsc": "tsc",
     "type-check": "tsc --noEmit",
     "lint": "eslint . --ignore-path .gitignore --ignore-path .prettierignore --ext .ts,.tsx,.js",

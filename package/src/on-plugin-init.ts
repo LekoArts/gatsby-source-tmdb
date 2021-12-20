@@ -1,7 +1,7 @@
 import { GatsbyNode } from "gatsby"
 import { ERROR_CODES } from "./constants"
 
-export const onPreInit: GatsbyNode["onPreInit"] = ({ reporter }) => {
+export const onPluginInit: GatsbyNode["onPluginInit"] = ({ reporter }) => {
   reporter.setErrorMap({
     [ERROR_CODES.initialSourcing]: {
       text: (context) => context.sourceMessage,
