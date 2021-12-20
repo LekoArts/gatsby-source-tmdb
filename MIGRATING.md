@@ -2,6 +2,10 @@
 
 If you want to update to a new major version of `gatsby-source-tmdb`, follow the steps below. Please note that once a new major version is out support for the old version has ended (only critical security fixes will be backported).
 
+## Migrating from v2 to v3
+
+TODO
+
 ## Migrating from v1 to v2
 
 The major update from v1 to v2 was a complete overhaul of the plugin (you can find the PR here: https://github.com/LekoArts/gatsby-source-tmdb/pull/9). The codebase was moved to TS, the implementation of custom API endpoints was redone, and underlying libraries were replaced. Thus some breaking changes were necessary to allow for these new features.
