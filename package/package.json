@@ -4,9 +4,9 @@
   "description": "Source from The Movie Database (TMDb) in Gatsby. Supports all endpoints, optionally downloads images and extends results with more information.",
   "main": "index.js",
   "engines": {
-    "node": ">=12.13.0"
+    "node": ">=14.15.0"
   },
-  "author": "LekoArts <hello@lekoarts.de>",
+  "author": "LekoArts <lekoarts@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/LekoArts/gatsby-source-tmdb",
@@ -20,14 +20,14 @@
   "private": false,
   "dependencies": {
     "gatsby-node-helpers": "^1.2.1",
-    "gatsby-source-filesystem": "^3.4.0",
+    "gatsby-source-filesystem": "^4.4.0",
     "got": "^11.8.2"
   },
   "devDependencies": {
-    "@types/got": "^9.6.11",
+    "@types/got": "^9.6.12",
     "cross-env": "^7.0.3",
-    "gatsby": "^3.4.0",
-    "gatsby-plugin-utils": "^1.4.0"
+    "gatsby": "^4.4.0",
+    "gatsby-plugin-utils": "^2.4.0"
   },
   "keywords": [
     "gatsby",
@@ -38,7 +38,7 @@
     "themoviedatabase"
   ],
   "peerDependencies": {
-    "gatsby": "^3.0.0"
+    "gatsby": "^4.0.0"
   },
   "scripts": {
     "build": "tsc",

@@ -7,10 +7,6 @@ module.exports = {
     siteUrl: process.env.URL || `https://tmdb.lekoarts.de`,
     logo: `/logo.png`,
   },
-  flags: {
-    DEV_SSR: false,
-    FAST_DEV: true,
-  },
   plugins: [
     {
       resolve: `gatsby-source-tmdb`,
