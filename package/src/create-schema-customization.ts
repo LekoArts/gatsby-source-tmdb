@@ -22,8 +22,8 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
   // Create types that use the path types
   // For example:
   // type TmdbAccountFavoriteMovies implements Node {
-  //  backdrop_path: BackdropPath
-  //  ...other_path_types
+  //   backdrop_path: BackdropPath
+  //   ...other_path_types
   // }
   const imageTypes = endpoints.map((endpoint) => {
     const name = generateTypeName(endpoint, typePrefix)
