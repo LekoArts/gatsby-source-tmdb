@@ -53,6 +53,6 @@
     "version-packages": "changeset version",
     "release": "changeset publish",
     "concurrently": "concurrently",
-    "prepare": "husky install"
+    "prepare": "husky install && yarn package:prepare"
   }
 }
