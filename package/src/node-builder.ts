@@ -1,36 +1,90 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
+import { Node as NodeType } from "gatsby"
 import { Options } from "got"
+import * as GatsbyFS from "gatsby-source-filesystem"
 import * as TMDBPlugin from "./types/tmdb-plugin"
 import * as Response from "./types/response"
 import { getParam, modifyURL } from "./api-utils"
-import { ERROR_CODES, IMAGE_TYPES } from "./constants"
+import { ERROR_CODES, IMAGE_BASE_URL, IMAGE_SIZES, IMAGE_TYPES } from "./constants"
+import { capitalize } from "./schema-utils"
 
-export const imageTransformation = ({ node, configuration }: TMDBPlugin.ImageTransformation) => {
-  const baseUrl = configuration.images.secure_base_url
-  const imageSizes = configuration.images
-  const modifiedNode = node
+export const imageTransformation = async ({
+  node,
+  pluginOptions,
+  endpoint,
+  gatsbyApi,
+  nodeHelpers,
+}: TMDBPlugin.ImageTransformation) => {
+  const { actions, createNodeId, cache, store, reporter } = gatsbyApi
+  const { createNode, createNodeField } = actions
+
+  const baseUrl = IMAGE_BASE_URL
+  const imageSizes = IMAGE_SIZES
+  const modifiedNode = { ...node }
+  const globalDownloadImages = pluginOptions.downloadImages
+  const endpointDownload = endpoint.downloadImages
 
   // For each imageType, e.g. "backdrop_path" extend the string to an object
   // With the "source" as the original path and then all available sizes as new keys
-  IMAGE_TYPES.forEach((type) => {
-    if (node[`${type}_path`]) {
-      modifiedNode[`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
-        (o, key) => ({ ...o, [key]: `${baseUrl}${key}${node[`${type}_path`]}` }),
-        { source: node[`${type}_path`] as string }
-      )
-    }
-    // When a list is queried it has all its items in "items"
-    // These nodes also need to be adjusted
-    if (node.items) {
-      node.items.forEach((item, index) => {
-        if (item[`${type}_path`]) {
-          modifiedNode.items[index][`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
-            (o, key) => ({ ...o, [key]: `${baseUrl}${key}${item[`${type}_path`]}` }),
-            { source: item[`${type}_path`] as string }
-          )
+  await Promise.all(
+    IMAGE_TYPES.map(async (type) => {
+      if (node[`${type}_path`]) {
+        modifiedNode[`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
+          (o, key) => ({ ...o, [key]: `${baseUrl}${key}${node[`${type}_path`]}` }),
+          { source: node[`${type}_path`] as string }
+        )
+
+        if (globalDownloadImages || endpointDownload) {
+          const fileNode = await GatsbyFS.createRemoteFileNode({
+            url: modifiedNode[`${type}_path`].original,
+            parentNodeId: nodeHelpers.createNodeId(node.id.toString()),
+            createNode,
+            createNodeId,
+            cache,
+            store,
+            reporter,
+          })
+
+          if (fileNode) {
+            const name = `localFile${capitalize(type)}`
+            createNodeField({ node: node as NodeType, name, value: fileNode.id })
+          }
         }
-      })
-    }
-  })
+      }
+      // When a list is queried it has all its items in "items"
+      // These nodes also need to be adjusted
+      if (node.items) {
+        await Promise.all(
+          node.items.map(async (item, index) => {
+            if (item[`${type}_path`]) {
+              modifiedNode.items[index][`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
+                (o, key) => ({ ...o, [key]: `${baseUrl}${key}${item[`${type}_path`]}` }),
+                { source: item[`${type}_path`] as string }
+              )
+
+              if (globalDownloadImages || endpointDownload) {
+                const fileNode = await GatsbyFS.createRemoteFileNode({
+                  url: modifiedNode.items[index][`${type}_path`].original,
+                  parentNodeId: nodeHelpers.createNodeId(node.id.toString()),
+                  createNode,
+                  createNodeId,
+                  cache,
+                  store,
+                  reporter,
+                })
+
+                if (fileNode) {
+                  const name = `localFileItems${capitalize(type)}`
+                  createNodeField({ node: node as NodeType, name, value: fileNode.id })
+                }
+              }
+            }
+          })
+        )
+      }
+    })
+  )
 
   return modifiedNode
 }
@@ -42,7 +96,6 @@ export const nodeBuilder = async ({
   pluginOptions,
   accountId,
   gatsbyApi,
-  configuration,
 }: TMDBPlugin.NodeBuilder) => {
   // The account_id shouldn't be in the typeName
   const urlWithoutAccountId = endpoint.url.replace(`/:account_id`, ``)
@@ -71,9 +124,9 @@ export const nodeBuilder = async ({
     },
   }
 
-  let items: Response.PaginationItems = []
+  let items: TMDBPlugin.ResponseNode[] = []
 
-  const fetchPaginatedData = async (): Promise<Response.PaginationItems> =>
+  const fetchPaginatedData = async (): Promise<TMDBPlugin.ResponseNode[]> =>
     tmdbGot.paginate.all(endpoint.url, {
       responseType: `json`,
       context: defaults.context,
@@ -115,7 +168,7 @@ export const nodeBuilder = async ({
       },
     })
 
-  const fetchData = async ({ url, context }): Promise<Response.ResponseItem> => tmdbGot(url, { context }).json()
+  const fetchData = async ({ url, context }): Promise<TMDBPlugin.ResponseNode> => tmdbGot(url, { context }).json()
 
   try {
     items = await fetchPaginatedData()
@@ -171,11 +224,13 @@ export const nodeBuilder = async ({
 
   itemTimer.setStatus(`Processing ${items.length} results`)
 
-  items.forEach((item) => {
-    const transformedItem = imageTransformation({ node: item, configuration })
-    const node = Node({ ...transformedItem, id: item.id.toString() })
-    gatsbyApi.actions.createNode(node)
-  })
+  await Promise.all(
+    items.map(async (item) => {
+      const node = Node({ ...item, id: item.id.toString() })
+      const transformedNode = await imageTransformation({ node, pluginOptions, endpoint, gatsbyApi, nodeHelpers })
+      await gatsbyApi.actions.createNode(transformedNode)
+    })
+  )
 
   itemTimer.end()
 }

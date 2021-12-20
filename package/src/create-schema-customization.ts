@@ -1,26 +1,28 @@
 import { GatsbyNode } from "gatsby"
 import * as TMDBPlugin from "./types/tmdb-plugin"
-import { defaultOptions, generateTypeName, defineImageNode } from "./api-utils"
-import { IMAGE_TYPE_NAMES } from "./constants"
+import { defaultOptions } from "./api-utils"
+import { IMAGE_TYPES } from "./constants"
+import { defineImageNode, generateTypeName, definePathNode } from "./schema-utils"
 
 export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] = (
   { actions, schema },
   pluginOptions: TMDBPlugin.PluginOptions
-): any => {
+): void => {
   const { typePrefix, endpoints } = defaultOptions(pluginOptions)
   const { createTypes } = actions
 
   // Create types for each image type
-  // type BackdropPath {}
-  const pathTypes = IMAGE_TYPE_NAMES.map((typeName) =>
-    schema.buildObjectType({
-      name: typeName,
-      fields: {},
-    })
-  )
+  //
+  // type BackdropPath {
+  //   original: String
+  //   w300: String
+  //   ...other_backdrop_path_types
+  // }
+  //
+  const pathTypes = IMAGE_TYPES.map((imageType) => definePathNode(imageType, schema))
 
   // Create types that use the path types
-  // For example:
+  //
   // type TmdbAccountFavoriteMovies implements Node {
   //   backdrop_path: BackdropPath
   //   ...other_path_types
@@ -68,14 +70,6 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
       poster_sizes: [String]
       profile_sizes: [String]
       still_sizes: [String]
-    }
-
-    type ${typePrefix}AccountListsItems {
-      backdrop_path: BackdropPath
-      logo_path: LogoPath
-      poster_path: PosterPath
-      profile_path: ProfilePath
-      still_path: StillPath
     }
   `
 

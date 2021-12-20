@@ -10,7 +10,7 @@ import { defaultOptions } from "./api-utils"
 export const sourceNodes: GatsbyNode["sourceNodes"] = async (
   gatsbyApi: SourceNodesArgs,
   pluginOptions: TMDBPlugin.PluginOptions
-): Promise<any> => {
+): Promise<void> => {
   const { apiKey, sessionID, typePrefix, endpoints } = defaultOptions(pluginOptions)
   const { reporter, createNodeId, createContentDigest, actions } = gatsbyApi
   const nodeHelpers = createNodeHelpers({
@@ -29,7 +29,20 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
      */
     const tmdbGot = tmdbGotInstance({ apiKey, sessionID })
 
-    const configuration: Response.Configuration = await tmdbGot(`configuration`).json()
+    let configuration: Response.Configuration
+
+    try {
+      configuration = await tmdbGot(`configuration`).json()
+    } catch (error) {
+      reporter.panicOnBuild({
+        id: ERROR_CODES.configurationSourcing,
+        context: {
+          sourceMessage: `Could not source configuration or account from TMDB. Are your credentials correct?`,
+        },
+        error,
+      })
+    }
+
     const accountInfo: Response.AccountInfo = await tmdbGot(`account`).json()
 
     const ConfigurationNode = nodeHelpers.createNodeFactory(`Configuration`)
@@ -49,7 +62,6 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
           pluginOptions,
           accountId: accountInfo.id,
           nodeHelpers,
-          configuration,
         })
       )
     )
@@ -57,7 +69,7 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async (
     reporter.panicOnBuild({
       id: ERROR_CODES.initialSourcing,
       context: {
-        sourceMessage: `Could not source configuration or account from TMDB. Are your credentials correct?`,
+        sourceMessage: `There was an error during sourcing & node creation. See the detailed error below.`,
       },
       error,
     })

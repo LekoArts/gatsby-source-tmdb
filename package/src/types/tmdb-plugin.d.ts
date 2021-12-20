@@ -1,4 +1,4 @@
-import { PluginOptions as DefaultPluginOptions, SourceNodesArgs } from "gatsby"
+import { PluginOptions as DefaultPluginOptions, SourceNodesArgs, NodeInput } from "gatsby"
 import { NodeHelpers } from "gatsby-node-helpers"
 import { Got } from "got"
 import * as Response from "./response"
@@ -10,12 +10,14 @@ export interface PluginOptions extends DefaultPluginOptions {
   region?: string
   timezone?: string
   typePrefix?: string
+  downloadImages?: boolean
   endpoints?: Endpoint[]
 }
 
 export interface Endpoint {
   url: string
   typeName?: string
+  downloadImages?: boolean
   searchParams?: {
     language?: string
     page?: number
@@ -39,7 +41,6 @@ export interface NodeBuilder {
   pluginOptions: PluginOptions
   accountId: Response.AccountInfo["id"]
   gatsbyApi: SourceNodesArgs
-  configuration: Response.Configuration
 }
 
 export interface ImageNode {
@@ -48,7 +49,12 @@ export interface ImageNode {
   [key: string]: string
 }
 
+export interface ResponseNode extends NodeInput, Response.ResponseItem {}
+
 export interface ImageTransformation {
-  node: Response.ResponseItem
-  configuration: Response.Configuration
+  node: ResponseNode
+  endpoint: Endpoint
+  pluginOptions: PluginOptions
+  gatsbyApi: SourceNodesArgs
+  nodeHelpers: NodeHelpers
 }

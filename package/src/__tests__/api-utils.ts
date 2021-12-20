@@ -1,4 +1,4 @@
-import { modifyURL, getParam, defaultOptions, generateTypeName } from "../api-utils"
+import { modifyURL, getParam, defaultOptions } from "../api-utils"
 
 const endpoint01 = `configuration`
 const endpoint02 = `movie/:movie_id`
@@ -39,6 +39,7 @@ describe(`api-utils`, () => {
     expect(defaultOptions({ apiKey: `foo`, sessionID: `bar`, plugins: [] })).toMatchInlineSnapshot(`
       Object {
         "apiKey": "foo",
+        "downloadImages": false,
         "endpoints": Array [
           Object {
             "url": "account/:account_id/lists",
@@ -70,24 +71,11 @@ describe(`api-utils`, () => {
         ],
         "language": "en-US",
         "plugins": Array [],
-        "region": "US",
+        "region": "DE",
         "sessionID": "bar",
         "timezone": "Europe/London",
         "typePrefix": "Tmdb",
       }
     `)
-  })
-  it(`generateTypeName works correctly`, () => {
-    expect(generateTypeName({ url: `account/:account_id/favorite/movies` }, `Tmdb`)).toBe(`TmdbAccountFavoriteMovies`)
-    expect(generateTypeName({ url: `tv/:tv_id`, context: { tv_id: `1234` } }, `Tmdb`)).toBe(`TmdbTv1234`)
-    expect(generateTypeName({ url: `tv/:tv_id`, context: { tv_id: `1234` }, typeName: `CustomName` }, `Tmdb`)).toBe(
-      `TmdbCustomName`
-    )
-    expect(generateTypeName({ url: `account/:account_id/favorite/movies`, typeName: `CustomName` }, `Tmdb`)).toBe(
-      `TmdbCustomName`
-    )
-    expect(generateTypeName({ url: `account/:account_id/favorite/movies`, typeName: `CustomName` }, `Naruto`)).toBe(
-      `NarutoCustomName`
-    )
   })
 })

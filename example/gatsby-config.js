@@ -18,6 +18,7 @@ module.exports = {
         endpoints: [
           {
             url: `account/:account_id/lists`,
+            downloadImages: true,
             extension: {
               url: `list/:list_id`,
             },

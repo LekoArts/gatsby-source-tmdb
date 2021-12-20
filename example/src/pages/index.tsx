@@ -52,7 +52,7 @@ const Index: React.FC<PageProps<DataProps>> = ({
                     key={tv.tmdbId}
                     name={tv.name}
                     link={`/tv/${tv.tmdbId}`}
-                    cover={tv.poster_path.localFile}
+                    cover={tv.poster_path.path}
                     next={airDate}
                     rating={tv.vote_average}
                     status={tv.status}
@@ -180,17 +180,7 @@ export const query = graphql`
         vote_average
         first_air_date
         poster_path {
-          localFile {
-            childImageSharp {
-              gatsbyImageData(
-                quality: 90
-                formats: [AUTO, WEBP, AVIF]
-                placeholder: BLURRED
-                width: 600
-                breakpoints: [360, 450, 600]
-              )
-            }
-          }
+          path: w342
         }
         next_episode_to_air {
           air_date
