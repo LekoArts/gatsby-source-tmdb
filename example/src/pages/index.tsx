@@ -52,7 +52,7 @@ const Index: React.FC<PageProps<DataProps>> = ({
                     key={tv.tmdbId}
                     name={tv.name}
                     link={`/tv/${tv.tmdbId}`}
-                    cover={tv.poster_path.path}
+                    cover={tv.poster_path.localFile}
                     next={airDate}
                     rating={tv.vote_average}
                     status={tv.status}
@@ -134,7 +134,7 @@ const Index: React.FC<PageProps<DataProps>> = ({
                 {list.items.map((item) => (
                   <Card
                     key={item.name}
-                    cover={item.poster_path.path}
+                    cover={item.poster_path.localFile}
                     link={`/${item.media_type}/${item.id}`}
                     name={item.name}
                     rating={item.vote_average}
@@ -169,7 +169,17 @@ export const query = graphql`
           media_type
           id
           poster_path {
-            path: w342
+            localFile {
+              childImageSharp {
+                gatsbyImageData(
+                  quality: 90
+                  formats: [AUTO, WEBP, AVIF]
+                  placeholder: BLURRED
+                  width: 600
+                  breakpoints: [360, 450, 600]
+                )
+              }
+            }
           }
         }
       }
@@ -180,7 +190,17 @@ export const query = graphql`
         vote_average
         first_air_date
         poster_path {
-          path: w342
+          localFile {
+            childImageSharp {
+              gatsbyImageData(
+                quality: 90
+                formats: [AUTO, WEBP, AVIF]
+                placeholder: BLURRED
+                width: 600
+                breakpoints: [360, 450, 600]
+              )
+            }
+          }
         }
         next_episode_to_air {
           air_date
@@ -288,7 +308,11 @@ type DataProps = {
         media_type: string
         id: number
         poster_path: {
-          path: string
+          localFile: {
+            childImageSharp: {
+              gatsbyImageData: IGatsbyImageData
+            }
+          }
         }
       }[]
     }[]

@@ -1,4 +1,4 @@
-import { PluginOptions as DefaultPluginOptions, SourceNodesArgs, NodeInput } from "gatsby"
+import { PluginOptions as DefaultPluginOptions, SourceNodesArgs } from "gatsby"
 import { NodeHelpers } from "gatsby-node-helpers"
 import { Got } from "got"
 import * as Response from "./response"
@@ -45,12 +45,24 @@ export interface NodeBuilder {
 
 export interface ImageNode {
   source: string
-  original: string
+  original?: string
   [key: string]: string
 }
 
-export interface ResponseNode extends NodeInput, Response.ResponseItem {}
+export interface ResponseNode extends Response.ResponseItem {}
 
+interface ImagePaths {
+  poster_path?: ImageNode
+  backdrop_path?: ImageNode
+  still_path?: ImageNode
+  logo_path?: ImageNode
+  profile_path?: ImageNode
+}
+
+export interface ImageTransformationReponse extends ImagePaths {
+  id: number
+  items?: ImagePaths[]
+}
 export interface ImageTransformation {
   node: ResponseNode
   endpoint: Endpoint

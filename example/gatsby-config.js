@@ -31,6 +31,7 @@ module.exports = {
           },
           {
             url: `account/:account_id/favorite/tv`,
+            downloadImages: true,
             extension: {
               url: `tv/:tv_id`,
             },

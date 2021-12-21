@@ -32,7 +32,7 @@ export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }):
       ),
     countLimit: Joi.number().description(`Number of how many items to fetch from this endpoint.`),
     downloadImages: Joi.boolean()
-      .default(`false`)
+      .default(false)
       .description(`Download images for e.g. backdrop_path to make it available in gatsby-plugin-image.`),
     extension: Joi.object({
       url: Joi.string()

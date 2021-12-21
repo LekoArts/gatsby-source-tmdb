@@ -21,13 +21,13 @@ export const generateTypeName = (endpoint: TMDBPlugin.Endpoint, typePrefix: stri
 
 export const capitalize = (s: string): string => s && s[0].toUpperCase() + s.slice(1)
 
+export const generateImageTypeName = (imageType: typeof IMAGE_TYPES[number]) => `${capitalize(imageType)}Path`
+
 export const definePathNode = (
   imageType: typeof IMAGE_TYPES[number],
   schema: NodePluginSchema
 ): GatsbyGraphQLObjectType => {
-  const type = capitalize(imageType)
-  const typeName = `${type}Path`
-
+  const name = generateImageTypeName(imageType)
   let fields
 
   IMAGE_SIZES[`${imageType}_sizes`].forEach((size) => {
@@ -38,8 +38,27 @@ export const definePathNode = (
   })
 
   return schema.buildObjectType({
-    name: typeName,
+    name,
     fields,
+  })
+}
+
+export const defineLocalFileNode = (
+  imageType: typeof IMAGE_TYPES[number],
+  schema: NodePluginSchema
+): GatsbyGraphQLObjectType => {
+  const name = generateImageTypeName(imageType)
+
+  return schema.buildObjectType({
+    name,
+    fields: {
+      localFile: {
+        type: `File`,
+        extensions: {
+          link: {},
+        },
+      },
+    },
   })
 }
 

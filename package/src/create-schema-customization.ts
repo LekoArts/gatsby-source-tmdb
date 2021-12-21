@@ -2,7 +2,7 @@ import { GatsbyNode } from "gatsby"
 import * as TMDBPlugin from "./types/tmdb-plugin"
 import { defaultOptions } from "./api-utils"
 import { IMAGE_TYPES } from "./constants"
-import { defineImageNode, generateTypeName, definePathNode } from "./schema-utils"
+import { defineImageNode, generateTypeName, definePathNode, defineLocalFileNode } from "./schema-utils"
 
 export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] = (
   { actions, schema },
@@ -20,6 +20,8 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
   // }
   //
   const pathTypes = IMAGE_TYPES.map((imageType) => definePathNode(imageType, schema))
+
+  const localFileTypes = IMAGE_TYPES.map((imageType) => defineLocalFileNode(imageType, schema))
 
   // Create types that use the path types
   //
@@ -71,7 +73,12 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
       profile_sizes: [String]
       still_sizes: [String]
     }
+
+    type ${typePrefix}AccountListsItems {
+      backdrop_path: BackdropPath
+      poster_path: PosterPath
+    }
   `
 
-  createTypes([...pathTypes, ...imageTypes, mandatoryTypes])
+  createTypes([...pathTypes, ...localFileTypes, ...imageTypes, mandatoryTypes])
 }

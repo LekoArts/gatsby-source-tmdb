@@ -1,83 +1,80 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { Node as NodeType } from "gatsby"
 import { Options } from "got"
 import * as GatsbyFS from "gatsby-source-filesystem"
+import { SourceNodesArgs } from "gatsby"
 import * as TMDBPlugin from "./types/tmdb-plugin"
 import * as Response from "./types/response"
 import { getParam, modifyURL } from "./api-utils"
 import { ERROR_CODES, IMAGE_BASE_URL, IMAGE_SIZES, IMAGE_TYPES } from "./constants"
-import { capitalize } from "./schema-utils"
+
+const downloadImgAndCreateFileNode = async (
+  { url, nodeId }: { url: string; nodeId: string },
+  { actions: { createNode }, createNodeId, cache, store, reporter }: SourceNodesArgs
+): Promise<string> => {
+  const fileNode = await GatsbyFS.createRemoteFileNode({
+    url,
+    cache,
+    createNode,
+    createNodeId,
+    store,
+    reporter,
+    parentNodeId: nodeId,
+  })
+
+  return fileNode.id
+}
 
 export const imageTransformation = async ({
   node,
   pluginOptions,
   endpoint,
-  gatsbyApi,
   nodeHelpers,
+  gatsbyApi,
 }: TMDBPlugin.ImageTransformation) => {
-  const { actions, createNodeId, cache, store, reporter } = gatsbyApi
-  const { createNode, createNodeField } = actions
-
   const baseUrl = IMAGE_BASE_URL
   const imageSizes = IMAGE_SIZES
-  const modifiedNode = { ...node }
   const globalDownloadImages = pluginOptions.downloadImages
   const endpointDownload = endpoint.downloadImages
+  const mutatedNode = node as TMDBPlugin.ImageTransformationReponse
 
   // For each imageType, e.g. "backdrop_path" extend the string to an object
   // With the "source" as the original path and then all available sizes as new keys
   await Promise.all(
     IMAGE_TYPES.map(async (type) => {
-      if (node[`${type}_path`]) {
-        modifiedNode[`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
-          (o, key) => ({ ...o, [key]: `${baseUrl}${key}${node[`${type}_path`]}` }),
-          { source: node[`${type}_path`] as string }
+      if (mutatedNode[`${type}_path`]) {
+        mutatedNode[`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
+          (o, key) => ({ ...o, [key]: `${baseUrl}${key}${mutatedNode[`${type}_path`]}` }),
+          { source: mutatedNode[`${type}_path`] as unknown as string }
         )
 
         if (globalDownloadImages || endpointDownload) {
-          const fileNode = await GatsbyFS.createRemoteFileNode({
-            url: modifiedNode[`${type}_path`].original,
-            parentNodeId: nodeHelpers.createNodeId(node.id.toString()),
-            createNode,
-            createNodeId,
-            cache,
-            store,
-            reporter,
-          })
-
-          if (fileNode) {
-            const name = `localFile${capitalize(type)}`
-            createNodeField({ node: node as NodeType, name, value: fileNode.id })
-          }
+          const url = mutatedNode[`${type}_path`].original
+          const fileNodeId = await downloadImgAndCreateFileNode(
+            { url, nodeId: nodeHelpers.createNodeId(mutatedNode.id.toString()) },
+            gatsbyApi
+          )
+          mutatedNode[`${type}_path`].localFile = fileNodeId
         }
       }
       // When a list is queried it has all its items in "items"
       // These nodes also need to be adjusted
-      if (node.items) {
+      if (mutatedNode.items) {
         await Promise.all(
-          node.items.map(async (item, index) => {
+          mutatedNode.items.map(async (item, index) => {
             if (item[`${type}_path`]) {
-              modifiedNode.items[index][`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
+              mutatedNode.items[index][`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
                 (o, key) => ({ ...o, [key]: `${baseUrl}${key}${item[`${type}_path`]}` }),
-                { source: item[`${type}_path`] as string }
+                { source: item[`${type}_path`] as unknown as string }
               )
 
               if (globalDownloadImages || endpointDownload) {
-                const fileNode = await GatsbyFS.createRemoteFileNode({
-                  url: modifiedNode.items[index][`${type}_path`].original,
-                  parentNodeId: nodeHelpers.createNodeId(node.id.toString()),
-                  createNode,
-                  createNodeId,
-                  cache,
-                  store,
-                  reporter,
-                })
-
-                if (fileNode) {
-                  const name = `localFileItems${capitalize(type)}`
-                  createNodeField({ node: node as NodeType, name, value: fileNode.id })
-                }
+                const url = mutatedNode.items[index][`${type}_path`].original
+                const fileNodeId = await downloadImgAndCreateFileNode(
+                  { url, nodeId: nodeHelpers.createNodeId(mutatedNode.id.toString()) },
+                  gatsbyApi
+                )
+                mutatedNode.items[index][`${type}_path`].localFile = fileNodeId
               }
             }
           })
@@ -86,7 +83,7 @@ export const imageTransformation = async ({
     })
   )
 
-  return modifiedNode
+  return mutatedNode
 }
 
 export const nodeBuilder = async ({
@@ -224,13 +221,11 @@ export const nodeBuilder = async ({
 
   itemTimer.setStatus(`Processing ${items.length} results`)
 
-  await Promise.all(
-    items.map(async (item) => {
-      const node = Node({ ...item, id: item.id.toString() })
-      const transformedNode = await imageTransformation({ node, pluginOptions, endpoint, gatsbyApi, nodeHelpers })
-      await gatsbyApi.actions.createNode(transformedNode)
-    })
-  )
+  for (const item of items) {
+    const transformedItem = await imageTransformation({ node: item, pluginOptions, endpoint, nodeHelpers, gatsbyApi })
+    const node = Node({ ...transformedItem, id: item.id.toString() })
+    gatsbyApi.actions.createNode(node)
+  }
 
   itemTimer.end()
 }
