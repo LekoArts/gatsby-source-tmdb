@@ -26,7 +26,7 @@ type CardProps = {
 
 const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`
 
-const Card: React.FC<CardProps> = function ({ name, link, cover, next, rating, status, release, episodes, seasons }) {
+const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, release, episodes, seasons }) => {
   const ref = React.useRef()
   const [animatedProps, api] = useSpring(() => ({
     xys: [0, 0, 1],

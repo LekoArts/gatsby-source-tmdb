@@ -30,7 +30,7 @@ const calculateTime = ({ episodes, runTime }: { episodes: number; runTime: numbe
   return convertMinsToHrsMins(episodes * time)
 }
 
-const DetailView: React.FC<{ id: string; type: "tv" | "movie" }> = function ({ id, type }) {
+const DetailView: React.FC<{ id: string; type: "tv" | "movie" }> = ({ id, type }) => {
   const { status, data, error } = useQuery([`${type}-detail`, id], async () => fetchTmdb({ id, type }))
 
   if (status === `loading`) {

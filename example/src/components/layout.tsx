@@ -6,7 +6,7 @@ import { IconMother } from "./icon"
 import Back from "./back"
 import * as styles from "./layout.css"
 
-const Layout: React.FC<{ location?: PageProps["location"] }> = function ({ children, location }) {
+const Layout: React.FC<{ location?: PageProps["location"] }> = ({ children, location }) => {
   const isHome = location?.pathname === `/`
 
   return (
