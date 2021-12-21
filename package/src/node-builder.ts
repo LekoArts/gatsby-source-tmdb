@@ -50,10 +50,25 @@ export const imageTransformation = async ({
 
         if (globalDownloadImages || endpointDownload) {
           const url = mutatedNode[`${type}_path`].original
-          const fileNodeId = await downloadImgAndCreateFileNode(
-            { url, nodeId: nodeHelpers.createNodeId(mutatedNode.id.toString()) },
-            gatsbyApi
-          )
+          let fileNodeId
+
+          try {
+            fileNodeId = await downloadImgAndCreateFileNode(
+              { url, nodeId: nodeHelpers.createNodeId(mutatedNode.id.toString()) },
+              gatsbyApi
+            )
+          } catch (error) {
+            gatsbyApi.reporter.panicOnBuild(
+              {
+                id: ERROR_CODES.imageDownloading,
+                context: {
+                  sourceMessage: `Error during downloading of ${url}`,
+                },
+              },
+              error
+            )
+          }
+
           mutatedNode[`${type}_path`].localFile = fileNodeId
         }
       }
@@ -70,10 +85,25 @@ export const imageTransformation = async ({
 
               if (globalDownloadImages || endpointDownload) {
                 const url = mutatedNode.items[index][`${type}_path`].original
-                const fileNodeId = await downloadImgAndCreateFileNode(
-                  { url, nodeId: nodeHelpers.createNodeId(mutatedNode.id.toString()) },
-                  gatsbyApi
-                )
+                let fileNodeId
+
+                try {
+                  fileNodeId = await downloadImgAndCreateFileNode(
+                    { url, nodeId: nodeHelpers.createNodeId(mutatedNode.id.toString()) },
+                    gatsbyApi
+                  )
+                } catch (error) {
+                  gatsbyApi.reporter.panicOnBuild(
+                    {
+                      id: ERROR_CODES.imageDownloading,
+                      context: {
+                        sourceMessage: `Error during downloading of ${url}`,
+                      },
+                    },
+                    error
+                  )
+                }
+
                 mutatedNode.items[index][`${type}_path`].localFile = fileNodeId
               }
             }

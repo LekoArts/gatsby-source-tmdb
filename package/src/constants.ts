@@ -5,6 +5,7 @@ export const ERROR_CODES = {
   extensionSourcing: `30002`,
   getParamUndefined: `30003`,
   configurationSourcing: `30004`,
+  imageDownloading: `30005`,
 } as const
 export const IMAGE_TYPES = [`backdrop`, `logo`, `poster`, `profile`, `still`] as const
 export const IMAGE_SIZES = {

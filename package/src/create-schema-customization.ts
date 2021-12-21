@@ -11,24 +11,32 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
   const { typePrefix, endpoints } = defaultOptions(pluginOptions)
   const { createTypes } = actions
 
-  // Create types for each image type
-  //
-  // type BackdropPath {
-  //   original: String
-  //   w300: String
-  //   ...other_backdrop_path_types
-  // }
-  //
+  /**
+   * Create types for each image type
+   * @example
+   * type BackdropPath {
+   *   original: String
+   *   w300: String
+   * }
+   */
   const pathTypes = IMAGE_TYPES.map((imageType) => definePathNode(imageType, schema))
 
+  /**
+   * Create localFile entries for each image type
+   * @example
+   * type BackdropPath {
+   *   localFile: File @link
+   * }
+   */
   const localFileTypes = IMAGE_TYPES.map((imageType) => defineLocalFileNode(imageType, schema))
 
-  // Create types that use the path types
-  //
-  // type TmdbAccountFavoriteMovies implements Node {
-  //   backdrop_path: BackdropPath
-  //   ...other_path_types
-  // }
+  /**
+   * Create types that use the path types
+   * @example
+   * type TmdbAccountFavoriteMovies implements Node {
+   *   backdrop_path: BackdropPath
+   * }
+   */
   const imageTypes = endpoints.map((endpoint) => {
     const name = generateTypeName(endpoint, typePrefix)
     return defineImageNode(name, schema)

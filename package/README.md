@@ -75,6 +75,10 @@ You can offset the day calculation, defaulting to EST. You can [query the list o
 
 By default, all types created by this plugin are prefixed with `TMDb`. So if you query `/account/{account_id}/favorite/tv` the resulting type will be `TmdbAccountFavoriteTv`. This is helpful when you use multiple instances of this plugin in the same site (by using different API keys & session IDs) and want to have multiple instances of e.g. `/account/{account_id}/favorite/tv`. You'd then set a `typePrefix: "Second"` and the result would be `SecondAccountFavoriteTv`.
 
+### `downloadImages: boolean`
+
+By default, no images for e.g. `poster_path` etc. are downloaded. With this setting you can **globally** enable the downloading of images. Under the additional `localFile` field you'll be able to access the downloaded file and use it with `gatsby-plugin-image`.
+
 ### `endpoints: Endpoint[]`
 
 With `Endpoint` being:
@@ -83,6 +87,7 @@ With `Endpoint` being:
 interface Endpoint {
   url: string
   typeName?: string
+  downloadImages?: boolean
   searchParams?: {
     language?: string
     page?: number
@@ -126,6 +131,10 @@ Similar to the `typePrefix` option you can modify the name of the type here. In 
 ```
 
 Normally this would result in `TmdbAccountFavoriteTv` but in this case it would be `FavTv`.
+
+#### `downloadImages: boolean`
+
+The behavior is the same as the global `downloadImages` setting but you can individually turn on image downloading with the setting on the `Endpoint`. The global setting overwrites any `Endpoint` setting.
 
 #### `searchParams: object`
 

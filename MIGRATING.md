@@ -4,7 +4,80 @@ If you want to update to a new major version of `gatsby-source-tmdb`, follow the
 
 ## Migrating from v2 to v3
 
-TODO
+This major update makes `gatsby-source-tmdb` compatible with Gatsby 4! With Gatsby 4 some larger underlying changes were made to Gatsby and new features like Deferred Static Generation, Server Side Rendering, and Parallel Query Running were released. In order to support all these new features `gatsby-source-tmdb` needed to go through some changes. You can find the PR here: https://github.com/LekoArts/gatsby-source-tmdb/pull/14
+
+If you want to start with a fresh project you can clone [gatsby-starter-tmdb](https://github.com/LekoArts/gatsby-starter-tmdb).
+
+### Updating your dependencies
+
+You need to update your `package.json` to use the latest version of `gatsby-source-tmdb`.
+
+```json
+{
+  "dependencies": {
+    "gatsby-source-tmdb": "^3.0.0"
+  }
+}
+```
+
+### Update Gatsby packages
+
+This plugin also now requires you to use Gatsby 4 (see [Gatsby's migration guide](https://www.gatsbyjs.com/docs/reference/release-notes/migrating-from-v3-to-v4/)). Update Gatsby and all related packages.
+
+### Handle image downloading
+
+In `gatsby-source-tmdb` v2 you were able to query `localFile` on any `backdrop_path`, `poster_path` etc. field. In v3 of this plugin you'll still be able to do that, but you have to explicitly opt-in to the download of the images now. Under the hood the plugin had to change the lazy-downloading to download everything upfront.
+
+Your easiest solution to restore the old behavior is to set `downloadImages: true` globally for the plugin:
+
+```diff
+ require("dotenv").config()
+
+ module.exports = {
+   plugins: [
+     {
+       resolve: "gatsby-source-tmdb",
+       options: {
+         apiKey: process.env.API_KEY,
+         sessionID: process.env.SESSION_ID,
++        downloadImages: true,
+       }
+     }
+   ]
+ }
+```
+
+But please note that this will download **all** images for every node & endpoint you have. The amount of images and the time it takes to download & process them might be huge. Instead, you better set the option on an individual level for each endpoint where you want to use e.g. `gatsby-plugin-image`:
+
+```diff
+ require("dotenv").config()
+
+ module.exports = {
+   plugins: [
+     {
+       resolve: "gatsby-source-tmdb",
+       options: {
+         apiKey: process.env.API_KEY,
+         sessionID: process.env.SESSION_ID,
+         endpoints: [
+           {
+             url: "tv/:tv_id",
++            downloadImages: true,
+             context: {
+               tv_id: "66732"
+             },
+             searchParams: {
+               append_to_response: "videos,similar"
+             }
+           },
+         ]
+       }
+     }
+   ]
+ }
+```
+
+In this setup you'll only be able to use `localFile` on the specified endpoint and its fields.
 
 ## Migrating from v1 to v2
 

@@ -1,5 +1,6 @@
 import { SourceNodesArgs } from "gatsby"
 import { createNodeHelpers } from "gatsby-node-helpers"
+import { createRemoteFileNode } from "gatsby-source-filesystem"
 import { defaultOptions } from "../api-utils"
 import { imageTransformation } from "../node-builder"
 
@@ -73,6 +74,8 @@ describe(`imageTransformation in nodeBuilder`, () => {
       gatsbyApi,
     })
     expect(result).toMatchSnapshot()
+    const mock = createRemoteFileNode as jest.Mock
+    expect(mock).not.toHaveBeenCalled()
   })
   it(`should convert nodes two levels deep`, async () => {
     const nodeCopy = {
@@ -110,6 +113,8 @@ describe(`imageTransformation in nodeBuilder`, () => {
         gatsbyApi,
       })
       expect(result).toMatchSnapshot()
+      const mock = createRemoteFileNode as jest.Mock
+      expect(mock).toHaveBeenCalled()
     })
     it(`set in endpoint should convert nodes two levels deep`, async () => {
       const nodeCopy = {
