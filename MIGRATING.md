@@ -31,50 +31,50 @@ In `gatsby-source-tmdb` v2 you were able to query `localFile` on any `backdrop_p
 Your easiest solution to restore the old behavior is to set `downloadImages: true` globally for the plugin:
 
 ```diff
- require("dotenv").config()
+require("dotenv").config()
 
- module.exports = {
-   plugins: [
-     {
-       resolve: "gatsby-source-tmdb",
-       options: {
-         apiKey: process.env.API_KEY,
-         sessionID: process.env.SESSION_ID,
-+        downloadImages: true,
-       }
-     }
-   ]
- }
+module.exports = {
+  plugins: [
+    {
+      resolve: "gatsby-source-tmdb",
+      options: {
+        apiKey: process.env.API_KEY,
+        sessionID: process.env.SESSION_ID,
++       downloadImages: true,
+      }
+    }
+  ]
+}
 ```
 
 But please note that this will download **all** images for every node & endpoint you have. The amount of images and the time it takes to download & process them might be huge. Instead, you better set the option on an individual level for each endpoint where you want to use e.g. `gatsby-plugin-image`:
 
 ```diff
- require("dotenv").config()
+require("dotenv").config()
 
- module.exports = {
-   plugins: [
-     {
-       resolve: "gatsby-source-tmdb",
-       options: {
-         apiKey: process.env.API_KEY,
-         sessionID: process.env.SESSION_ID,
-         endpoints: [
-           {
-             url: "tv/:tv_id",
-+            downloadImages: true,
-             context: {
-               tv_id: "66732"
-             },
-             searchParams: {
-               append_to_response: "videos,similar"
-             }
-           },
-         ]
-       }
-     }
-   ]
- }
+module.exports = {
+  plugins: [
+    {
+      resolve: "gatsby-source-tmdb",
+      options: {
+        apiKey: process.env.API_KEY,
+        sessionID: process.env.SESSION_ID,
+        endpoints: [
+          {
+            url: "tv/:tv_id",
++           downloadImages: true,
+            context: {
+              tv_id: "66732"
+            },
+            searchParams: {
+              append_to_response: "videos,similar"
+            }
+          },
+        ]
+      }
+    }
+  ]
+}
 ```
 
 In this setup you'll only be able to use `localFile` on the specified endpoint and its fields.
