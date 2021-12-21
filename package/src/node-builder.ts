@@ -63,7 +63,7 @@ export const imageTransformation = async ({
         await Promise.all(
           mutatedNode.items.map(async (item, index) => {
             if (item[`${type}_path`]) {
-              mutatedNode.items[index][`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
+              item[`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
                 (o, key) => ({ ...o, [key]: `${baseUrl}${key}${item[`${type}_path`]}` }),
                 { source: item[`${type}_path`] as unknown as string }
               )
