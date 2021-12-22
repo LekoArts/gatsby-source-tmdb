@@ -1,38 +1,31 @@
 import * as React from "react"
 import { Icon } from "./icon"
-import {
-  legendStyle,
-  titleStyle,
-  wrapperStyle,
-  legendItemStyle,
-  greyLightFillStyle,
-  legendIconStyle,
-} from "./legend.css"
+import * as styles from "./legend.css"
 
 const Legend: React.FC = () => (
-  <div className={legendStyle}>
-    <div className={titleStyle}>Legend</div>
-    <div className={wrapperStyle}>
-      <div className={legendItemStyle}>
-        <Icon name="star" className={`${greyLightFillStyle} ${legendIconStyle}`} /> Rating
+  <div className={styles.legendStyle}>
+    <div className={styles.titleStyle}>Legend</div>
+    <div className={styles.wrapperStyle}>
+      <div className={styles.legendItemStyle}>
+        <Icon name="star" className={`${styles.greyLightFillStyle} ${styles.legendIconStyle}`} /> Rating
       </div>
-      <div className={legendItemStyle}>
-        <Icon name="first" className={`${greyLightFillStyle} ${legendIconStyle}`} /> Release
+      <div className={styles.legendItemStyle}>
+        <Icon name="first" className={`${styles.greyLightFillStyle} ${styles.legendIconStyle}`} /> Release
       </div>
-      <div className={legendItemStyle}>
-        <Icon name="next" className={`${greyLightFillStyle} ${legendIconStyle}`} /> Next Episode
+      <div className={styles.legendItemStyle}>
+        <Icon name="next" className={`${styles.greyLightFillStyle} ${styles.legendIconStyle}`} /> Next Episode
       </div>
-      <div className={legendItemStyle}>
-        <Icon name="episodes" className={`${greyLightFillStyle} ${legendIconStyle}`} /> Episodes
+      <div className={styles.legendItemStyle}>
+        <Icon name="episodes" className={`${styles.greyLightFillStyle} ${styles.legendIconStyle}`} /> Episodes
       </div>
-      <div className={legendItemStyle}>
-        <Icon name="seasons" className={`${greyLightFillStyle} ${legendIconStyle}`} /> Seasons
+      <div className={styles.legendItemStyle}>
+        <Icon name="seasons" className={`${styles.greyLightFillStyle} ${styles.legendIconStyle}`} /> Seasons
       </div>
-      <div className={legendItemStyle}>
-        <Icon name="running" className={legendIconStyle} /> Returning Series
+      <div className={styles.legendItemStyle}>
+        <Icon name="running" className={styles.legendIconStyle} /> Returning Series
       </div>
-      <div className={legendItemStyle}>
-        <Icon name="ended" className={legendIconStyle} /> Ended
+      <div className={styles.legendItemStyle}>
+        <Icon name="ended" className={styles.legendIconStyle} /> Ended
       </div>
     </div>
   </div>

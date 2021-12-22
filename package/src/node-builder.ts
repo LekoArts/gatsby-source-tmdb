@@ -1,38 +1,119 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import { Options } from "got"
+import * as GatsbyFS from "gatsby-source-filesystem"
+import { SourceNodesArgs } from "gatsby"
 import * as TMDBPlugin from "./types/tmdb-plugin"
 import * as Response from "./types/response"
 import { getParam, modifyURL } from "./api-utils"
-import { ERROR_CODES, IMAGE_TYPES } from "./constants"
+import { ERROR_CODES, IMAGE_BASE_URL, IMAGE_SIZES, IMAGE_TYPES } from "./constants"
 
-export const imageTransformation = ({ node, configuration }: TMDBPlugin.ImageTransformation) => {
-  const baseUrl = configuration.images.secure_base_url
-  const imageSizes = configuration.images
-  const modifiedNode = node
+const downloadImgAndCreateFileNode = async (
+  { url, nodeId }: { url: string; nodeId: string },
+  { actions: { createNode }, createNodeId, cache, store, reporter }: SourceNodesArgs
+): Promise<string> => {
+  const fileNode = await GatsbyFS.createRemoteFileNode({
+    url,
+    cache,
+    createNode,
+    createNodeId,
+    store,
+    reporter,
+    parentNodeId: nodeId,
+  })
+
+  return fileNode.id
+}
+
+export const imageTransformation = async ({
+  node,
+  pluginOptions,
+  endpoint,
+  nodeHelpers,
+  gatsbyApi,
+}: TMDBPlugin.ImageTransformation) => {
+  const baseUrl = IMAGE_BASE_URL
+  const imageSizes = IMAGE_SIZES
+  const globalDownloadImages = pluginOptions.downloadImages
+  const endpointDownload = endpoint.downloadImages
+  const mutatedNode = node as TMDBPlugin.ImageTransformationReponse
 
   // For each imageType, e.g. "backdrop_path" extend the string to an object
   // With the "source" as the original path and then all available sizes as new keys
-  IMAGE_TYPES.forEach((type) => {
-    if (node[`${type}_path`]) {
-      modifiedNode[`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
-        (o, key) => ({ ...o, [key]: `${baseUrl}${key}${node[`${type}_path`]}` }),
-        { source: node[`${type}_path`] as string }
-      )
-    }
-    // When a list is queried it has all its items in "items"
-    // These nodes also need to be adjusted
-    if (node.items) {
-      node.items.forEach((item, index) => {
-        if (item[`${type}_path`]) {
-          modifiedNode.items[index][`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
-            (o, key) => ({ ...o, [key]: `${baseUrl}${key}${item[`${type}_path`]}` }),
-            { source: item[`${type}_path`] as string }
-          )
-        }
-      })
-    }
-  })
+  await Promise.all(
+    IMAGE_TYPES.map(async (type) => {
+      if (mutatedNode[`${type}_path`]) {
+        mutatedNode[`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
+          (o, key) => ({ ...o, [key]: `${baseUrl}${key}${mutatedNode[`${type}_path`]}` }),
+          { source: mutatedNode[`${type}_path`] as unknown as string }
+        )
 
-  return modifiedNode
+        if (globalDownloadImages || endpointDownload) {
+          const url = mutatedNode[`${type}_path`].original
+          let fileNodeId
+
+          try {
+            fileNodeId = await downloadImgAndCreateFileNode(
+              { url, nodeId: nodeHelpers.createNodeId(mutatedNode.id.toString()) },
+              gatsbyApi
+            )
+          } catch (error) {
+            gatsbyApi.reporter.panicOnBuild(
+              {
+                id: ERROR_CODES.imageDownloading,
+                context: {
+                  sourceMessage: `Error during downloading of ${url}`,
+                },
+              },
+              error
+            )
+          }
+
+          mutatedNode[`${type}_path`].localFile = fileNodeId
+        }
+      }
+      // When a list is queried it has all its items in "items"
+      // These nodes also need to be adjusted
+      if (mutatedNode.items) {
+        await Promise.all(
+          mutatedNode.items.map(async (item, index) => {
+            if (item[`${type}_path`]) {
+              item[`${type}_path`] = imageSizes[`${type}_sizes`].reduce(
+                (o, key) => ({ ...o, [key]: `${baseUrl}${key}${item[`${type}_path`]}` }),
+                { source: item[`${type}_path`] as unknown as string }
+              )
+
+              if (globalDownloadImages || endpointDownload) {
+                const url = mutatedNode.items[index][`${type}_path`].original
+                let fileNodeId
+
+                try {
+                  fileNodeId = await downloadImgAndCreateFileNode(
+                    { url, nodeId: nodeHelpers.createNodeId(mutatedNode.id.toString()) },
+                    gatsbyApi
+                  )
+                } catch (error) {
+                  gatsbyApi.reporter.panicOnBuild(
+                    {
+                      id: ERROR_CODES.imageDownloading,
+                      context: {
+                        sourceMessage: `Error during downloading of ${url}`,
+                      },
+                    },
+                    error
+                  )
+                }
+
+                mutatedNode.items[index][`${type}_path`].localFile = fileNodeId
+              }
+            }
+          })
+        )
+      }
+    })
+  )
+
+  return mutatedNode
 }
 
 export const nodeBuilder = async ({
@@ -42,7 +123,6 @@ export const nodeBuilder = async ({
   pluginOptions,
   accountId,
   gatsbyApi,
-  configuration,
 }: TMDBPlugin.NodeBuilder) => {
   // The account_id shouldn't be in the typeName
   const urlWithoutAccountId = endpoint.url.replace(`/:account_id`, ``)
@@ -71,16 +151,15 @@ export const nodeBuilder = async ({
     },
   }
 
-  let items: Response.PaginationItems = []
+  let items: Response.ResponseItem[] = []
 
-  const fetchPaginatedData = async (): Promise<Response.PaginationItems> =>
+  const fetchPaginatedData = async (): Promise<Response.ResponseItem[]> =>
     tmdbGot.paginate.all(endpoint.url, {
       responseType: `json`,
       context: defaults.context,
       searchParams: defaults.searchParams,
       pagination: {
         countLimit: defaults.pagination.countLimit,
-        // @ts-ignore
         transform: (response) => {
           const { results } = response.body as Response.PaginationTransformResponse
 
@@ -171,11 +250,11 @@ export const nodeBuilder = async ({
 
   itemTimer.setStatus(`Processing ${items.length} results`)
 
-  items.forEach((item) => {
-    const transformedItem = imageTransformation({ node: item, configuration })
+  for (const item of items) {
+    const transformedItem = await imageTransformation({ node: item, pluginOptions, endpoint, nodeHelpers, gatsbyApi })
     const node = Node({ ...transformedItem, id: item.id.toString() })
     gatsbyApi.actions.createNode(node)
-  })
+  }
 
   itemTimer.end()
 }

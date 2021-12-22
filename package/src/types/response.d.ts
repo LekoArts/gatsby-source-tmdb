@@ -192,4 +192,3 @@ export interface ResponseItem
     AccountList,
     Network,
     SimplePerson {}
-export type PaginationItems = Array<ResponseItem>

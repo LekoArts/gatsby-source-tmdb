@@ -4,36 +4,7 @@ import ContentLoader from "react-content-loader"
 import { format, parseISO } from "date-fns"
 import { fetchTmdb } from "../utils/fetch-tmdb"
 import { Icon } from "./icon"
-import {
-  detailViewWrapperStyle,
-  informationStyle,
-  posterWrapperStyle,
-  posterImageStyle,
-  mainWrapper,
-  h1Style,
-  originalNameStyle,
-  h2Style,
-  statistics1Style,
-  primaryFillStyle,
-  totalRuntimeStyle,
-  statistics2Style,
-  whiteFillStyle,
-  genresStyle,
-  genreStyle,
-  overviewStyle,
-  paragraphStyle,
-  secondaryInformationStyle,
-  castOverviewStyle,
-  castStyle,
-  castImageWrapperStyle,
-  castImageStyle,
-  castNamesStyle,
-  castNamesDetailStyle,
-  trailerStyle,
-  iframeStyle,
-  similarStyle,
-  similarLinkStyle,
-} from "./detail-view.css"
+import * as styles from "./detail-view.css"
 
 const IMAGE_URL = `https://image.tmdb.org/t/p/`
 
@@ -64,7 +35,7 @@ const DetailView: React.FC<{ id: string; type: "tv" | "movie" }> = ({ id, type }
 
   if (status === `loading`) {
     return (
-      <div className={detailViewWrapperStyle}>
+      <div className={styles.detailViewWrapperStyle}>
         <ContentLoader
           viewBox="0 0 590 700"
           style={{ width: `100%` }}
@@ -93,26 +64,25 @@ const DetailView: React.FC<{ id: string; type: "tv" | "movie" }> = ({ id, type }
     )
   }
 
-  if (status === `error`) {
-    // @ts-ignore
-    return <div className={detailViewWrapperStyle}>Error: {error.message}</div>
+  if (status === `error` && error instanceof Error) {
+    return <div className={styles.detailViewWrapperStyle}>Error: {error.message}</div>
   }
 
   return (
-    <div className={detailViewWrapperStyle}>
-      <section className={informationStyle}>
-        <div className={posterWrapperStyle}>
-          <img alt="" className={posterImageStyle} src={`${IMAGE_URL}w500${data.poster_path}`} />
+    <div className={styles.detailViewWrapperStyle}>
+      <section className={styles.informationStyle}>
+        <div className={styles.posterWrapperStyle}>
+          <img alt="" className={styles.posterImageStyle} src={`${IMAGE_URL}w500${data.poster_path}`} />
         </div>
-        <div data-item="detail-view-details" className={mainWrapper}>
-          <h1 className={h1Style}>
+        <div data-item="detail-view-details" className={styles.mainWrapper}>
+          <h1 className={styles.h1Style}>
             {data.title || data.name} ({format(parseISO(data.release_date || data.first_air_date), `yyyy`)})
           </h1>
           {(data.title !== data.original_title || data.name !== data.original_name) && (
-            <div className={originalNameStyle}>Original: {data.original_title || data.original_name}</div>
+            <div className={styles.originalNameStyle}>Original: {data.original_title || data.original_name}</div>
           )}
-          <div className={`statistics-01 ${statistics1Style}`}>
-            <Icon name="star" className={primaryFillStyle} /> {data.vote_average}
+          <div className={`statistics-01 ${styles.statistics1Style}`}>
+            <Icon name="star" className={styles.primaryFillStyle} /> {data.vote_average}
             {data.status &&
               type === `tv` &&
               (data.status === `Returning Series` ? (
@@ -125,7 +95,7 @@ const DetailView: React.FC<{ id: string; type: "tv" | "movie" }> = ({ id, type }
                 </span>
               ))}
           </div>
-          <div className={`statistics-02 ${statistics2Style}`}>
+          <div className={`statistics-02 ${styles.statistics2Style}`}>
             {data.number_of_episodes && (
               <div>
                 <Icon name="episodes" /> {data.number_of_episodes}
@@ -138,7 +108,7 @@ const DetailView: React.FC<{ id: string; type: "tv" | "movie" }> = ({ id, type }
             )}
             {data.next_episode_to_air && (
               <div>
-                <Icon name="next" className={whiteFillStyle} />
+                <Icon name="next" className={styles.whiteFillStyle} />
                 {` `}
                 {format(parseISO(data.next_episode_to_air.air_date), `dd.MM.yy`)}
               </div>
@@ -146,7 +116,7 @@ const DetailView: React.FC<{ id: string; type: "tv" | "movie" }> = ({ id, type }
           </div>
           {data.runtime && <div>Runtime: {data.runtime} Minutes</div>}
           {data.episode_run_time && (
-            <div className={totalRuntimeStyle}>
+            <div className={styles.totalRuntimeStyle}>
               Total Runtime:{` `}
               {calculateTime({
                 episodes: data.number_of_episodes,
@@ -154,31 +124,31 @@ const DetailView: React.FC<{ id: string; type: "tv" | "movie" }> = ({ id, type }
               })}
             </div>
           )}
-          <div className={genresStyle}>
+          <div className={styles.genresStyle}>
             {data.genres.map((genre) => (
-              <div className={genreStyle} key={genre.id}>
+              <div className={styles.genreStyle} key={genre.id}>
                 {genre.name}
               </div>
             ))}
           </div>
-          <div className={overviewStyle}>
-            <h2 className={h2Style}>Overview</h2>
-            <p className={paragraphStyle}>{data.overview}</p>
+          <div className={styles.overviewStyle}>
+            <h2 className={styles.h2Style}>Overview</h2>
+            <p className={styles.paragraphStyle}>{data.overview}</p>
           </div>
         </div>
       </section>
-      <section className={secondaryInformationStyle}>
+      <section className={styles.secondaryInformationStyle}>
         {data.credits.cast.length > 0 && (
           <>
             <h2>Top Billed Cast</h2>
-            <div className={castOverviewStyle}>
+            <div className={styles.castOverviewStyle}>
               {data.credits.cast.slice(0, 12).map((member) => (
-                <div className={castStyle} key={member.name}>
-                  <div className={castImageWrapperStyle}>
-                    <img alt="" className={castImageStyle} src={`${IMAGE_URL}w185${member.profile_path}`} />
+                <div className={styles.castStyle} key={member.name}>
+                  <div className={styles.castImageWrapperStyle}>
+                    <img alt="" className={styles.castImageStyle} src={`${IMAGE_URL}w185${member.profile_path}`} />
                   </div>
-                  <div className={castNamesStyle}>
-                    <span className={castNamesDetailStyle}>{member.name}</span>
+                  <div className={styles.castNamesStyle}>
+                    <span className={styles.castNamesDetailStyle}>{member.name}</span>
                     <span>{member.character}</span>
                   </div>
                 </div>
@@ -189,9 +159,9 @@ const DetailView: React.FC<{ id: string; type: "tv" | "movie" }> = ({ id, type }
         {data.videos.results.length > 0 && (
           <>
             <h2>Trailer</h2>
-            <div className={trailerStyle}>
+            <div className={styles.trailerStyle}>
               <iframe
-                className={iframeStyle}
+                className={styles.iframeStyle}
                 width="560"
                 title="Trailer"
                 height="315"
@@ -204,9 +174,9 @@ const DetailView: React.FC<{ id: string; type: "tv" | "movie" }> = ({ id, type }
           </>
         )}
         <h2>Similar {type === `tv` ? `Shows` : `Movies`}</h2>
-        <div className={similarStyle}>
+        <div className={styles.similarStyle}>
           {data.similar.results.slice(0, 10).map((item) => (
-            <a key={item.id} className={similarLinkStyle} href={`/${type}/${item.id}`}>
+            <a key={item.id} className={styles.similarLinkStyle} href={`/${type}/${item.id}`}>
               {item.name || item.title}
             </a>
           ))}

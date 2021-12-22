@@ -7,10 +7,6 @@ module.exports = {
     siteUrl: process.env.URL || `https://tmdb.lekoarts.de`,
     logo: `/logo.png`,
   },
-  flags: {
-    DEV_SSR: false,
-    FAST_DEV: true,
-  },
   plugins: [
     {
       resolve: `gatsby-source-tmdb`,
@@ -22,6 +18,7 @@ module.exports = {
         endpoints: [
           {
             url: `account/:account_id/lists`,
+            downloadImages: true,
             extension: {
               url: `list/:list_id`,
             },
@@ -34,6 +31,7 @@ module.exports = {
           },
           {
             url: `account/:account_id/favorite/tv`,
+            downloadImages: true,
             extension: {
               url: `tv/:tv_id`,
             },

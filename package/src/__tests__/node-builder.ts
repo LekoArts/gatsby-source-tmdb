@@ -1,18 +1,55 @@
+import { SourceNodesArgs } from "gatsby"
+import { createNodeHelpers } from "gatsby-node-helpers"
+import { createRemoteFileNode } from "gatsby-source-filesystem"
+import { defaultOptions } from "../api-utils"
 import { imageTransformation } from "../node-builder"
 
-const configuration = {
-  images: {
-    secure_base_url: `https://www.example.com/`,
-    backdrop_sizes: [`w100`, `w200`],
-    logo_sizes: [`w100`, `w200`],
-    poster_sizes: [`w100`, `w200`],
-    profile_sizes: [`w100`, `w200`],
-    still_sizes: [`w100`, `w200`],
-  },
-  change_keys: [`foobar`],
+const endpoint = {
+  url: `account/:account_id/favorite/movies`,
 }
 
-const node = {
+const pluginOptions = defaultOptions({
+  apiKey: `api-key`,
+  sessionID: `session-id`,
+  plugins: [],
+})
+
+const nodeHelpers = createNodeHelpers({
+  typePrefix: `Tmdb`,
+  createNodeId: (input) => input.toString(),
+  createContentDigest: (input) => input.toString(),
+})
+
+jest.mock(`gatsby-source-filesystem`, () => ({
+  createRemoteFileNode: jest.fn().mockResolvedValue({
+    id: `local-file-node-id`,
+  }),
+}))
+
+const gatsbyApi = {
+  cache: {
+    set: jest.fn(),
+    get: jest.fn(),
+  },
+  actions: {
+    createNode: jest.fn(),
+  },
+  createContentDigest: jest.fn(),
+  createNodeId: jest.fn(),
+  store: jest.fn(),
+  reporter: {
+    info: jest.fn(),
+    error: jest.fn(),
+    panic: jest.fn(),
+    activityTimer: (): Record<string, unknown> => ({
+      start: jest.fn(),
+      end: jest.fn(),
+      setStatus: jest.fn(),
+    }),
+  },
+} as unknown as SourceNodesArgs
+
+export const node = {
   id: 1,
   backdrop_path: `/backdrop_image.png`,
   logo_path: `/logo_image.png`,
@@ -21,90 +58,112 @@ const node = {
   still_path: `/still_image.png`,
 }
 
-const deepNode = {
-  id: 1,
-  items: [
-    {
-      id: 2,
-      backdrop_path: `/backdrop_image.png`,
-      logo_path: `/logo_image.png`,
-    },
-    {
-      id: 3,
-      poster_path: `/poster_image.png`,
-      profile_path: `/profile_image.png`,
-      still_path: `/still_image.png`,
-    },
-  ],
+export const nodeSmall = {
+  id: 2,
+  backdrop_path: `/backdrop_image.png`,
 }
 
 describe(`imageTransformation in nodeBuilder`, () => {
-  it(`should convert nodes one level deep`, () => {
-    expect(imageTransformation({ node, configuration })).toStrictEqual({
-      id: 1,
-      backdrop_path: {
-        source: `/backdrop_image.png`,
-        w100: `https://www.example.com/w100/backdrop_image.png`,
-        w200: `https://www.example.com/w200/backdrop_image.png`,
-      },
-      logo_path: {
-        source: `/logo_image.png`,
-        w100: `https://www.example.com/w100/logo_image.png`,
-        w200: `https://www.example.com/w200/logo_image.png`,
-      },
-      poster_path: {
-        source: `/poster_image.png`,
-        w100: `https://www.example.com/w100/poster_image.png`,
-        w200: `https://www.example.com/w200/poster_image.png`,
-      },
-      profile_path: {
-        source: `/profile_image.png`,
-        w100: `https://www.example.com/w100/profile_image.png`,
-        w200: `https://www.example.com/w200/profile_image.png`,
-      },
-      still_path: {
-        source: `/still_image.png`,
-        w100: `https://www.example.com/w100/still_image.png`,
-        w200: `https://www.example.com/w200/still_image.png`,
-      },
+  it(`should convert nodes one level deep`, async () => {
+    const nodeCopy = { ...node, title: `one-level` }
+    const result = await imageTransformation({
+      node: nodeCopy,
+      endpoint,
+      pluginOptions,
+      nodeHelpers,
+      gatsbyApi,
     })
+    expect(result).toMatchSnapshot()
+    const mock = createRemoteFileNode as jest.Mock
+    expect(mock).not.toHaveBeenCalled()
   })
-  it(`should convert nodes two levels deep (in items like in lists)`, () => {
-    expect(imageTransformation({ node: deepNode, configuration })).toStrictEqual({
-      id: 1,
+  it(`should convert nodes two levels deep`, async () => {
+    const nodeCopy = {
+      id: 3,
       items: [
         {
-          id: 2,
-          backdrop_path: {
-            source: `/backdrop_image.png`,
-            w100: `https://www.example.com/w100/backdrop_image.png`,
-            w200: `https://www.example.com/w200/backdrop_image.png`,
-          },
-          logo_path: {
-            source: `/logo_image.png`,
-            w100: `https://www.example.com/w100/logo_image.png`,
-            w200: `https://www.example.com/w200/logo_image.png`,
-          },
+          backdrop_path: `/backdrop_image.png`,
+          logo_path: `/logo_image.png`,
         },
         {
-          id: 3,
-          poster_path: {
-            source: `/poster_image.png`,
-            w100: `https://www.example.com/w100/poster_image.png`,
-            w200: `https://www.example.com/w200/poster_image.png`,
-          },
-          profile_path: {
-            source: `/profile_image.png`,
-            w100: `https://www.example.com/w100/profile_image.png`,
-            w200: `https://www.example.com/w200/profile_image.png`,
-          },
-          still_path: {
-            source: `/still_image.png`,
-            w100: `https://www.example.com/w100/still_image.png`,
-            w200: `https://www.example.com/w200/still_image.png`,
-          },
+          poster_path: `/poster_image.png`,
+          profile_path: `/profile_image.png`,
+          still_path: `/still_image.png`,
         },
       ],
+      title: `two-level`,
+    }
+    const result = await imageTransformation({
+      node: nodeCopy,
+      endpoint,
+      pluginOptions,
+      nodeHelpers,
+      gatsbyApi,
+    })
+    expect(result).toMatchSnapshot()
+  })
+  describe(`with downloadImages`, () => {
+    it(`set in endpoint should convert nodes one level deep`, async () => {
+      const nodeCopy = { ...nodeSmall, title: `img-one-level` }
+      const result = await imageTransformation({
+        node: nodeCopy,
+        endpoint: { ...endpoint, downloadImages: true },
+        pluginOptions,
+        nodeHelpers,
+        gatsbyApi,
+      })
+      expect(result).toMatchSnapshot()
+      const mock = createRemoteFileNode as jest.Mock
+      expect(mock).toHaveBeenCalled()
+    })
+    it(`set in endpoint should convert nodes two levels deep`, async () => {
+      const nodeCopy = {
+        id: 4,
+        items: [
+          {
+            backdrop_path: `/backdrop_image.png`,
+          },
+        ],
+        title: `img-two-level`,
+      }
+      const result = await imageTransformation({
+        node: nodeCopy,
+        endpoint: { ...endpoint, downloadImages: true },
+        pluginOptions,
+        nodeHelpers,
+        gatsbyApi,
+      })
+      expect(result).toMatchSnapshot()
+    })
+    it(`set in pluginOptions should convert nodes one level deep`, async () => {
+      const nodeCopy = { ...nodeSmall, title: `img-options-one-level` }
+      const result = await imageTransformation({
+        node: nodeCopy,
+        endpoint,
+        pluginOptions: { ...pluginOptions, downloadImages: true },
+        nodeHelpers,
+        gatsbyApi,
+      })
+      expect(result).toMatchSnapshot()
+    })
+    it(`set in pluginOptions should convert nodes two levels deep`, async () => {
+      const nodeCopy = {
+        id: 4,
+        items: [
+          {
+            backdrop_path: `/backdrop_image.png`,
+          },
+        ],
+        title: `img-options-two-level`,
+      }
+      const result = await imageTransformation({
+        node: nodeCopy,
+        endpoint,
+        pluginOptions: { ...pluginOptions, downloadImages: true },
+        nodeHelpers,
+        gatsbyApi,
+      })
+      expect(result).toMatchSnapshot()
     })
   })
 })

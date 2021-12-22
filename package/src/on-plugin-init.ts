@@ -1,7 +1,7 @@
 import { GatsbyNode } from "gatsby"
 import { ERROR_CODES } from "./constants"
 
-export const onPreInit: GatsbyNode["onPreInit"] = ({ reporter }) => {
+export const onPluginInit: GatsbyNode["onPluginInit"] = ({ reporter }) => {
   reporter.setErrorMap({
     [ERROR_CODES.initialSourcing]: {
       text: (context) => context.sourceMessage,
@@ -14,6 +14,16 @@ export const onPreInit: GatsbyNode["onPreInit"] = ({ reporter }) => {
       category: `THIRD_PARTY`,
     },
     [ERROR_CODES.extensionSourcing]: {
+      text: (context) => context.sourceMessage,
+      level: `ERROR`,
+      category: `THIRD_PARTY`,
+    },
+    [ERROR_CODES.configurationSourcing]: {
+      text: (context) => context.sourceMessage,
+      level: `ERROR`,
+      category: `THIRD_PARTY`,
+    },
+    [ERROR_CODES.imageDownloading]: {
       text: (context) => context.sourceMessage,
       level: `ERROR`,
       category: `THIRD_PARTY`,

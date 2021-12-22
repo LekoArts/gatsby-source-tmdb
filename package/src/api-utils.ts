@@ -1,5 +1,3 @@
-import { NodePluginSchema, GatsbyGraphQLObjectType } from "gatsby"
-import { createNodeHelpers } from "gatsby-node-helpers"
 import { defaultEndpoints } from "./endpoints"
 import * as TMDBPlugin from "./types/tmdb-plugin"
 import { TYPE_PREFIX } from "./constants"
@@ -9,6 +7,8 @@ import { TYPE_PREFIX } from "./constants"
  * @param url
  * @param params
  * @return Modified url
+ * @example
+ * modifyURL('/tv/:tv_id/season/:season_number', { tv_id: 2, season_number: 3 })
  */
 export const modifyURL = (url: string, params?: Record<string, unknown>): string => {
   if (!params) {
@@ -32,6 +32,8 @@ const getParamRegex = /:(.*)/
  * Parse the endpoint URL and get the parameter that is used
  * @param url
  * @return Parameter without colon
+ * @example
+ * getParam('/tv/:tv_id')
  */
 export const getParam = (url: string): string => url.match(getParamRegex)?.[1]
 
@@ -43,38 +45,11 @@ export const getParam = (url: string): string => url.match(getParamRegex)?.[1]
 export const defaultOptions = (pluginOptions: TMDBPlugin.PluginOptions): TMDBPlugin.PluginOptions => ({
   apiKey: pluginOptions.apiKey,
   sessionID: pluginOptions.sessionID,
+  downloadImages: pluginOptions.downloadImages ?? false,
   typePrefix: pluginOptions.typePrefix || TYPE_PREFIX,
-  region: pluginOptions.region || `US`,
+  region: pluginOptions.region || `DE`,
   timezone: pluginOptions.timezone || `Europe/London`,
   language: pluginOptions.language || `en-US`,
   endpoints: pluginOptions.endpoints || defaultEndpoints,
   plugins: pluginOptions.plugins || [],
 })
-
-export const generateTypeName = (endpoint: TMDBPlugin.Endpoint, typePrefix: string): string => {
-  const nodeHelpers = createNodeHelpers({
-    typePrefix,
-    createNodeId: (input) => input.toString(),
-    createContentDigest: (input) => input.toString(),
-  })
-
-  // Clean the URL from the accountId placeholder
-  const urlWithoutAccountId = endpoint.url.replace(`/:account_id`, ``)
-  // Get the root type name, e.g. when account/:account_id/favorite/movies is requested this is account/favourite/movies
-  const extractedTypeName = endpoint.typeName || modifyURL(urlWithoutAccountId, endpoint.context)
-  // This gets turned into AccountFavouriteMovies
-  return nodeHelpers.createTypeName(extractedTypeName)
-}
-
-export const defineImageNode = (name: string, schema: NodePluginSchema): GatsbyGraphQLObjectType =>
-  schema.buildObjectType({
-    name,
-    fields: {
-      backdrop_path: `BackdropPath`,
-      logo_path: `LogoPath`,
-      poster_path: `PosterPath`,
-      profile_path: `ProfilePath`,
-      still_path: `StillPath`,
-    },
-    interfaces: [`Node`],
-  })

@@ -9,6 +9,7 @@ describe(`pluginOptionsSchema`, () => {
       language: `English`,
       region: `New York`,
       timezone: `ZW`,
+      downloadImages: 123,
       endpoints: [
         {
           countLimit: `foobar`,
@@ -16,6 +17,7 @@ describe(`pluginOptionsSchema`, () => {
           searchParams: {
             language: 123,
           },
+          downloadImages: 123,
           extension: {
             url: `/with-leading-slash`,
           },
@@ -36,9 +38,11 @@ describe(`pluginOptionsSchema`, () => {
       `"language" with value "English" fails to match the ISO 639-1 pattern`,
       `"region" with value "New York" fails to match the ISO 3166-1 pattern`,
       `"timezone" with value "ZW" fails to match the Region/City pattern`,
+      `"downloadImages" must be a boolean`,
       `"endpoints[0].url" with value "/with-leading-slash" fails to match the No leading slash pattern`,
       `"endpoints[0].searchParams.language" must be a string`,
       `"endpoints[0].countLimit" must be a number`,
+      `"endpoints[0].downloadImages" must be a boolean`,
       `"endpoints[0].extension.url" with value "/with-leading-slash" fails to match the No leading slash pattern`,
       `"endpoints[1].url" is required`,
       `"endpoints[1].no_url" is not allowed`,
@@ -52,6 +56,7 @@ describe(`pluginOptionsSchema`, () => {
       language: `en-US`,
       region: `US`,
       timezone: `America/New_York`,
+      downloadImages: false,
       endpoints: [
         {
           url: `account/:account_id/lists`,
@@ -59,6 +64,7 @@ describe(`pluginOptionsSchema`, () => {
             language: `de-DE`,
             foo: `bar`,
           },
+          downloadImages: true,
           context: {
             foo: `bar`,
           },

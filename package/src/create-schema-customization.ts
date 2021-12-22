@@ -1,30 +1,42 @@
 import { GatsbyNode } from "gatsby"
 import * as TMDBPlugin from "./types/tmdb-plugin"
-import { defaultOptions, generateTypeName, defineImageNode } from "./api-utils"
-import { IMAGE_TYPE_NAMES } from "./constants"
+import { defaultOptions } from "./api-utils"
+import { IMAGE_TYPES } from "./constants"
+import { defineImageNode, generateTypeName, definePathNode, defineLocalFileNode } from "./schema-utils"
 
 export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] = (
   { actions, schema },
   pluginOptions: TMDBPlugin.PluginOptions
-): any => {
+): void => {
   const { typePrefix, endpoints } = defaultOptions(pluginOptions)
   const { createTypes } = actions
 
-  // Create types for each image type
-  // type BackdropPath {}
-  const pathTypes = IMAGE_TYPE_NAMES.map((typeName) =>
-    schema.buildObjectType({
-      name: typeName,
-      fields: {},
-    })
-  )
+  /**
+   * Create types for each image type
+   * @example
+   * type BackdropPath {
+   *   original: String
+   *   w300: String
+   * }
+   */
+  const pathTypes = IMAGE_TYPES.map((imageType) => definePathNode(imageType, schema))
 
-  // Create types that use the path types
-  // For example:
-  // type TmdbAccountFavoriteMovies implements Node {
-  //  backdrop_path: BackdropPath
-  //  ...other_path_types
-  // }
+  /**
+   * Create localFile entries for each image type
+   * @example
+   * type BackdropPath {
+   *   localFile: File @link
+   * }
+   */
+  const localFileTypes = IMAGE_TYPES.map((imageType) => defineLocalFileNode(imageType, schema))
+
+  /**
+   * Create types that use the path types
+   * @example
+   * type TmdbAccountFavoriteMovies implements Node {
+   *   backdrop_path: BackdropPath
+   * }
+   */
   const imageTypes = endpoints.map((endpoint) => {
     const name = generateTypeName(endpoint, typePrefix)
     return defineImageNode(name, schema)
@@ -72,12 +84,9 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
 
     type ${typePrefix}AccountListsItems {
       backdrop_path: BackdropPath
-      logo_path: LogoPath
       poster_path: PosterPath
-      profile_path: ProfilePath
-      still_path: StillPath
     }
   `
 
-  createTypes([...pathTypes, ...imageTypes, mandatoryTypes])
+  createTypes([...pathTypes, ...localFileTypes, ...imageTypes, mandatoryTypes])
 }

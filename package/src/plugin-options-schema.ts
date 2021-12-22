@@ -31,6 +31,11 @@ export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }):
         `Pass information that is necessary for the URL, e.g. when requesting movie/:movie_id pass movie_id here through context.`
       ),
     countLimit: Joi.number().description(`Number of how many items to fetch from this endpoint.`),
+    downloadImages: Joi.boolean()
+      .default(false)
+      .description(
+        `Download images for e.g. poster_path to make it available in gatsby-plugin-image. You can also enable this globally for all endpoints in the settings.`
+      ),
     extension: Joi.object({
       url: Joi.string()
         .required()
@@ -61,6 +66,11 @@ export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }):
       .pattern(/^[A-Za-z_]*\/[A-Za-z_]*$/, `Region/City`)
       .description(`Specify a timezone to offset the day calculation.`)
       .default(`Europe/London`),
+    downloadImages: Joi.boolean()
+      .default(false)
+      .description(
+        `Downloads images for each node and makes gatsby-plugin-image available. This is a global setting for all endpoints, you can individually download images for each endpoint.`
+      ),
     endpoints: Joi.array().description(`Specify the TMDB endpoints that the plugin should access.`).items(EndpointKeys),
     typePrefix: Joi.string()
       .pattern(/^[a-zA-Z_][A-Za-z0-9_]*$/, `Valid GraphQL typePrefix`)

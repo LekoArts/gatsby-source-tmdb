@@ -1,19 +1,10 @@
 import * as React from "react"
 import { useSpring, animated } from "react-spring"
-import { Link } from "gatsby"
+import { Link, graphql } from "gatsby"
 import { IGatsbyImageData, getImage, GatsbyImage, ImageDataLike } from "gatsby-plugin-image"
 import { format, parseISO } from "date-fns"
 import { Icon } from "./icon"
-import {
-  wrapperStyle,
-  linkStyle,
-  imageStyle,
-  contentStyle,
-  titleStyle,
-  itemStyle,
-  itemIconStyle,
-  itemTextStyle,
-} from "./card.css"
+import * as styles from "./card.css"
 
 type CardProps = {
   name: string
@@ -45,7 +36,7 @@ const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, re
 
   return (
     <animated.div
-      className={wrapperStyle}
+      className={styles.wrapperStyle}
       data-item="card"
       ref={ref}
       onMouseMove={({ clientX, clientY }) => {
@@ -69,9 +60,9 @@ const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, re
       }}
       style={{ transform: animatedProps.xys.to(trans) }}
     >
-      <Link to={link} className={linkStyle}>
-        <div className={contentStyle}>
-          <h2 className={titleStyle}>
+      <Link to={link} className={styles.linkStyle}>
+        <div className={styles.contentStyle}>
+          <h2 className={styles.titleStyle}>
             {name}
             {` `}
             {status &&
@@ -82,29 +73,33 @@ const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, re
               ))}
           </h2>
           <div style={{ display: `flex` }}>
-            <div className={itemStyle}>
-              <Icon className={itemIconStyle} name="star" /> <div className={itemTextStyle}>{rating}</div>
+            <div className={styles.itemStyle}>
+              <Icon className={styles.itemIconStyle} name="star" /> <div className={styles.itemTextStyle}>{rating}</div>
             </div>
-            <div className={itemStyle}>
-              <Icon className={itemIconStyle} name="first" />
+            <div className={styles.itemStyle}>
+              <Icon className={styles.itemIconStyle} name="first" />
               {` `}
-              <div className={itemTextStyle}>{format(parseISO(release), `yyyy`)}</div>
+              <div className={styles.itemTextStyle}>{format(parseISO(release), `yyyy`)}</div>
             </div>
             {next && (
-              <div className={itemStyle}>
-                <Icon className={itemIconStyle} name="next" />
+              <div className={styles.itemStyle}>
+                <Icon className={styles.itemIconStyle} name="next" />
                 {` `}
-                <div className={itemTextStyle}>{format(parseISO(next), `dd.MM.yy`)}</div>
+                <div className={styles.itemTextStyle}>{format(parseISO(next), `dd.MM.yy`)}</div>
               </div>
             )}
             {episodes && (
-              <div className={itemStyle}>
-                <Icon className={itemIconStyle} name="episodes" /> <div className={itemTextStyle}>{episodes}</div>
+              <div className={styles.itemStyle}>
+                <Icon className={styles.itemIconStyle} name="episodes" />
+                {` `}
+                <div className={styles.itemTextStyle}>{episodes}</div>
               </div>
             )}
             {seasons && (
-              <div className={itemStyle}>
-                <Icon className={itemIconStyle} name="seasons" /> <div className={itemTextStyle}>{seasons}</div>
+              <div className={styles.itemStyle}>
+                <Icon className={styles.itemIconStyle} name="seasons" />
+                {` `}
+                <div className={styles.itemTextStyle}>{seasons}</div>
               </div>
             )}
           </div>
@@ -112,7 +107,7 @@ const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, re
         {isGatsbyImage ? (
           <GatsbyImage alt="" image={getImage(cover as ImageDataLike)} />
         ) : (
-          <img alt="" loading="lazy" src={cover as string} className={imageStyle} />
+          <img alt="" loading="lazy" src={cover as string} className={styles.imageStyle} />
         )}
       </Link>
     </animated.div>
@@ -120,3 +115,19 @@ const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, re
 }
 
 export default Card
+
+export const fragment = graphql`
+  fragment CardCover on PosterPath {
+    localFile {
+      childImageSharp {
+        gatsbyImageData(
+          quality: 90
+          formats: [AUTO, WEBP, AVIF]
+          placeholder: BLURRED
+          width: 600
+          breakpoints: [360, 450, 600]
+        )
+      }
+    }
+  }
+`

@@ -1,8 +1,9 @@
 import * as React from "react"
+import { PageProps } from "gatsby"
 import Layout from "../components/layout"
 import Link from "../components/link"
 
-const NotFound = () => (
+const NotFound: React.FC<PageProps> = () => (
   <Layout>
     <h1>404 - Not Found</h1>
     <p>

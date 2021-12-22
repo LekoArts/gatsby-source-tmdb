@@ -10,12 +10,14 @@ export interface PluginOptions extends DefaultPluginOptions {
   region?: string
   timezone?: string
   typePrefix?: string
+  downloadImages?: boolean
   endpoints?: Endpoint[]
 }
 
 export interface Endpoint {
   url: string
   typeName?: string
+  downloadImages?: boolean
   searchParams?: {
     language?: string
     page?: number
@@ -39,16 +41,30 @@ export interface NodeBuilder {
   pluginOptions: PluginOptions
   accountId: Response.AccountInfo["id"]
   gatsbyApi: SourceNodesArgs
-  configuration: Response.Configuration
 }
 
 export interface ImageNode {
   source: string
-  original: string
+  original?: string
   [key: string]: string
 }
 
+interface ImagePaths {
+  poster_path?: ImageNode
+  backdrop_path?: ImageNode
+  still_path?: ImageNode
+  logo_path?: ImageNode
+  profile_path?: ImageNode
+}
+
+export interface ImageTransformationReponse extends ImagePaths {
+  id: number
+  items?: ImagePaths[]
+}
 export interface ImageTransformation {
   node: Response.ResponseItem
-  configuration: Response.Configuration
+  endpoint: Endpoint
+  pluginOptions: PluginOptions
+  gatsbyApi: SourceNodesArgs
+  nodeHelpers: NodeHelpers
 }
