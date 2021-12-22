@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: '12'
       - name: Publish Starter
-        uses: ./.github/actions/publish-starter
+        uses: LekoArts/actions-push-subdirectories@master
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
