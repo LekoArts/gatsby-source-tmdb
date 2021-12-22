@@ -49,8 +49,6 @@ export interface ImageNode {
   [key: string]: string
 }
 
-export interface ResponseNode extends Response.ResponseItem {}
-
 interface ImagePaths {
   poster_path?: ImageNode
   backdrop_path?: ImageNode
@@ -64,7 +62,7 @@ export interface ImageTransformationReponse extends ImagePaths {
   items?: ImagePaths[]
 }
 export interface ImageTransformation {
-  node: ResponseNode
+  node: Response.ResponseItem
   endpoint: Endpoint
   pluginOptions: PluginOptions
   gatsbyApi: SourceNodesArgs

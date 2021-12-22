@@ -41,7 +41,7 @@
     "develop": "yarn concurrently 'yarn package:watch' 'yarn example:develop'",
     "build": "yarn package:prepare && yarn example:build",
     "tsc": "tsc",
-    "type-check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint . --ignore-path .gitignore --ignore-path .prettierignore --ext .ts,.tsx,.js",
     "lint:fix": "yarn lint --fix",
     "format": "prettier \"**/*.{md,mdx,json,yaml}\" --write",

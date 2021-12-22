@@ -36,7 +36,7 @@ const Layout: React.FC<{ location?: PageProps["location"] }> = ({ children, loca
       <main className={styles.mainStyle}>{children}</main>
       <footer className={styles.footerStyle}>
         <p>
-          Made by <Link to="https://www.lekoarts.de">LekoArts</Link>.{` `}
+          Made by <Link to="https://www.lekoarts.de/?utm_source=tmdb-website">LekoArts</Link>.{` `}
           <Link to="https://github.com/LekoArts/gatsby-source-tmdb">Source</Link>.{` `}
           <Link to="/attribution">Attribution</Link>.
         </p>

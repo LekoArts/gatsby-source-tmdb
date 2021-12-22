@@ -151,16 +151,15 @@ export const nodeBuilder = async ({
     },
   }
 
-  let items: TMDBPlugin.ResponseNode[] = []
+  let items: Response.ResponseItem[] = []
 
-  const fetchPaginatedData = async (): Promise<TMDBPlugin.ResponseNode[]> =>
+  const fetchPaginatedData = async (): Promise<Response.ResponseItem[]> =>
     tmdbGot.paginate.all(endpoint.url, {
       responseType: `json`,
       context: defaults.context,
       searchParams: defaults.searchParams,
       pagination: {
         countLimit: defaults.pagination.countLimit,
-        // @ts-ignore
         transform: (response) => {
           const { results } = response.body as Response.PaginationTransformResponse
 
@@ -195,7 +194,7 @@ export const nodeBuilder = async ({
       },
     })
 
-  const fetchData = async ({ url, context }): Promise<TMDBPlugin.ResponseNode> => tmdbGot(url, { context }).json()
+  const fetchData = async ({ url, context }): Promise<Response.ResponseItem> => tmdbGot(url, { context }).json()
 
   try {
     items = await fetchPaginatedData()
