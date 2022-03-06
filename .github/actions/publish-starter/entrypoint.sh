@@ -9,7 +9,7 @@ BRANCH_NAME="${4:-main}"
 BASE=$(pwd)
 
 git config --global user.email "lekoarts@gmail.com"
-git config --global user.name "$GITHUB_USERNAME"
+git config --global user.name "LekoArts"
 
 echo "Cloning $FOLDER and pushing to $GITHUB_USERNAME"
 echo "Using $STARTER_NAME as the package.json key"
@@ -32,7 +32,6 @@ cp -r $BASE/$FOLDER/. .
 # generate a new yarn.lock file based on package-lock.json unless you're in a workspace
 if [ "$IS_WORKSPACE" = null ]; then
   echo "  Regenerating yarn.lock"
-  rm -rf yarn.lock
   yarn
 fi
 
