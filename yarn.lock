@@ -9654,7 +9654,7 @@ __metadata:
     gatsby-plugin-react-helmet-async: ^1.2.1
     gatsby-plugin-sharp: next
     gatsby-plugin-vanilla-extract: ^2.0.1
-    gatsby-source-tmdb: ^3.0.0
+    gatsby-source-tmdb: ^3.0.1
     gatsby-transformer-sharp: next
     node-fetch: ^2.6.1
     react: ^17.0.2
@@ -10946,7 +10946,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gatsby-source-tmdb@^3.0.0, gatsby-source-tmdb@workspace:package":
+"gatsby-source-tmdb@^3.0.1, gatsby-source-tmdb@workspace:package":
   version: 0.0.0-use.local
   resolution: "gatsby-source-tmdb@workspace:package"
   dependencies:
