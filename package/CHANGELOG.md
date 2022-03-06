@@ -1,5 +1,13 @@
 # gatsby-source-tmdb
 
+## 3.0.1
+
+### Patch Changes
+
+- [#17](https://github.com/LekoArts/gatsby-source-tmdb/pull/17) [`a77ef26`](https://github.com/LekoArts/gatsby-source-tmdb/commit/a77ef26f98939e19b603902b15477179e6619476) Thanks [@LekoArts](https://github.com/LekoArts)! - chore(gatsby-source-tmdb): Update dependencies
+
+  Updates dependencies in monorepo, example, and in package itself.
+
 ## 3.0.0
 
 ### Major Changes
