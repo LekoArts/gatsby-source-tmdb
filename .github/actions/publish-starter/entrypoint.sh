@@ -33,7 +33,7 @@ cp -r $BASE/$FOLDER/. .
 if [ "$IS_WORKSPACE" = null ]; then
   echo "  Generating yarn.lock"
   touch yarn.lock
-  yarn
+  YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn
 fi
 
 # Commit if there is anything to
