@@ -56,5 +56,6 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-react-helmet-async`,
     `gatsby-plugin-gatsby-cloud`,
+    `gatsby-plugin-vanilla-extract`,
   ],
 }
