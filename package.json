@@ -17,8 +17,6 @@
     "@types/react-dom": "^17.0.13",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
-    "concurrently": "^7.0.0",
-    "cross-env": "^7.0.3",
     "eslint": "^8.10.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",
@@ -37,24 +35,20 @@
   "scripts": {
     "example:develop": "yarn workspace example develop",
     "example:build": "yarn workspace example build",
-    "package:watch": "yarn workspace gatsby-source-tmdb watch",
     "package:prepare": "yarn workspace gatsby-source-tmdb prepare",
-    "develop": "yarn concurrently 'yarn package:watch' 'yarn example:develop'",
-    "build": "yarn package:prepare && yarn example:build",
-    "tsc": "tsc",
+    "watch": "yarn workspace gatsby-source-tmdb watch",
+    "build": "yarn workspace gatsby-source-tmdb build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ignore-path .gitignore --ignore-path .prettierignore --ext .ts,.tsx,.js",
     "lint:fix": "yarn lint --fix",
     "format": "prettier \"**/*.{md,mdx,json,yaml}\" --write",
     "test": "jest",
-    "test:update": "jest --updateSnapshot",
     "test:watch": "jest --watch",
     "test:ci": "jest --ci --runInBand",
     "changeset": "changeset",
     "release": "changeset publish",
-    "concurrently": "concurrently",
-    "prepare": "husky install && yarn package:prepare",
-    "postinstall": "husky install && yarn package:prepare"
+    "postinstall": "husky install && yarn package:prepare",
+    "prepare": "yarn postinstall"
   },
   "packageManager": "yarn@3.2.0"
 }

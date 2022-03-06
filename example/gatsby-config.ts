@@ -1,6 +1,7 @@
-require(`dotenv`).config()
+import { GatsbyConfig } from "gatsby"
+import "dotenv/config"
 
-module.exports = {
+const config: GatsbyConfig = {
   siteMetadata: {
     title: process.env.TITLE || `The Movie Database - LekoArts`,
     description: process.env.DESC || `Source from The Movie Database (TMDb) API (v3) in Gatsby.`,
@@ -59,3 +60,5 @@ module.exports = {
     `gatsby-plugin-vanilla-extract`,
   ],
 }
+
+export default config

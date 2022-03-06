@@ -2,10 +2,15 @@
   "name": "gatsby-source-tmdb",
   "version": "3.0.1",
   "description": "Source from The Movie Database (TMDb) in Gatsby. Supports all endpoints, optionally downloads images and extends results with more information.",
-  "main": "index.js",
+  "source": "src/gatsby-node.ts",
+  "main": "dist/gatsby-node.js",
   "engines": {
     "node": ">=14.15.0"
   },
+  "files": [
+    "dist/*",
+    "gatsby-node.js"
+  ],
   "author": "LekoArts <lekoarts@gmail.com>",
   "repository": {
     "type": "git",
@@ -23,9 +28,11 @@
     "got": "^11.8.2"
   },
   "devDependencies": {
+    "@parcel/packager-ts": "2.3.2",
     "@types/got": "^9.6.12",
     "gatsby": "^4.9.1",
-    "gatsby-plugin-utils": "^3.3.0"
+    "gatsby-plugin-utils": "^3.3.0",
+    "parcel": "^2.3.2"
   },
   "keywords": [
     "gatsby",
@@ -39,8 +46,8 @@
     "gatsby": "^4.0.0"
   },
   "scripts": {
-    "build": "tsc",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "tsc --watch"
+    "watch": "parcel watch",
+    "build": "parcel build --no-source-maps",
+    "prepare": "npm run build"
   }
 }
