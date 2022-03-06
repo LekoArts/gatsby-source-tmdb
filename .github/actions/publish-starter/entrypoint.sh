@@ -31,7 +31,8 @@ cp -r $BASE/$FOLDER/. .
 
 # generate a new yarn.lock file based on package-lock.json unless you're in a workspace
 if [ "$IS_WORKSPACE" = null ]; then
-  echo "  Regenerating yarn.lock"
+  echo "  Generating yarn.lock"
+  touch yarn.lock
   yarn
 fi
 
