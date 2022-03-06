@@ -54,5 +54,6 @@
     "release": "changeset publish",
     "concurrently": "concurrently",
     "prepare": "husky install && yarn package:prepare"
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }
