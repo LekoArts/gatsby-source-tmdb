@@ -12,4 +12,3 @@ src
 .vscode
 public
 .cache
-tsconfig.json

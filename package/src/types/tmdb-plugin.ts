@@ -1,9 +1,9 @@
-import { PluginOptions as DefaultPluginOptions, SourceNodesArgs } from "gatsby"
+import { PluginOptions, SourceNodesArgs } from "gatsby"
 import { NodeHelpers } from "gatsby-node-helpers"
 import { Got } from "got"
 import * as Response from "./response"
 
-export interface PluginOptions extends DefaultPluginOptions {
+export interface TMDBPluginOptions extends PluginOptions {
   apiKey: string
   sessionID: string
   language?: string
@@ -23,7 +23,7 @@ export interface Endpoint {
     page?: number
     append_to_response?: string // eslint-disable-line
     region?: string
-    [key: string]: string
+    [key: string]: string | number
   }
   context?: {
     [key: string]: string
@@ -38,7 +38,7 @@ export interface NodeBuilder {
   endpoint: Endpoint
   tmdbGot: Got
   nodeHelpers: NodeHelpers
-  pluginOptions: PluginOptions
+  pluginOptions: TMDBPluginOptions
   accountId: Response.AccountInfo["id"]
   gatsbyApi: SourceNodesArgs
 }
@@ -64,7 +64,7 @@ export interface ImageTransformationReponse extends ImagePaths {
 export interface ImageTransformation {
   node: Response.ResponseItem
   endpoint: Endpoint
-  pluginOptions: PluginOptions
+  pluginOptions: TMDBPluginOptions
   gatsbyApi: SourceNodesArgs
   nodeHelpers: NodeHelpers
 }

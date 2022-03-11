@@ -4269,6 +4269,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@parcel/transformer-typescript-types@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "@parcel/transformer-typescript-types@npm:2.3.2"
+  dependencies:
+    "@parcel/diagnostic": 2.3.2
+    "@parcel/plugin": 2.3.2
+    "@parcel/source-map": ^2.0.0
+    "@parcel/ts-utils": 2.3.2
+    nullthrows: ^1.1.1
+  peerDependencies:
+    typescript: ">=3.0.0"
+  checksum: 89b2aaf765b4fcccd0a6b3afecf8a6c7dc17417ba63f931b18ac391f79dd3d7218fb1e53948a24c5429e6416fae19947cbf161ee76064572795e4982066c26e6
+  languageName: node
+  linkType: hard
+
+"@parcel/ts-utils@npm:2.3.2":
+  version: 2.3.2
+  resolution: "@parcel/ts-utils@npm:2.3.2"
+  dependencies:
+    nullthrows: ^1.1.1
+  peerDependencies:
+    typescript: ">=3.0.0"
+  checksum: 9cabf8de2e273b94160b6d2b4821c6dfba04db3bee61d1e165ef742bd2d56a7a4098066f61cc0c0af135fa9ad12c254736922de1db63528a294400dcb2623f5d
+  languageName: node
+  linkType: hard
+
 "@parcel/types@npm:2.3.1":
   version: 2.3.1
   resolution: "@parcel/types@npm:2.3.1"
@@ -11305,6 +11331,7 @@ __metadata:
   resolution: "gatsby-source-tmdb@workspace:package"
   dependencies:
     "@parcel/packager-ts": 2.3.2
+    "@parcel/transformer-typescript-types": ^2.3.2
     "@types/got": ^9.6.12
     gatsby: ^4.9.1
     gatsby-node-helpers: ^1.2.1

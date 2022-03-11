@@ -63,14 +63,13 @@ export interface AccountInfo {
   username?: string
 }
 
-export interface MovieResult {
+interface BaseMovieResult {
   poster_path?: string | null | { source: string; [key: string]: string }
   adult?: boolean
   overview?: string
   release_date?: string
   genre_ids?: Array<number>
   id?: number
-  media_type?: "movie"
   original_title?: string
   original_language?: string
   title?: string
@@ -82,22 +81,29 @@ export interface MovieResult {
   rating?: number
 }
 
-export interface TvResult {
+export interface MovieResult extends BaseMovieResult {
+  media_type?: "movie"
+}
+
+interface BaseTvResult {
   poster_path?: string | null | { source: string; [key: string]: string }
   popularity?: number
   id?: number
   overview?: string
   backdrop_path?: string | null | { source: string; [key: string]: string }
   vote_average?: number
-  media_type: "tv"
   first_air_date?: string
-  origin_country?: Array<string>
   genre_ids?: Array<number>
   original_language?: string
   vote_count?: number
   name?: string
   original_name?: string
   rating?: number
+}
+
+export interface TvResult extends BaseTvResult {
+  media_type: "tv"
+  origin_country?: Array<string>
 }
 
 export interface AccountList {
@@ -142,7 +148,7 @@ export interface Network {
   name?: string
   id?: number
   logo_path?: string | { source: string; [key: string]: string }
-  origin_country?: string
+  origin_country?: string | Array<string>
 }
 
 export interface SimplePerson {
@@ -163,19 +169,19 @@ export interface SimplePerson {
 }
 
 export interface MovieResultResponse extends PaginatedResponse {
-  results?: Array<MovieResult>
+  results: Array<MovieResult>
 }
 
 export interface TvResultResponse extends PaginatedResponse {
-  results?: Array<TvResult>
+  results: Array<TvResult>
 }
 
 export interface SimpleEpisodeResponse extends PaginatedResponse {
-  results?: Array<SimpleEpisode>
+  results: Array<SimpleEpisode>
 }
 
 export interface AccountListResponse extends PaginatedResponse {
-  results?: Array<AccountList>
+  results: Array<AccountList>
 }
 
 export type PaginationTransformResponse =
@@ -183,12 +189,16 @@ export type PaginationTransformResponse =
   | TvResultResponse
   | SimpleEpisodeResponse
   | AccountListResponse
+
 export interface ResponseItem
   extends AccountInfo,
-    MovieResult,
-    TvResult,
+    BaseMovieResult,
+    BaseTvResult,
     SimpleEpisode,
     SimpleSeason,
     AccountList,
     Network,
-    SimplePerson {}
+    SimplePerson {
+  media_type?: "tv" | "movie"
+  origin_country?: Array<string> | string
+}
