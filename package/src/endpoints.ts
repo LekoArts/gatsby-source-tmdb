@@ -1,4 +1,4 @@
-import * as TMDBPlugin from "./types/tmdb-plugin"
+import type * as TMDBPlugin from "./types/tmdb-plugin"
 
 export const defaultEndpoints: Array<TMDBPlugin.Endpoint> = [
   // Account

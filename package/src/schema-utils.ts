@@ -1,8 +1,8 @@
-import { NodePluginSchema, GatsbyGraphQLObjectType } from "gatsby"
+import type { NodePluginSchema, GatsbyGraphQLObjectType } from "gatsby"
 import { createNodeHelpers } from "gatsby-node-helpers"
 import { modifyURL } from "./api-utils"
 import { IMAGE_TYPES, IMAGE_SIZES } from "./constants"
-import * as TMDBPlugin from "./types/tmdb-plugin"
+import type * as TMDBPlugin from "./types/tmdb-plugin"
 
 export const generateTypeName = (endpoint: TMDBPlugin.Endpoint, typePrefix: string): string => {
   const nodeHelpers = createNodeHelpers({
