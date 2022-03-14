@@ -1,12 +1,12 @@
-import { GatsbyNode } from "gatsby"
-import * as TMDBPlugin from "./types/tmdb-plugin"
+import type { GatsbyNode } from "gatsby"
+import type * as TMDBPlugin from "./types/tmdb-plugin"
 import { defaultOptions } from "./api-utils"
 import { IMAGE_TYPES } from "./constants"
 import { defineImageNode, generateTypeName, definePathNode, defineLocalFileNode } from "./schema-utils"
 
 export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] = (
   { actions, schema },
-  pluginOptions: TMDBPlugin.PluginOptions
+  pluginOptions: TMDBPlugin.TMDBPluginOptions
 ): void => {
   const { typePrefix, endpoints } = defaultOptions(pluginOptions)
   const { createTypes } = actions

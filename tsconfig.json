@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "noEmit": true,
     "target": "es5",
     "moduleResolution": "node",
     "noUnusedLocals": true,
@@ -15,7 +16,8 @@
     "esModuleInterop": true,
     "jsx": "preserve",
     "lib": ["es2016", "dom"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
   },
   "exclude": ["example/*"],
 }

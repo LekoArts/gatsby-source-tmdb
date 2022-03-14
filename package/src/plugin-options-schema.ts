@@ -1,5 +1,6 @@
-import { GatsbyNode } from "gatsby"
-import { ObjectSchema } from "gatsby-plugin-utils"
+import type { GatsbyNode } from "gatsby"
+import type { ObjectSchema } from "gatsby-plugin-utils"
+import { TYPE_PREFIX } from "./constants"
 
 // Changes in the schema here also require updates in __tests__/plugin-options-schema.ts
 export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }): ObjectSchema => {
@@ -77,6 +78,6 @@ export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }):
       .description(
         `Specify the prefix for all created nodes, e.g. allTmdbAccount. It must follow this spec: https://spec.graphql.org/draft/#sec-Names`
       )
-      .default(`Tmdb`),
+      .default(TYPE_PREFIX),
   })
 }

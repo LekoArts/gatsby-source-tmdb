@@ -1,10 +1,10 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import { Options } from "got"
+import type { Options } from "got"
 import * as GatsbyFS from "gatsby-source-filesystem"
-import { SourceNodesArgs } from "gatsby"
-import * as TMDBPlugin from "./types/tmdb-plugin"
-import * as Response from "./types/response"
+import type { SourceNodesArgs } from "gatsby"
+import type * as TMDBPlugin from "./types/tmdb-plugin"
+import type * as Response from "./types/response"
 import { getParam, modifyURL } from "./api-utils"
 import { ERROR_CODES, IMAGE_BASE_URL, IMAGE_SIZES, IMAGE_TYPES } from "./constants"
 

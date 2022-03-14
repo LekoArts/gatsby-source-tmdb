@@ -1,4 +1,4 @@
-import { GatsbyNode } from "gatsby"
+import type { GatsbyNode } from "gatsby"
 import { ERROR_CODES } from "./constants"
 
 export const onPluginInit: GatsbyNode["onPluginInit"] = ({ reporter }) => {

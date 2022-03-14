@@ -1,5 +1,5 @@
 import { defaultEndpoints } from "./endpoints"
-import * as TMDBPlugin from "./types/tmdb-plugin"
+import type * as TMDBPlugin from "./types/tmdb-plugin"
 import { TYPE_PREFIX } from "./constants"
 
 /**
@@ -42,7 +42,7 @@ export const getParam = (url: string): string => url.match(getParamRegex)?.[1]
  * @param pluginOptions
  * @return Merged plugin options (with defaults)
  */
-export const defaultOptions = (pluginOptions: TMDBPlugin.PluginOptions): TMDBPlugin.PluginOptions => ({
+export const defaultOptions = (pluginOptions: TMDBPlugin.TMDBPluginOptions): TMDBPlugin.TMDBPluginOptions => ({
   apiKey: pluginOptions.apiKey,
   sessionID: pluginOptions.sessionID,
   downloadImages: pluginOptions.downloadImages ?? false,

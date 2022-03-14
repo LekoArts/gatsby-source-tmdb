@@ -1,15 +1,15 @@
-import { GatsbyNode, SourceNodesArgs } from "gatsby"
+import type { GatsbyNode, SourceNodesArgs } from "gatsby"
 import { createNodeHelpers } from "gatsby-node-helpers"
 import { tmdbGotInstance } from "./tmdb-got"
-import * as TMDBPlugin from "./types/tmdb-plugin"
-import * as Response from "./types/response"
+import type * as TMDBPlugin from "./types/tmdb-plugin"
+import type * as Response from "./types/response"
 import { nodeBuilder } from "./node-builder"
 import { ERROR_CODES } from "./constants"
 import { defaultOptions } from "./api-utils"
 
 export const sourceNodes: GatsbyNode["sourceNodes"] = async (
   gatsbyApi: SourceNodesArgs,
-  pluginOptions: TMDBPlugin.PluginOptions
+  pluginOptions: TMDBPlugin.TMDBPluginOptions
 ): Promise<void> => {
   const { apiKey, sessionID, typePrefix, endpoints } = defaultOptions(pluginOptions)
   const { reporter, createNodeId, createContentDigest, actions } = gatsbyApi
