@@ -47,6 +47,7 @@
     "test:ci": "jest --ci --runInBand",
     "changeset": "changeset",
     "release": "changeset publish",
+    "release-update-lockfile": "changeset version && yarn install --mode update-lockfile",
     "postinstall": "husky install && yarn package:prepare",
     "prepare": "yarn postinstall"
   },
