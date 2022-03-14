@@ -1,6 +1,6 @@
 import type { GatsbyNode } from "gatsby"
 import type { ObjectSchema } from "gatsby-plugin-utils"
-import { TYPE_PREFIX } from "./constants"
+import { DEFAULT_OPTIONS, TYPE_PREFIX } from "./constants"
 
 // Changes in the schema here also require updates in __tests__/plugin-options-schema.ts
 export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }): ObjectSchema => {
@@ -58,15 +58,15 @@ export const pluginOptionsSchema: GatsbyNode["pluginOptionsSchema"] = ({ Joi }):
     language: Joi.string()
       .pattern(/^[a-z]{2}-[A-Z]{2}$/, `ISO 639-1`)
       .description(`Specify the language of titles, descriptions etc. Applies to all results.`)
-      .default(`en-US`),
+      .default(DEFAULT_OPTIONS.language),
     region: Joi.string()
       .pattern(/^[A-Z]{2}$/, `ISO 3166-1`)
       .description(`Will narrow the search to only display results within the specified country.`)
-      .default(`US`),
+      .default(DEFAULT_OPTIONS.region),
     timezone: Joi.string()
       .pattern(/^[A-Za-z_]*\/[A-Za-z_]*$/, `Region/City`)
       .description(`Specify a timezone to offset the day calculation.`)
-      .default(`Europe/London`),
+      .default(DEFAULT_OPTIONS.timezone),
     downloadImages: Joi.boolean()
       .default(false)
       .description(

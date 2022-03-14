@@ -17,3 +17,8 @@ export const IMAGE_SIZES = {
 }
 export const IMAGE_BASE_URL = `https://image.tmdb.org/t/p/`
 export const TYPE_PREFIX = `Tmdb`
+export const DEFAULT_OPTIONS = {
+  region: `US`,
+  timezone: `Europe/London`,
+  language: `en-US`,
+} as const
