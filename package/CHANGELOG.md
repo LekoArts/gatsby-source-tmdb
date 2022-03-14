@@ -1,5 +1,11 @@
 # gatsby-source-tmdb
 
+## 3.0.2
+
+### Patch Changes
+
+- [#19](https://github.com/LekoArts/gatsby-source-tmdb/pull/19) [`609c3db`](https://github.com/LekoArts/gatsby-source-tmdb/commit/609c3dba2a0e9f0365a89d598b852effadda7950) Thanks [@LekoArts](https://github.com/LekoArts)! - chore: Use Parcel for package compilation
+
 ## 3.0.1
 
 ### Patch Changes
