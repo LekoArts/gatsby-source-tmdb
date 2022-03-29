@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "license": "MIT",
   "starter-name": "gatsby-starter-tmdb",
@@ -15,7 +15,7 @@
     "gatsby-plugin-react-helmet-async": "^1.2.1",
     "gatsby-plugin-sharp": "next",
     "gatsby-plugin-vanilla-extract": "^2.0.1",
-    "gatsby-source-tmdb": "^3.0.1",
+    "gatsby-source-tmdb": "^3.0.3",
     "gatsby-transformer-sharp": "next",
     "node-fetch": "^2.6.1",
     "react": "^17.0.2",
