@@ -76,12 +76,12 @@ describe(`api-utils`, () => {
               "url": "tv/top_rated",
             },
           ],
-          "language": "en-US",
+          "language": undefined,
           "plugins": Array [],
-          "region": "DE",
+          "region": undefined,
           "sessionID": "bar",
-          "timezone": "Europe/London",
-          "typePrefix": "Tmdb",
+          "timezone": undefined,
+          "typePrefix": undefined,
         }
       `)
     })
