@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from "vitest"
 import { NodePluginSchema } from "gatsby"
 import {
   generateTypeName,
@@ -9,7 +10,7 @@ import {
 } from "../schema-utils"
 
 const schema = {
-  buildObjectType: jest.fn().mockImplementation(({ name, fields }) => ({
+  buildObjectType: vi.fn().mockImplementation(({ name, fields }) => ({
     name,
     fields,
   })),

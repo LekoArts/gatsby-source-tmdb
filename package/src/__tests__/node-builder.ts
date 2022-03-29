@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from "vitest"
 import { SourceNodesArgs } from "gatsby"
 import { createNodeHelpers } from "gatsby-node-helpers"
 import { createRemoteFileNode } from "gatsby-source-filesystem"
@@ -20,31 +21,31 @@ const nodeHelpers = createNodeHelpers({
   createContentDigest: (input) => input.toString(),
 })
 
-jest.mock(`gatsby-source-filesystem`, () => ({
-  createRemoteFileNode: jest.fn().mockResolvedValue({
+vi.mock(`gatsby-source-filesystem`, () => ({
+  createRemoteFileNode: vi.fn().mockResolvedValue({
     id: `local-file-node-id`,
   }),
 }))
 
 const gatsbyApi = {
   cache: {
-    set: jest.fn(),
-    get: jest.fn(),
+    set: vi.fn(),
+    get: vi.fn(),
   },
   actions: {
-    createNode: jest.fn(),
+    createNode: vi.fn(),
   },
-  createContentDigest: jest.fn(),
-  createNodeId: jest.fn(),
-  store: jest.fn(),
+  createContentDigest: vi.fn(),
+  createNodeId: vi.fn(),
+  store: vi.fn(),
   reporter: {
-    info: jest.fn(),
-    error: jest.fn(),
-    panic: jest.fn(),
+    info: vi.fn(),
+    error: vi.fn(),
+    panic: vi.fn(),
     activityTimer: (): Record<string, unknown> => ({
-      start: jest.fn(),
-      end: jest.fn(),
-      setStatus: jest.fn(),
+      start: vi.fn(),
+      end: vi.fn(),
+      setStatus: vi.fn(),
     }),
   },
 } as unknown as SourceNodesArgs
@@ -74,7 +75,7 @@ describe(`imageTransformation in nodeBuilder`, () => {
       gatsbyApi,
     })
     expect(result).toMatchSnapshot()
-    const mock = createRemoteFileNode as jest.Mock
+    const mock = createRemoteFileNode
     expect(mock).not.toHaveBeenCalled()
   })
   it(`should convert nodes two levels deep`, async () => {
@@ -113,7 +114,7 @@ describe(`imageTransformation in nodeBuilder`, () => {
         gatsbyApi,
       })
       expect(result).toMatchSnapshot()
-      const mock = createRemoteFileNode as jest.Mock
+      const mock = createRemoteFileNode
       expect(mock).toHaveBeenCalled()
     })
     it(`set in endpoint should convert nodes two levels deep`, async () => {
