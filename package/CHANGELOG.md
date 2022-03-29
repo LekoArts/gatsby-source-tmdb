@@ -1,5 +1,13 @@
 # gatsby-source-tmdb
 
+## 3.0.3
+
+### Patch Changes
+
+- [#21](https://github.com/LekoArts/gatsby-source-tmdb/pull/21) [`3ea4502`](https://github.com/LekoArts/gatsby-source-tmdb/commit/3ea45020400291c2111565d5068deac114895d1f) Thanks [@LekoArts](https://github.com/LekoArts)! - chore: Update Packages
+
+  Also changed the `defaults` handling under the hood, but no changes in behavior.
+
 ## 3.0.2
 
 ### Patch Changes
