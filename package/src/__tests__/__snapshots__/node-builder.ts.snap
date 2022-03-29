@@ -1,8 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`imageTransformation in nodeBuilder should convert nodes one level deep 1`] = `
-Object {
-  "backdrop_path": Object {
+exports[`imageTransformation in nodeBuilder > should convert nodes one level deep 1`] = `
+{
+  "backdrop_path": {
     "original": "https://image.tmdb.org/t/p/original/backdrop_image.png",
     "source": "/backdrop_image.png",
     "w1280": "https://image.tmdb.org/t/p/w1280/backdrop_image.png",
@@ -10,7 +10,7 @@ Object {
     "w780": "https://image.tmdb.org/t/p/w780/backdrop_image.png",
   },
   "id": 1,
-  "logo_path": Object {
+  "logo_path": {
     "original": "https://image.tmdb.org/t/p/original/logo_image.png",
     "source": "/logo_image.png",
     "w154": "https://image.tmdb.org/t/p/w154/logo_image.png",
@@ -20,7 +20,7 @@ Object {
     "w500": "https://image.tmdb.org/t/p/w500/logo_image.png",
     "w92": "https://image.tmdb.org/t/p/w92/logo_image.png",
   },
-  "poster_path": Object {
+  "poster_path": {
     "original": "https://image.tmdb.org/t/p/original/poster_image.png",
     "source": "/poster_image.png",
     "w154": "https://image.tmdb.org/t/p/w154/poster_image.png",
@@ -30,14 +30,14 @@ Object {
     "w780": "https://image.tmdb.org/t/p/w780/poster_image.png",
     "w92": "https://image.tmdb.org/t/p/w92/poster_image.png",
   },
-  "profile_path": Object {
+  "profile_path": {
     "h632": "https://image.tmdb.org/t/p/h632/profile_image.png",
     "original": "https://image.tmdb.org/t/p/original/profile_image.png",
     "source": "/profile_image.png",
     "w185": "https://image.tmdb.org/t/p/w185/profile_image.png",
     "w45": "https://image.tmdb.org/t/p/w45/profile_image.png",
   },
-  "still_path": Object {
+  "still_path": {
     "original": "https://image.tmdb.org/t/p/original/still_image.png",
     "source": "/still_image.png",
     "w185": "https://image.tmdb.org/t/p/w185/still_image.png",
@@ -48,19 +48,19 @@ Object {
 }
 `;
 
-exports[`imageTransformation in nodeBuilder should convert nodes two levels deep 1`] = `
-Object {
+exports[`imageTransformation in nodeBuilder > should convert nodes two levels deep 1`] = `
+{
   "id": 3,
-  "items": Array [
-    Object {
-      "backdrop_path": Object {
+  "items": [
+    {
+      "backdrop_path": {
         "original": "https://image.tmdb.org/t/p/original/backdrop_image.png",
         "source": "/backdrop_image.png",
         "w1280": "https://image.tmdb.org/t/p/w1280/backdrop_image.png",
         "w300": "https://image.tmdb.org/t/p/w300/backdrop_image.png",
         "w780": "https://image.tmdb.org/t/p/w780/backdrop_image.png",
       },
-      "logo_path": Object {
+      "logo_path": {
         "original": "https://image.tmdb.org/t/p/original/logo_image.png",
         "source": "/logo_image.png",
         "w154": "https://image.tmdb.org/t/p/w154/logo_image.png",
@@ -71,8 +71,8 @@ Object {
         "w92": "https://image.tmdb.org/t/p/w92/logo_image.png",
       },
     },
-    Object {
-      "poster_path": Object {
+    {
+      "poster_path": {
         "original": "https://image.tmdb.org/t/p/original/poster_image.png",
         "source": "/poster_image.png",
         "w154": "https://image.tmdb.org/t/p/w154/poster_image.png",
@@ -82,14 +82,14 @@ Object {
         "w780": "https://image.tmdb.org/t/p/w780/poster_image.png",
         "w92": "https://image.tmdb.org/t/p/w92/poster_image.png",
       },
-      "profile_path": Object {
+      "profile_path": {
         "h632": "https://image.tmdb.org/t/p/h632/profile_image.png",
         "original": "https://image.tmdb.org/t/p/original/profile_image.png",
         "source": "/profile_image.png",
         "w185": "https://image.tmdb.org/t/p/w185/profile_image.png",
         "w45": "https://image.tmdb.org/t/p/w45/profile_image.png",
       },
-      "still_path": Object {
+      "still_path": {
         "original": "https://image.tmdb.org/t/p/original/still_image.png",
         "source": "/still_image.png",
         "w185": "https://image.tmdb.org/t/p/w185/still_image.png",
@@ -102,9 +102,9 @@ Object {
 }
 `;
 
-exports[`imageTransformation in nodeBuilder with downloadImages set in endpoint should convert nodes one level deep 1`] = `
-Object {
-  "backdrop_path": Object {
+exports[`imageTransformation in nodeBuilder > with downloadImages > set in endpoint should convert nodes one level deep 1`] = `
+{
+  "backdrop_path": {
     "localFile": "local-file-node-id",
     "original": "https://image.tmdb.org/t/p/original/backdrop_image.png",
     "source": "/backdrop_image.png",
@@ -117,12 +117,12 @@ Object {
 }
 `;
 
-exports[`imageTransformation in nodeBuilder with downloadImages set in endpoint should convert nodes two levels deep 1`] = `
-Object {
+exports[`imageTransformation in nodeBuilder > with downloadImages > set in endpoint should convert nodes two levels deep 1`] = `
+{
   "id": 4,
-  "items": Array [
-    Object {
-      "backdrop_path": Object {
+  "items": [
+    {
+      "backdrop_path": {
         "localFile": "local-file-node-id",
         "original": "https://image.tmdb.org/t/p/original/backdrop_image.png",
         "source": "/backdrop_image.png",
@@ -136,9 +136,9 @@ Object {
 }
 `;
 
-exports[`imageTransformation in nodeBuilder with downloadImages set in pluginOptions should convert nodes one level deep 1`] = `
-Object {
-  "backdrop_path": Object {
+exports[`imageTransformation in nodeBuilder > with downloadImages > set in pluginOptions should convert nodes one level deep 1`] = `
+{
+  "backdrop_path": {
     "localFile": "local-file-node-id",
     "original": "https://image.tmdb.org/t/p/original/backdrop_image.png",
     "source": "/backdrop_image.png",
@@ -151,12 +151,12 @@ Object {
 }
 `;
 
-exports[`imageTransformation in nodeBuilder with downloadImages set in pluginOptions should convert nodes two levels deep 1`] = `
-Object {
+exports[`imageTransformation in nodeBuilder > with downloadImages > set in pluginOptions should convert nodes two levels deep 1`] = `
+{
   "id": 4,
-  "items": Array [
-    Object {
-      "backdrop_path": Object {
+  "items": [
+    {
+      "backdrop_path": {
         "localFile": "local-file-node-id",
         "original": "https://image.tmdb.org/t/p/original/backdrop_image.png",
         "source": "/backdrop_image.png",

@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest"
 import { modifyURL, getParam, defaultOptions } from "../api-utils"
 
 const endpoint01 = `configuration`
@@ -44,40 +45,40 @@ describe(`api-utils`, () => {
   describe(`defaultOptions`, () => {
     it(`should return defaults with no additional input`, () => {
       expect(defaultOptions({ apiKey: `foo`, sessionID: `bar`, plugins: [] })).toMatchInlineSnapshot(`
-        Object {
+        {
           "apiKey": "foo",
           "downloadImages": false,
-          "endpoints": Array [
-            Object {
+          "endpoints": [
+            {
               "url": "account/:account_id/lists",
             },
-            Object {
+            {
               "url": "account/:account_id/favorite/movies",
             },
-            Object {
+            {
               "url": "account/:account_id/favorite/tv",
             },
-            Object {
+            {
               "url": "account/:account_id/watchlist/movies",
             },
-            Object {
+            {
               "url": "account/:account_id/watchlist/tv",
             },
-            Object {
+            {
               "url": "movie/popular",
             },
-            Object {
+            {
               "url": "movie/top_rated",
             },
-            Object {
+            {
               "url": "tv/popular",
             },
-            Object {
+            {
               "url": "tv/top_rated",
             },
           ],
           "language": undefined,
-          "plugins": Array [],
+          "plugins": [],
           "region": undefined,
           "sessionID": "bar",
           "timezone": undefined,
@@ -99,17 +100,17 @@ describe(`api-utils`, () => {
           endpoints: [{ url: `/tv/:tv_id`, downloadImages: true }],
         })
       ).toMatchInlineSnapshot(`
-        Object {
+        {
           "apiKey": "foo",
           "downloadImages": true,
-          "endpoints": Array [
-            Object {
+          "endpoints": [
+            {
               "downloadImages": true,
               "url": "/tv/:tv_id",
             },
           ],
           "language": "en-GB",
-          "plugins": Array [],
+          "plugins": [],
           "region": "GB",
           "sessionID": "bar",
           "timezone": "Europe/Berlin",

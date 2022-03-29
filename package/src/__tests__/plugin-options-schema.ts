@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest"
 import { testPluginOptionsSchema } from "gatsby-plugin-utils"
 import { pluginOptionsSchema } from "../plugin-options-schema"
 

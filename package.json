@@ -26,11 +26,11 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.3.0",
     "husky": "^7.0.4",
-    "jest": "^27.5.1",
     "lint-staged": "^12.3.7",
     "prettier": "^2.6.1",
-    "ts-jest": "^27.1.4",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "vite": "^2.8.6",
+    "vitest": "^0.8.0"
   },
   "scripts": {
     "develop": "yarn workspace example develop",
@@ -42,9 +42,8 @@
     "lint": "eslint . --ignore-path .gitignore --ignore-path .prettierignore --ext .ts,.tsx,.js",
     "lint:fix": "yarn lint --fix",
     "format": "prettier \"**/*.{md,mdx,json,yaml}\" --write",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:ci": "jest --ci --runInBand",
+    "test:watch": "vitest watch",
+    "test:ci": "vitest run",
     "changeset": "changeset",
     "release": "changeset publish",
     "release-update-lockfile": "changeset version && yarn install --mode update-lockfile",
