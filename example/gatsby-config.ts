@@ -1,4 +1,5 @@
-import { GatsbyConfig } from "gatsby"
+import type { GatsbyConfig, PluginRef } from "gatsby"
+import type { TMDBPluginOptions } from "gatsby-source-tmdb"
 import "dotenv/config"
 
 const config: GatsbyConfig = {
@@ -50,7 +51,7 @@ const config: GatsbyConfig = {
             },
           },
         ],
-      },
+      } as TMDBPluginOptions,
     },
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
@@ -58,7 +59,7 @@ const config: GatsbyConfig = {
     `gatsby-plugin-react-helmet-async`,
     `gatsby-plugin-gatsby-cloud`,
     `gatsby-plugin-vanilla-extract`,
-  ],
+  ] as PluginRef[],
 }
 
 export default config
