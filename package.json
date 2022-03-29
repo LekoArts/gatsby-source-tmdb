@@ -51,5 +51,9 @@
     "postinstall": "husky install && yarn package:prepare",
     "prepare": "yarn postinstall"
   },
+  "resolutions": {
+    "@parcel/core": "^2.4.0",
+    "parcel": "^2.4.0"
+  },
   "packageManager": "yarn@3.2.0"
 }
