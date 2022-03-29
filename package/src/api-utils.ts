@@ -1,6 +1,5 @@
 import { defaultEndpoints } from "./endpoints"
 import type * as TMDBPlugin from "./types/tmdb-plugin"
-import { DEFAULT_OPTIONS, TYPE_PREFIX } from "./constants"
 
 /**
  * Compiles the endpoint based on the params
@@ -46,10 +45,10 @@ export const defaultOptions = (pluginOptions: TMDBPlugin.TMDBPluginOptions): TMD
   apiKey: pluginOptions.apiKey,
   sessionID: pluginOptions.sessionID,
   downloadImages: pluginOptions.downloadImages ?? false,
-  typePrefix: pluginOptions.typePrefix || TYPE_PREFIX,
-  region: pluginOptions.region || DEFAULT_OPTIONS.region,
-  timezone: pluginOptions.timezone || DEFAULT_OPTIONS.timezone,
-  language: pluginOptions.language || DEFAULT_OPTIONS.language,
+  typePrefix: pluginOptions.typePrefix,
+  region: pluginOptions.region,
+  timezone: pluginOptions.timezone,
+  language: pluginOptions.language,
   endpoints: pluginOptions.endpoints || defaultEndpoints,
   plugins: pluginOptions.plugins || [],
 })
