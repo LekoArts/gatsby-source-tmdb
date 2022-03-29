@@ -52,7 +52,20 @@
     "prepare": "yarn postinstall"
   },
   "resolutions": {
+    "@parcel/bundler-default": "^2.4.0",
+    "@parcel/compressor-raw": "^2.4.0",
     "@parcel/core": "^2.4.0",
+    "@parcel/namer-default": "^2.4.0",
+    "@parcel/optimizer-terser": "^2.4.0",
+    "@parcel/packager-js": "^2.4.0",
+    "@parcel/reporter-dev-server": "^2.4.0",
+    "@parcel/runtime-js": "^2.4.0",
+    "@parcel/runtime-react-refresh": "^2.4.0",
+    "@parcel/runtime-service-worker": "^2.4.0",
+    "@parcel/transformer-js": "^2.4.0",
+    "@parcel/transformer-json": "^2.4.0",
+    "@parcel/transformer-raw": "^2.4.0",
+    "@parcel/transformer-react-refresh-wrap": "^2.4.0",
     "parcel": "^2.4.0"
   },
   "packageManager": "yarn@3.2.0"

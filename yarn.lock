@@ -2838,7 +2838,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/bundler-default@npm:2.4.0, @parcel/bundler-default@npm:^2.3.2":
+"@parcel/bundler-default@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/bundler-default@npm:2.4.0"
   dependencies:
@@ -2897,7 +2897,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/compressor-raw@npm:2.4.0, @parcel/compressor-raw@npm:^2.3.2":
+"@parcel/compressor-raw@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/compressor-raw@npm:2.4.0"
   dependencies:
@@ -3218,7 +3218,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/namer-default@npm:2.4.0, @parcel/namer-default@npm:^2.3.2":
+"@parcel/namer-default@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/namer-default@npm:2.4.0"
   dependencies:
@@ -3293,7 +3293,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/optimizer-terser@npm:2.4.0, @parcel/optimizer-terser@npm:^2.3.2":
+"@parcel/optimizer-terser@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/optimizer-terser@npm:2.4.0"
   dependencies:
@@ -3366,7 +3366,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/packager-js@npm:2.4.0, @parcel/packager-js@npm:^2.3.2":
+"@parcel/packager-js@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/packager-js@npm:2.4.0"
   dependencies:
@@ -3442,7 +3442,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/reporter-dev-server@npm:2.4.0, @parcel/reporter-dev-server@npm:^2.3.2":
+"@parcel/reporter-dev-server@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/reporter-dev-server@npm:2.4.0"
   dependencies:
@@ -3472,7 +3472,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/runtime-js@npm:2.4.0, @parcel/runtime-js@npm:^2.3.2":
+"@parcel/runtime-js@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/runtime-js@npm:2.4.0"
   dependencies:
@@ -3483,7 +3483,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/runtime-react-refresh@npm:2.4.0, @parcel/runtime-react-refresh@npm:^2.3.2":
+"@parcel/runtime-react-refresh@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/runtime-react-refresh@npm:2.4.0"
   dependencies:
@@ -3494,7 +3494,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/runtime-service-worker@npm:2.4.0, @parcel/runtime-service-worker@npm:^2.3.2":
+"@parcel/runtime-service-worker@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/runtime-service-worker@npm:2.4.0"
   dependencies:
@@ -3572,7 +3572,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/transformer-js@npm:2.4.0, @parcel/transformer-js@npm:^2.3.2":
+"@parcel/transformer-js@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/transformer-js@npm:2.4.0"
   dependencies:
@@ -3591,7 +3591,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/transformer-json@npm:2.4.0, @parcel/transformer-json@npm:^2.3.2":
+"@parcel/transformer-json@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/transformer-json@npm:2.4.0"
   dependencies:
@@ -3632,7 +3632,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/transformer-raw@npm:2.4.0, @parcel/transformer-raw@npm:^2.3.2":
+"@parcel/transformer-raw@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/transformer-raw@npm:2.4.0"
   dependencies:
@@ -3641,7 +3641,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/transformer-react-refresh-wrap@npm:2.4.0, @parcel/transformer-react-refresh-wrap@npm:^2.3.2":
+"@parcel/transformer-react-refresh-wrap@npm:^2.4.0":
   version: 2.4.0
   resolution: "@parcel/transformer-react-refresh-wrap@npm:2.4.0"
   dependencies:
