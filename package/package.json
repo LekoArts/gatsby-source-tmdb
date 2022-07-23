@@ -29,12 +29,12 @@
     "got": "^11.8.2"
   },
   "devDependencies": {
-    "@parcel/packager-ts": "2.3.2",
-    "@parcel/transformer-typescript-types": "2.3.2",
+    "@parcel/packager-ts": "^2.6.2",
+    "@parcel/transformer-typescript-types": "^2.6.2",
     "@types/got": "^9.6.12",
     "gatsby": "next",
     "gatsby-plugin-utils": "next",
-    "parcel": "2.3.2"
+    "parcel": "^2.6.2"
   },
   "keywords": [
     "gatsby",
