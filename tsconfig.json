@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "noEmit": true,
-    "target": "es5",
+    "target": "ES6",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
