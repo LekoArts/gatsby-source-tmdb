@@ -10,15 +10,13 @@ import { ERROR_CODES, IMAGE_BASE_URL, IMAGE_SIZES, IMAGE_TYPES } from "./constan
 
 const downloadImgAndCreateFileNode = async (
   { url, nodeId }: { url: string; nodeId: string },
-  { actions: { createNode }, createNodeId, cache, store, reporter }: SourceNodesArgs
+  { actions: { createNode }, createNodeId, cache }: SourceNodesArgs
 ): Promise<string> => {
   const fileNode = await GatsbyFS.createRemoteFileNode({
     url,
     cache,
     createNode,
     createNodeId,
-    store,
-    reporter,
     parentNodeId: nodeId,
   })
 
@@ -169,7 +167,7 @@ export const nodeBuilder = async ({
 
           return results
         },
-        shouldContinue: (item, allItems) => {
+        shouldContinue: (item: Response.ResponseItem, allItems: Response.ResponseItem[]) => {
           const hasNoPagination = allItems.length > 0 && allItems.every((entry) => entry.id === item.id)
           return !hasNoPagination
         },
