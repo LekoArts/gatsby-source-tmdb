@@ -1,5 +1,12 @@
 # example
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`8779fbc`](https://github.com/LekoArts/gatsby-source-tmdb/commit/8779fbc55ac13b4aaed69e1869a38a74b4f03fdf)]:
+  - gatsby-source-tmdb@4.0.0
+
 ## 0.0.5
 
 ### Patch Changes

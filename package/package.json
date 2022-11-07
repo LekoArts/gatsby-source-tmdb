@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-tmdb",
-  "version": "3.0.4",
+  "version": "4.0.0",
   "description": "Source from The Movie Database (TMDb) in Gatsby. Supports all endpoints, optionally downloads images and extends results with more information.",
   "main": "dist/gatsby-node.js",
   "source": "src/gatsby-node.ts",

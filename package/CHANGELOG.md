@@ -1,5 +1,11 @@
 # gatsby-source-tmdb
 
+## 4.0.0
+
+### Major Changes
+
+- [#26](https://github.com/LekoArts/gatsby-source-tmdb/pull/26) [`8779fbc`](https://github.com/LekoArts/gatsby-source-tmdb/commit/8779fbc55ac13b4aaed69e1869a38a74b4f03fdf) Thanks [@LekoArts](https://github.com/LekoArts)! - Minimum required Node.js version is 18. Bump peerDependency to Gatsby 5.
+
 ## 3.0.4
 
 ### Patch Changes
