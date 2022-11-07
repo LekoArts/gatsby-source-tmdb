@@ -1,5 +1,11 @@
 # gatsby-source-tmdb
 
+## 3.0.4
+
+### Patch Changes
+
+- [#24](https://github.com/LekoArts/gatsby-source-tmdb/pull/24) [`d54a26f`](https://github.com/LekoArts/gatsby-source-tmdb/commit/d54a26f947a019a2abf7f91511686101d431a4b4) Thanks [@LekoArts](https://github.com/LekoArts)! - Update all dependencies
+
 ## 3.0.3
 
 ### Patch Changes
