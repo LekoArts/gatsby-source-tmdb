@@ -1,4 +1,4 @@
-FROM node:14-slim
+FROM node:18-slim
 
 LABEL com.github.actions.name="Publish starter"
 LABEL com.github.actions.description="Automatically push subdirectories in a monorepo to their own repositories"

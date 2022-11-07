@@ -6,7 +6,7 @@
   "source": "src/gatsby-node.ts",
   "types": "dist/types.d.ts",
   "engines": {
-    "node": ">=14.15.0"
+    "node": ">=18.0.0"
   },
   "files": [
     "dist/*",
@@ -25,16 +25,16 @@
   "license": "MIT",
   "dependencies": {
     "gatsby-node-helpers": "^1.2.1",
-    "gatsby-source-filesystem": "^4.9.1",
-    "got": "^11.8.2"
+    "gatsby-source-filesystem": "^5.0.0-next.0",
+    "got": "^11.8.5"
   },
   "devDependencies": {
-    "@parcel/packager-ts": "^2.6.2",
-    "@parcel/transformer-typescript-types": "^2.6.2",
+    "@parcel/packager-ts": "^2.7.0",
+    "@parcel/transformer-typescript-types": "^2.7.0",
     "@types/got": "^9.6.12",
-    "gatsby": "next",
-    "gatsby-plugin-utils": "next",
-    "parcel": "^2.6.2"
+    "gatsby": "^5.0.0-next.0",
+    "gatsby-plugin-utils": "^4.0.0-next.0",
+    "parcel": "^2.7.0"
   },
   "keywords": [
     "gatsby",
@@ -45,7 +45,7 @@
     "themoviedatabase"
   ],
   "peerDependencies": {
-    "gatsby": "^4.0.0"
+    "gatsby": "^5.0.0-next.0"
   },
   "scripts": {
     "watch": "parcel watch",

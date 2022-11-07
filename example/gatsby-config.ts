@@ -9,6 +9,7 @@ const config: GatsbyConfig = {
     siteUrl: process.env.URL || `https://tmdb.lekoarts.de`,
     logo: `/logo.png`,
   },
+  trailingSlash: `never`,
   plugins: [
     {
       resolve: `gatsby-source-tmdb`,
@@ -57,7 +58,6 @@ const config: GatsbyConfig = {
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-react-helmet-async`,
-    `gatsby-plugin-gatsby-cloud`,
     `gatsby-plugin-vanilla-extract`,
   ] as PluginRef[],
 }
