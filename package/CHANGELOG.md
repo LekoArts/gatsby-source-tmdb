@@ -1,5 +1,11 @@
 # gatsby-source-tmdb
 
+## 4.0.1
+
+### Patch Changes
+
+- [#28](https://github.com/LekoArts/gatsby-source-tmdb/pull/28) [`0ab50ca`](https://github.com/LekoArts/gatsby-source-tmdb/commit/0ab50cae0cbe3b0dc43b2569be693866bb1cc0a1) Thanks [@LekoArts](https://github.com/LekoArts)! - Moving from Gatsby 5 Beta to stable release.
+
 ## 4.0.0
 
 ### Major Changes
