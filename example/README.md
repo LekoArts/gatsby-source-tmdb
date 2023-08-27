@@ -1,6 +1,6 @@
 # gatsby-starter-tmdb
 
-An example project using `gatsby-source-tmdb` to build a dashboard of watchlist/favourite TV/movies and custom lists. You can see a **live preview** at [tmdb.lekoarts.de](https://tmdb.lekoarts.de).
+An example project using [gatsby-source-tmdb](https://github.com/LekoArts/gatsby-source-tmdb) to build a dashboard of watchlist/favourite TV/movies and custom lists. You can see a **live preview** at [tmdb.lekoarts.de](https://tmdb.lekoarts.de).
 
 Deploy this starter with one click on [Netlify](https://app.netlify.com/signup):
 
