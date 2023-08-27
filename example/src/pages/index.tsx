@@ -43,9 +43,6 @@ const Index: React.FC<PageProps<DataProps>> = ({
             <TabPanel>
               {favTV.nodes.map((tv) => {
                 let airDate
-                if (tv.next_episode_to_air) {
-                  airDate = tv.next_episode_to_air.air_date
-                }
 
                 return (
                   <Card
@@ -87,9 +84,6 @@ const Index: React.FC<PageProps<DataProps>> = ({
             <TabPanel>
               {watchedTV.nodes.map((tv) => {
                 let airDate
-                if (tv.next_episode_to_air) {
-                  airDate = tv.next_episode_to_air.air_date
-                }
                 return (
                   <Card
                     key={tv.name}
@@ -174,16 +168,13 @@ export const query = graphql`
         }
       }
     }
-    favTV: allTmdbAccountFavoriteTv(sort: { fields: vote_average, order: DESC }) {
+    favTV: allTmdbAccountFavoriteTv(sort: { vote_average: DESC }) {
       nodes {
         name
         vote_average
         first_air_date
         poster_path {
           ...CardCover
-        }
-        next_episode_to_air {
-          air_date
         }
         tmdbId
         status
@@ -192,7 +183,7 @@ export const query = graphql`
       }
       totalCount
     }
-    favMovies: allTmdbAccountFavoriteMovies(sort: { fields: vote_average, order: DESC }) {
+    favMovies: allTmdbAccountFavoriteMovies(sort: { vote_average: DESC }) {
       nodes {
         title
         release_date
@@ -204,13 +195,10 @@ export const query = graphql`
       }
       totalCount
     }
-    watchedTV: allTmdbAccountWatchlistTv(sort: { fields: first_air_date, order: DESC }) {
+    watchedTV: allTmdbAccountWatchlistTv(sort: { first_air_date: DESC }) {
       totalCount
       nodes {
         first_air_date
-        next_episode_to_air {
-          air_date
-        }
         vote_average
         status
         tmdbId
@@ -222,7 +210,7 @@ export const query = graphql`
         }
       }
     }
-    watchedMovies: allTmdbAccountWatchlistMovies(sort: { fields: release_date, order: DESC }) {
+    watchedMovies: allTmdbAccountWatchlistMovies(sort: { release_date: DESC }) {
       totalCount
       nodes {
         release_date
@@ -253,9 +241,6 @@ type DataProps = {
             gatsbyImageData: IGatsbyImageData
           }
         }
-      }
-      next_episode_to_air?: {
-        air_date: string
       }
       tmdbId: string
       status: "Returning Series" | "Ended" | "Canceled"
@@ -301,9 +286,6 @@ type DataProps = {
     totalCount: number
     nodes: {
       first_air_date: string
-      next_episode_to_air: {
-        air_date: string
-      }
       vote_average: number
       status: "Returning Series" | "Ended" | "Canceled"
       tmdbId: string

@@ -16,7 +16,6 @@ type CardProps = {
           gatsbyImageData: IGatsbyImageData
         }
       }
-  next?: string
   rating: number
   status?: "Returning Series" | "Ended" | "Canceled"
   release: string
@@ -26,7 +25,7 @@ type CardProps = {
 
 const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`
 
-const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, release, episodes, seasons }) => {
+const Card: React.FC<CardProps> = ({ name, link, cover, rating, status, release, episodes, seasons }) => {
   const ref = React.useRef()
   const [animatedProps, api] = useSpring(() => ({
     xys: [0, 0, 1],
@@ -81,13 +80,6 @@ const Card: React.FC<CardProps> = ({ name, link, cover, next, rating, status, re
               {` `}
               <div className={styles.itemTextStyle}>{format(parseISO(release), `yyyy`)}</div>
             </div>
-            {next && (
-              <div className={styles.itemStyle}>
-                <Icon className={styles.itemIconStyle} name="next" />
-                {` `}
-                <div className={styles.itemTextStyle}>{format(parseISO(next), `dd.MM.yy`)}</div>
-              </div>
-            )}
             {episodes && (
               <div className={styles.itemStyle}>
                 <Icon className={styles.itemIconStyle} name="episodes" />

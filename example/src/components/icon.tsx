@@ -10,8 +10,8 @@ export const Icon: React.FC<{
   <svg
     data-name={name}
     data-item="custom-item"
-    focusable={hidden ? `false` : null}
-    aria-hidden={hidden ? `true` : null}
+    focusable={hidden ? `false` : undefined}
+    aria-hidden={hidden ? `true` : undefined}
     className={`${iconStyles[name]} ${className}`}
     style={style}
   >

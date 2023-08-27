@@ -2,7 +2,7 @@ import * as React from "react"
 import { Link as GatsbyLink } from "gatsby"
 import { linkStyle } from "./link.css"
 
-const Link: React.FC<{ to: string }> = ({ to, children, ...rest }) => {
+const Link: React.FC<React.PropsWithChildren<{ to: string }>> = ({ to, children, ...rest }) => {
   const internal = /^\/(?!\/)/.test(to)
 
   if (internal) {
