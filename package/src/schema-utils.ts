@@ -21,10 +21,10 @@ export const generateTypeName = (endpoint: TMDBPlugin.Endpoint, typePrefix: stri
 
 export const capitalize = (s: string): string => s && s[0].toUpperCase() + s.slice(1)
 
-export const generateImageTypeName = (imageType: typeof IMAGE_TYPES[number]) => `${capitalize(imageType)}Path`
+export const generateImageTypeName = (imageType: (typeof IMAGE_TYPES)[number]) => `${capitalize(imageType)}Path`
 
 export const definePathNode = (
-  imageType: typeof IMAGE_TYPES[number],
+  imageType: (typeof IMAGE_TYPES)[number],
   schema: NodePluginSchema
 ): GatsbyGraphQLObjectType => {
   const name = generateImageTypeName(imageType)
@@ -44,7 +44,7 @@ export const definePathNode = (
 }
 
 export const defineLocalFileNode = (
-  imageType: typeof IMAGE_TYPES[number],
+  imageType: (typeof IMAGE_TYPES)[number],
   schema: NodePluginSchema
 ): GatsbyGraphQLObjectType => {
   const name = generateImageTypeName(imageType)
