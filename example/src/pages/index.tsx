@@ -41,24 +41,19 @@ const Index: React.FC<PageProps<DataProps>> = ({
             </TabList>
             <div className={spacerStyle} />
             <TabPanel>
-              {favTV.nodes.map((tv) => {
-                let airDate
-
-                return (
-                  <Card
-                    key={tv.tmdbId}
-                    name={tv.name}
-                    link={`/tv/${tv.tmdbId}`}
-                    cover={tv.poster_path.localFile}
-                    next={airDate}
-                    rating={tv.vote_average}
-                    status={tv.status}
-                    release={tv.first_air_date}
-                    episodes={tv.number_of_episodes}
-                    seasons={tv.number_of_seasons}
-                  />
-                )
-              })}
+              {favTV.nodes.map((tv) => (
+                <Card
+                  key={tv.tmdbId}
+                  name={tv.name}
+                  link={`/tv/${tv.tmdbId}`}
+                  cover={tv.poster_path.localFile}
+                  rating={tv.vote_average}
+                  status={tv.status}
+                  release={tv.first_air_date}
+                  episodes={tv.number_of_episodes}
+                  seasons={tv.number_of_seasons}
+                />
+              ))}
             </TabPanel>
             <TabPanel>
               {favMovies.nodes.map((movie) => (
@@ -82,23 +77,19 @@ const Index: React.FC<PageProps<DataProps>> = ({
             </TabList>
             <div className={spacerStyle} />
             <TabPanel>
-              {watchedTV.nodes.map((tv) => {
-                let airDate
-                return (
-                  <Card
-                    key={tv.name}
-                    cover={tv.poster_path.path}
-                    link={`/tv/${tv.tmdbId}`}
-                    name={tv.name}
-                    next={airDate}
-                    rating={tv.vote_average}
-                    status={tv.status}
-                    release={tv.first_air_date}
-                    episodes={tv.number_of_episodes}
-                    seasons={tv.number_of_seasons}
-                  />
-                )
-              })}
+              {watchedTV.nodes.map((tv) => (
+                <Card
+                  key={tv.name}
+                  cover={tv.poster_path.path}
+                  link={`/tv/${tv.tmdbId}`}
+                  name={tv.name}
+                  rating={tv.vote_average}
+                  status={tv.status}
+                  release={tv.first_air_date}
+                  episodes={tv.number_of_episodes}
+                  seasons={tv.number_of_seasons}
+                />
+              ))}
             </TabPanel>
             <TabPanel>
               {watchedMovies.nodes.map((movie) => (
