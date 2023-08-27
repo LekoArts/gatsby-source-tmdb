@@ -9218,6 +9218,7 @@ __metadata:
     "@vanilla-extract/css": ^1.13.0
     "@vanilla-extract/webpack-plugin": ^2.3.0
     date-fns: ^2.30.0
+    encoding: ^0.1.13
     gatsby: ^5.12.1
     gatsby-adapter-netlify: ^1.0.0
     gatsby-plugin-image: ^3.12.0
